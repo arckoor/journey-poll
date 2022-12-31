@@ -1,17 +1,33 @@
 <template>
-	<input
-		type="text"
-		v-model="username"
-		v-on:keydown.enter="($refs.password as HTMLElement).focus()"
-	/>
-	<input
-		type="text"
-		v-model="password"
-		v-on:keydown.enter="login"
-		ref="password"
-	/>
-	<button @click="login" :disabled="username === '' || password === ''">Login!</button>
-	<div>{{ errorMessage }}</div>
+	<div class="container">
+		<div class="inputContainer">
+			<label for="username">Username:</label>
+			<input
+				type="text"
+				v-model="username"
+				v-on:keydown.enter="($refs.password as HTMLElement).focus()"
+				id="username"
+				name="username"
+				placeholder="Enter your username..."
+			/>
+		</div>
+		<div class="inputContainer">
+			<label for="password">Password:</label>
+			<input
+				type="password"
+				v-model="password"
+				v-on:keydown.enter="login"
+				ref="password"
+				id="password"
+				name="password"
+				placeholder="Enter your password..."
+			/>
+		</div>
+		<div class="loginContainer">
+			<div :class="'button login' + ((username === '' || password === '') ? ' noHover' : '')" @click="login" :disabled="username === '' || password === ''">Login!</div>
+			<div class="error">{{ errorMessage }}</div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -38,8 +54,7 @@ export default defineComponent({
 				credentials: "include",
 				headers: {
 					"Accept": "application/json",
-					"Content-Type": "application/json",
-					// "Access-Control-Allow-Origin": "http://localhost:8080"
+					"Content-Type": "application/json"
 				},
 				body: JSON.stringify({
 					username: this.username,
@@ -63,3 +78,40 @@ export default defineComponent({
 	}
 });
 </script>
+
+<style scoped>
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 100vh;
+	justify-content: center;
+}
+
+.inputContainer {
+	display: flex;
+	flex-direction: row;
+	padding: 20px 0;
+	font-size: 25px;
+	align-items: center;
+}
+
+label {
+	width: 120px;
+	padding-right: 25px;
+}
+
+.loginContainer {
+	margin-top: 40px;
+}
+
+.login {
+	padding: 10px 40px;
+	margin: 0 5px;
+	text-align: center;
+}
+
+.error {
+	margin-top: 20px;
+}
+</style>

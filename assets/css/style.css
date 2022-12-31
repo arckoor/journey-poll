@@ -1,0 +1,62 @@
+:root {
+	--border: #2b2b2b;
+	--input-bg: #262626;
+	--danger: #ef1f42;
+	--success: #1dd144;
+}
+
+
+@font-face {
+	font-family: Roboto;
+	src: url(css/fonts/Roboto/Roboto-Medium.ttf);
+}
+
+html {
+	overflow-x: hidden;
+	font-family: Roboto, sans-serif;
+	background: #141414;
+	color: #ffffff;
+	font-size: 20px;
+}
+
+body {
+	margin: 0px;
+}
+
+.button {
+	cursor: pointer;
+	border-radius: 5px;
+	border: 2px solid var(--border);
+	transition: background .3s;
+}
+
+.button:hover {
+	background-color: var(--border);
+}
+
+.noHover {
+	pointer-events: none;
+}
+
+input[type=date],
+input[type=text] {
+	color: inherit;
+	font-size: 18px;
+	width: 200px;
+	background-color: var(--input-bg);
+	border: 2px solid var(--border);
+	padding: 3px 10px;
+	height: 100%;
+}
+
+input:focus {
+	outline: none;
+	border-color: var(--danger);
+}
+
+a:visited,
+a:active,
+a {
+	text-decoration: none;
+	color: inherit
+}

@@ -5,49 +5,70 @@ definePageMeta({
 </script>
 
 <template>
-	<Title>Create a new poll</Title>
-	<input
-		type="text"
-		name=""
-		id=""
-		v-model="name"
-		:disabled="published"
-	>
-	<input
-		type="date"
-		name=""
-		:min="toDateInputValue(addDays(new Date(), 1))"
-		id=""
-		v-model="ends"
-		:disabled="published"
-	>
-	<input
-		type="date"
-		name=""
-		:min="ends"
-		id=""
-		v-model="expires"
-		:disabled="published"
-	>
-	<input
-		type="file"
-		name=""
-		id=""
-		multiple
-		required
-		accept=".jpg,.png"
-		@change="preview"
-		:disabled="published"
-	>
-	<div v-if="!published">
-		<button @click="create" :disabled="!(name !== '' && expires > ends && images.length > 0)" >Create Poll!</button>
+	<div class="inputContainer">
+		<div class="inputItem">
+			<label for="pollName">Poll name:</label>
+			<input
+				type="text"
+				name="pollName"
+				id="pollName"
+				v-model="name"
+				:disabled="published"
+			>
+		</div>
+		<div class="inputItem">
+			<label for="pollEnd">Poll end:</label>
+			<input
+				type="date"
+				name="pollEnd"
+				id="pollEnd"
+				:min="toDateInputValue(addDays(new Date(), 1))"
+				v-model="ends"
+				:disabled="published"
+			>
+		</div>
+		<div class="inputItem">
+			<label for="pollExpiry">Poll expiry:</label>
+			<input
+				type="date"
+				name="pollExpiry"
+				id="pollExpiry"
+				:min="ends"
+				v-model="expires"
+				:disabled="published"
+			>
+		</div>
 	</div>
-	<div v-else>
-		Poll successfully published
-		<button @click="copyLink(config.public.base + '/' + id)">Copy Link</button>
+	<div class="fileWrapper">
+		<div class="button" @click="($refs.fileIn as HTMLInputElement).click()">Choose files</div>
+		<input
+			type="file"
+			name="fileIn"
+			id="fileIn"
+			ref="fileIn"
+			multiple
+			required
+			accept=".jpg,.png"
+			@change="preview"
+			:disabled="published"
+		>
+		<div class="imgGrid">
+			<img
+				v-for="image of previews"
+				:key="image"
+				:src="image"
+				alt="Uploaded image"
+			>
+		</div>
 	</div>
-	<div v-for="image of previews" :key="image">
-		<img :src="image" alt="">
+	<div class="buttonContainer">
+		<div v-if="!published">
+			<div @click="create" :class="'button' + (!(name !== '' && expires > ends && images.length > 0) ? ' noHover' : '')" >Create Poll!</div>
+		</div>
+		<div v-else>
+			<div class="successMsg">Poll successfully published!</div>
+			<div class="button" @click="copyLink(config.public.base + '/' + id)">Copy Link</div>
+		</div>
 	</div>
 </template>
 
@@ -106,5 +127,71 @@ export default defineComponent({
 		}
 	}
 });
-
 </script>
+
+<style scoped>
+.inputContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.inputItem {
+	width: 700px;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	margin: 20px 0 0 0;
+}
+
+input[type=text],
+input[type=date] {
+	width: 500px;
+}
+
+label {
+	width: 100px;
+}
+
+input[type=file] {
+	display: none;
+}
+
+.fileWrapper {
+	margin: 40px auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 1000px;
+}
+
+.button {
+	padding: 10px 20px;
+	text-align: center;
+}
+
+.imgGrid {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	column-gap: 20px;
+}
+
+img {
+	margin: 30px 0 auto;
+	width: 100%;
+    border: 4px solid #ffffff;
+}
+
+.buttonContainer {
+	padding: 20px 0 60px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.successMsg {
+	padding: 20px;
+}
+</style>
