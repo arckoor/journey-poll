@@ -10,10 +10,18 @@ export default defineNuxtConfig({
 	},
 	alias: {
 		"components": fileURLToPath(new URL("./components", import.meta.url)),
+		"assets": fileURLToPath(new URL("./assets", import.meta.url)),
 		"css": fileURLToPath(new URL("./assets/css", import.meta.url))
 	},
 	css: [
 		"css/style.css"
 	],
-	ssr: false
+	ssr: false,
+	app: {
+		head: {
+			link: [
+				{ rel: "icon", type: "icon/ico", href: "assets/favicon.ico" }
+			]
+		}
+	}
 });
