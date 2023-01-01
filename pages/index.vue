@@ -109,7 +109,6 @@ label {
 .login {
 	padding: 10px 40px;
 	margin: 0 5px;
-	text-align: center;
 }
 
 .error {

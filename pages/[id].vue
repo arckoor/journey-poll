@@ -236,7 +236,7 @@ button {
 	text-align: center;
 	background: var(--danger);
 	border-radius: 3px;
-	transition: background .3s;
+	transition: background var(--hover-transition);
 	color: #ffffff;
 	width: 120px;
 	font-size: 24px;;

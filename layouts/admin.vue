@@ -46,6 +46,10 @@ export default defineComponent({
 	border: 2px solid var(--border);
 	width: fit-content;
 	cursor: pointer;
+	transition: background var(--hover-transition);
 }
 
+.headerItem:hover {
+	background-color: var(--border);
+}
 </style>
