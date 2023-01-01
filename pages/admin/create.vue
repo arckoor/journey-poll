@@ -48,7 +48,7 @@ definePageMeta({
 			ref="fileIn"
 			multiple
 			required
-			accept=".jpg,.png"
+			accept=".jpg,.png,.jpeg"
 			@change="preview"
 			:disabled="published"
 		>
