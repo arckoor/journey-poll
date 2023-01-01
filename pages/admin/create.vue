@@ -62,8 +62,12 @@ definePageMeta({
 		</div>
 	</div>
 	<div class="buttonContainer">
-		<div v-if="!published">
+		<div v-if="!published && !working">
 			<div @click="create" :class="'button' + (!(name !== '' && expires > ends && images.length > 0) ? ' noHover' : '')" >Create Poll!</div>
+		</div>
+		<div v-else-if="!published && working" class="working">
+			<div class="spin"></div>
+			<div class="spinMsg">Working on creating your poll...</div>
 		</div>
 		<div v-else>
 			<div class="successMsg">Poll successfully published!</div>
@@ -84,6 +88,7 @@ export default defineComponent({
 			previews: new Array<string>(),
 			dZ: HTMLInputElement,
 			published: false,
+			working: false,
 			id: ""
 		};
 	},
@@ -106,6 +111,7 @@ export default defineComponent({
 			}
 		},
 		async create() {
+			this.working = true;
 			const formData = new FormData();
 			formData.append("name", this.name);
 			formData.append("ends", new Date(this.ends).getTime().toString());
@@ -123,6 +129,7 @@ export default defineComponent({
 					console.log(data);
 					this.id = data;
 				});
+			this.working = false;
 			this.published = true;
 		}
 	}
@@ -189,6 +196,40 @@ img {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+@keyframes spinner {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.spin::before {
+	animation: .6s linear infinite spinner;
+	animation-play-state: inherit;
+	border: solid 4px var(--spin-bg);
+	border-bottom-color: var(--danger);
+	border-radius: 50%;
+	content: "";
+	height: 20px;
+	position: absolute;
+	min-width: 20px;
+	width: 20px;
+}
+
+.working {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.spinMsg {
+	margin-top: 27px;
+	margin-left: 40px;
 }
 
 .successMsg {
