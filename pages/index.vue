@@ -3,6 +3,7 @@
 		<div class="inputContainer">
 			<label for="username">Username:</label>
 			<input
+				spellcheck="false"
 				type="text"
 				v-model="username"
 				v-on:keydown.enter="($refs.password as HTMLElement).focus()"
