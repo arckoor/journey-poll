@@ -9,16 +9,15 @@ definePageMeta({
 		<div class="refresh button" @click="getPolls">Refresh</div>
 	</div>
 	<div v-if="polls.length > 0">
-		<div v-for="poll of polls" :key="poll.id" class="pollItem">
-			<div class="pollName">{{ poll.name }}</div>
-			<div :class="'pollEnd' + (countdowns[poll.id] === '0s' ? ' green' : '')">Ends in: {{ countdowns[poll.id] }}</div>
-			<div :class="'pollEnd' + (new RegExp(/^[0-9]*m|^[0-9]*s/).test(expires[poll.id]) ? ' red' : '')">Expires in: {{ expires[poll.id] }}</div>
-			<div class="linkSection">
-				<div class="linkItem button" @click="copyLink(config.public.base + '/' + poll.id)">Click to copy link</div>
-				<div class="linkItem button" @click="navigateTo('/admin/results/' + poll.id)">Results</div>
-				<div class="linkItem button delete" @click="deletePoll(poll.id)">Delete</div>
-			</div>
-		</div>
+		<ListItem
+			v-for="poll of polls"
+			:key="poll.id"
+			:name="poll.name"
+			:countdown="countdowns[poll.id]"
+			:expires="expires[poll.id]"
+			:id="poll.id"
+			:cb="deletePoll"
+		/>
 	</div>
 	<div v-else class="noPoll">
 		<div class="noPollMsg">There are no polls.</div>
@@ -59,6 +58,7 @@ export default defineComponent({
 				},
 			})
 				.then(async res => {
+					this.destroyCountdowns();
 					const data = await res.json();
 					this.polls = [];
 					for (let item in data) {
@@ -77,7 +77,6 @@ export default defineComponent({
 						this.expireRefs[item] = eRef;
 					}
 				});
-
 		},
 		async deletePoll(id: string) {
 			await fetch(this.config.public.apiBase + "/admin/delete/" + id, {
@@ -87,6 +86,18 @@ export default defineComponent({
 			clearInterval(this.countdownRefs[id]);
 			delete this.countdownRefs[id];
 			await this.getPolls();
+		},
+		destroyCountdowns() {
+			for (let ct in this.countdownRefs) {
+				clearInterval(ct);
+			}
+			for (let ct in this.expireRefs) {
+				clearInterval(ct);
+			}
+			this.countdownRefs = {};
+			this.countdowns = {};
+			this.expireRefs = {};
+			this.expires = {};
 		}
 	}
 });
@@ -106,42 +117,6 @@ export default defineComponent({
 	border: 2px solid var(--border);
 	width: fit-content;
 	cursor: pointer;
-}
-
-.pollItem {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	padding: 20px 50px 20px 50px;
-	margin: 20px 50px 10px 50px;
-	border: 2px solid var(--border);
-	align-items: center;
-}
-
-.pollName {
-	flex-basis: 40%;
-	font-size: 24px;
-}
-
-.pollEnd {
-	flex-basis: 15%;
-}
-
-.linkSection {
-	flex-basis: 30%;
-	display: flex;
-	flex-direction: row;
-	justify-content: right;
-	align-items: center;
-}
-
-.linkItem {
-	padding: 10px 10px;
-	margin: 0 5px;
-}
-
-.delete:hover {
-	background-color: var(--danger);
 }
 
 .noPoll {
