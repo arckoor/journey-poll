@@ -39,7 +39,8 @@ body {
 }
 
 input[type=date],
-input[type=text] {
+input[type=text],
+input[type=password] {
 	color: inherit;
 	font-size: 18px;
 	width: 200px;

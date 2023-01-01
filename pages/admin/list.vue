@@ -161,7 +161,6 @@ export default defineComponent({
 }
 
 .button {
-	margin-top: 20px;
 	padding: 10px 20px;
 }
 </style>
