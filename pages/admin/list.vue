@@ -16,12 +16,23 @@ definePageMeta({
 			:countdown="countdowns[poll.id]"
 			:expires="expires[poll.id]"
 			:id="poll.id"
-			:cb="deletePoll"
+			:cb="enableDeletion"
 		/>
 	</div>
 	<div v-else class="noPoll">
 		<div class="noPollMsg">There are no polls.</div>
 		<NuxtLink class="button" to="/admin/create">Create one now!</NuxtLink>
+	</div>
+	<div :class="'deleteBG ' + (deletion ? 'deleteContainer' : ' deleteHide')">
+		<div class="deleteText">
+			Are you sure you want to delete poll "{{ deletionData.name }}"? <br />
+			The poll ID is {{ deletionData.id }}. <br />
+			This action is not reversible.
+		</div>
+		<div class="buttonContainer">
+			<div class="button deleteButton" @click="cancelDeletion">No, take me back.</div>
+			<div class="button deleteButton deleteConfirm" @click="confirmDeletion">Yes, delete!</div>
+		</div>
 	</div>
 </template>
 
@@ -42,6 +53,8 @@ export default defineComponent({
 			countdownRefs: {} as Record<string, NodeJS.Timer>,
 			expires: {} as Record<string, string>,
 			expireRefs: {} as Record<string, NodeJS.Timer>,
+			deletion: false,
+			deletionData: {} as Record<string, string>
 		};
 	},
 	async mounted() {
@@ -62,10 +75,8 @@ export default defineComponent({
 					const data = await res.json();
 					this.polls = [];
 					for (let item in data) {
-						this.polls.push({
-							id: item,
-							...data[item]
-						});
+						this.countdowns[item] = "";
+						this.expires[item] = "";
 						const ref = countdown(data[item].ends, (str: string) => { this.countdowns[item] = str; });
 						this.countdownRefs[item] = ref;
 						const eRef = countdown(data[item].expires, (str: string) => {
@@ -75,8 +86,29 @@ export default defineComponent({
 							}
 						});
 						this.expireRefs[item] = eRef;
+
+						this.polls.push({
+							id: item,
+							...data[item]
+						});
 					}
 				});
+		},
+		enableDeletion(id: string, name: string) {
+			this.deletion = true;
+			this.deletionData = {
+				id: id,
+				name: name
+			};
+		},
+		cancelDeletion() {
+			this.deletion = false;
+			this.deletionData = {};
+		},
+		confirmDeletion() {
+			this.deletePoll(this.deletionData.id);
+			this.deletion = false;
+			this.deletionData = {};
 		},
 		async deletePoll(id: string) {
 			await fetch(this.config.public.apiBase + "/admin/delete/" + id, {
@@ -133,5 +165,54 @@ export default defineComponent({
 
 .button {
 	padding: 10px 20px;
+}
+
+.deleteHide {
+	visibility: hidden;
+	opacity: 0;
+	max-height: 0;
+}
+
+.deleteBG {
+	background-color: transparent
+}
+
+.deleteContainer {
+	transition: background-color var(--delete-transition);
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: var(--popup-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	flex-direction: column;
+	visibility: visible;
+	opacity: 1;
+}
+
+.deleteText {
+	font-size: 30px;
+	text-align: center;
+}
+
+.buttonContainer {
+	display: flex;
+	width: 500px;
+}
+
+.deleteButton {
+	width: 200px;
+	margin: 40px 20px 0 20px;
+}
+
+.deleteConfirm {
+	border-color: var(--danger);
+}
+
+.deleteConfirm:hover {
+	background-color: var(--danger);
 }
 </style>

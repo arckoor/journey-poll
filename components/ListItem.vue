@@ -4,7 +4,7 @@ defineProps<{
 	countdown: string,
 	expires: string,
 	id: string,
-	cb: (id: string) => void
+	cb: (id: string, name: string) => void
 }>();
 const config = useRuntimeConfig();
 </script>
@@ -17,7 +17,7 @@ const config = useRuntimeConfig();
 		<div class="linkSection">
 			<div class="linkItem button" @click="copyLink(config.public.base + '/' + id)">Click to copy link</div>
 			<div class="linkItem button" @click="navigateTo('/admin/results/' + id)">Results</div>
-			<div class="linkItem button delete" @click="cb(id)">Delete</div>
+			<div class="linkItem button delete" @click="cb(id, name)">Delete</div>
 		</div>
 	</div>
 </template>
