@@ -12,7 +12,7 @@
 				<div :class="new RegExp(/^[0-9]*m|^[0-9]*s/).test(ct) ? ' red' : ''">This polls ends in {{ ct }}.</div>
 				<div class="additionalInfo">
 					<strong>Please check out the entries and then on the bottom of this page vote for your favorites!</strong>
-					The entry letter (A,B,C) is assigned at the top of the image. <u>You may vote for up to 3 entries!</u> <!-- todo the number 3 should be modifiable -->
+					The entry letter (A, B, C) is assigned at the top of the image. <u>You may vote for up to 3 entries!</u> <!-- todo the number 3 should be modifiable -->
 					Thanks for your vote!
 				</div>
 				<div class="imageContainer" v-for="idx in images.length" :key="idx">
@@ -106,7 +106,7 @@ export default defineComponent({
 						return;
 					}
 					countdown(json.ends, (str: string) => { this.ct = str; });
-					this.images = json.images;
+					this.images = this.shuffle(json.images);
 					for (let i=0; i<this.images.length; i++) {
 						this.checked.push(false);
 					}
@@ -216,6 +216,7 @@ input[type=checkbox] {
 	height: 18px;
 	cursor: pointer;
 }
+
 .buttonContainer {
 	height: 5vh;
 	display: flex;
@@ -223,6 +224,7 @@ input[type=checkbox] {
 	align-items: center;
 	justify-content: center;
 }
+
 button {
 	display: flex;
 	align-self: center;
@@ -232,7 +234,7 @@ button {
 	cursor: pointer;
 	border: 0px;
 	text-align: center;
-	background: rgb(221, 92, 18);
+	background: var(--danger);
 	border-radius: 3px;
 	transition: background .3s;
 	color: #ffffff;
