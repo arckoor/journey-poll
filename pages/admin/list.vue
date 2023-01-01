@@ -21,7 +21,7 @@ definePageMeta({
 		</div>
 	</div>
 	<div v-else class="noPoll">
-		There are no polls.
+		<div class="noPollMsg">There are no polls.</div>
 		<NuxtLink class="button" to="/admin/create">Create one now!</NuxtLink>
 	</div>
 </template>
@@ -144,20 +144,16 @@ export default defineComponent({
 	background-color: var(--danger);
 }
 
-.red {
-	color: var(--danger);
-}
-
-.green {
-	color: var(--success)
-}
-
 .noPoll {
-	padding-top: 50px;
+	padding: 50px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.noPollMsg {
+	padding-bottom: 20px;
 }
 
 .button {

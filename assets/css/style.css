@@ -61,3 +61,11 @@ a {
 	text-decoration: none;
 	color: inherit
 }
+
+.red {
+	color: var(--danger);
+}
+
+.green {
+	color: var(--success)
+}

@@ -9,7 +9,7 @@
 				This poll has already ended.
 			</div>
 			<div v-else>
-				<!-- todo loading spinny boi -->
+				<div :class="new RegExp(/^[0-9]*m|^[0-9]*s/).test(ct) ? ' red' : ''">This polls ends in {{ ct }}.</div>
 				<div class="additionalInfo">
 					<strong>Please check out the entries and then on the bottom of this page vote for your favorites!</strong>
 					The entry letter (A,B,C) is assigned at the top of the image. <u>You may vote for up to 3 entries!</u> <!-- todo the number 3 should be modifiable -->
@@ -58,7 +58,8 @@ export default defineComponent({
 			id: this.$route.params.id,
 			exists: true,
 			ended: false,
-			ready: false
+			ready: false,
+			ct: ""
 		};
 	},
 	async mounted() {
@@ -104,6 +105,7 @@ export default defineComponent({
 						this.ended = true;
 						return;
 					}
+					countdown(json.ends, (str: string) => { this.ct = str; });
 					this.images = json.images;
 					for (let i=0; i<this.images.length; i++) {
 						this.checked.push(false);
