@@ -64,6 +64,8 @@ export default defineComponent({
 			});
 			if (response.status === 200) {
 				navigateTo("/admin/list");
+			} else if (response.status === 429) {
+				this.errorMessage = "You are being rate limited.";
 			} else {
 				this.errorMessage = "Invalid login credentials.";
 			}
