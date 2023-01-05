@@ -7,20 +7,39 @@
 	--danger: #ef1f42;
 	--success: #1dd144;
 	--hover-transition: .3s;
-	--delete-transition: .5s
+	--delete-transition: .5s;
+
+	/* todo font sizes */
+
+	/* Stolen from the Hetzner Cloud Console */
+    --color-primary--hover: 	  #ed0d32;
+    --color-text: 				  #ededed;
+    --color-text--disabled: 	  #8a8a8a;
+    --color-back-link--hover:	  #a8a8a8;
+    --color-background--layer-0:  #141414;
+    --color-background--layer-10: #262626;
+    --color-background--layer-20: #2b2b2b;
+    --color-background--layer-30: #303030;
+    --color-background--layer-40: #383838;
+
+	--color-background--layer-50: #000000d2;
+	--color-primary--success:	  #1dd144;
+
+	--sidebar-width: 80px;
 }
 
 
 @font-face {
 	font-family: Roboto;
-	src: url(css/fonts/Roboto/Roboto-Medium.ttf);
+	src: url(css/fonts/Roboto/Roboto-Medium.ttf); 
+	/* todo https://fonts.google.com/?query=roboto variable font https://stackoverflow.com/a/74618718/12203337 */
 }
 
 html {
 	overflow-x: hidden;
 	font-family: Roboto, sans-serif;
-	background: var(--bg);
-	color: #ffffff;
+	background: var(--color-background--layer-0);
+	color: var(--color-text);
 	font-size: 20px;
 }
 
@@ -32,12 +51,20 @@ body {
 	text-align: center;
 	cursor: pointer;
 	border-radius: 5px;
-	border: 2px solid var(--border);
-	transition: background var(--hover-transition);
+	border: 2px solid var(--color-background--layer-10);
+	transition: border-color var(--hover-transition);
+
+	/* https://stackoverflow.com/a/4407335 */
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
 }
 
 .button:hover {
-	background-color: var(--border);
+	/* background-color: var(--color-background--layer-10); */
+	border-color: var(--color-primary--hover)
 }
 
 .noHover {
@@ -50,8 +77,8 @@ input[type=password] {
 	color: inherit;
 	font-size: 18px;
 	width: 200px;
-	background-color: var(--input-bg);
-	border: 2px solid var(--border);
+	background-color: var(--color-background--layer-10);
+	border: 2px solid var(--color-background--layer-0);
 	padding: 3px 10px;
 	height: 100%;
 }
@@ -69,9 +96,9 @@ a {
 }
 
 .red {
-	color: var(--danger);
+	color: var(--color-primary--hover);
 }
 
 .green {
-	color: var(--success)
+	color: var(--color-primary--success)
 }

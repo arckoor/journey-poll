@@ -25,7 +25,7 @@ definePageMeta({
 	</div>
 	<div :class="'deleteBG ' + (deletion ? 'deleteContainer' : ' deleteHide')">
 		<div class="deleteText">
-			Are you sure you want to delete poll "{{ deletionData.name }}"? <br />
+			Are you sure you want to delete "{{ deletionData.name }}"? <br />
 			The poll ID is {{ deletionData.id }}. <br />
 			This action is not reversible.
 		</div>
@@ -146,7 +146,6 @@ export default defineComponent({
 	margin: 10px 0;
 	padding: 10px 20px 10px 20px;
 	border-radius: 5px;
-	border: 2px solid var(--border);
 	width: fit-content;
 	cursor: pointer;
 }
@@ -184,7 +183,7 @@ export default defineComponent({
 	left: 0;
 	height: 100%;
 	width: 100%;
-	background-color: var(--popup-bg);
+	background-color: var(--color-background--layer-50);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -209,10 +208,10 @@ export default defineComponent({
 }
 
 .deleteConfirm {
-	border-color: var(--danger);
+	border-color: var(--color-primary--hover);
 }
 
 .deleteConfirm:hover {
-	background-color: var(--danger);
+	background-color: var(--color-primary--hover);
 }
 </style>

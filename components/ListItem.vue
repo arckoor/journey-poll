@@ -29,7 +29,7 @@ const config = useRuntimeConfig();
 	justify-content: space-between;
 	padding: 20px 50px 20px 50px;
 	margin: 20px 50px 10px 50px;
-	border: 2px solid var(--border);
+	border: 2px solid var(--color-background--layer-10);
 	align-items: center;
 }
 
@@ -57,6 +57,6 @@ const config = useRuntimeConfig();
 
 
 .delete:hover {
-	background-color: var(--danger);
+	background-color: var(--color-primary--hover);
 }
 </style>
