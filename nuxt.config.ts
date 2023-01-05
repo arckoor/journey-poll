@@ -5,7 +5,7 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			apiBase: process.env.NODE_ENV !== "production" ? "http://localhost:8080/poll" : process.env.NUXT_API_BASE_URL,
-			base: process.env.NODE_ENV !== "production" ? "http://localhost:3000" : process.env.NUXT_BASE_URL
+			base: process.env.NODE_ENV !== "production" ? "http://localhost:3000/p" : process.env.NUXT_BASE_URL
 		}
 	},
 	alias: {
@@ -20,7 +20,7 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			link: [
-				{ rel: "icon", type: "icon/ico", href: "assets/favicon.ico" }
+				{ rel: "icon", type: "icon/ico", href: "/favicon.ico" }
 			]
 		}
 	}
