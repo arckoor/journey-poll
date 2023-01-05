@@ -20,13 +20,13 @@ export function countdown(date: string, callback: (str: string) => void) {
 		const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 		let endStr = "";
 		if (days) {
-			endStr = `${days}d ${hours}h ${minutes}m ${seconds}s` ;
+			endStr = `${days}d ${hours}h ${minutes}m`;
 		} else if (hours) {
-			endStr = `${hours}h ${minutes}m ${seconds}s` ;
+			endStr = `${hours}h ${minutes}m ${seconds}s`;
 		} else if (minutes) {
-			endStr = `${minutes}m ${seconds}s` ;
+			endStr = `${minutes}m ${seconds}s`;
 		} else {
-			endStr = `${seconds}s` ;
+			endStr = `${seconds}s`;
 		}
 		callback(endStr);
 		if (distance < 0) {
