@@ -1,19 +1,23 @@
+<script setup lang="ts">
+defineProps<{
+	status: number,
+	data: Record<string, string | Array<string>>
+}>();
+</script>
+
 <template>
 	<div class="container" v-if="ready">
 		<div v-if="exists">
 			<div class="heading">{{ name }}</div>
-			<div v-if="voted && !ended" class="resultMessage">
+			<div class="remainingTime">
+				<div :class="new RegExp(/^[0-9]*m|^[0-9]*s/).test(ct) ? ' red' : ''">This polls ends in {{ ct }}.</div>
+			</div>
+			<div v-if="voted" class="resultMessage">
 				Thank you for voting!
 			</div>
-			<div v-else-if="ended" class="resultMessage">
-				This poll has already ended.
-			</div>
 			<div v-else>
-				<div :class="new RegExp(/^[0-9]*m|^[0-9]*s/).test(ct) ? ' red' : ''">This polls ends in {{ ct }}.</div>
 				<div class="additionalInfo">
-					<strong>Please check out the entries and then on the bottom of this page vote for your favorites!</strong>
-					The entry letter (A, B, C) is assigned at the top of the image. <u>You may vote for up to 3 entries!</u> <!-- todo the number 3 should be modifiable -->
-					Thanks for your vote!
+					<RichTextPreview :text="info" :entries="allowedVotes"/>
 				</div>
 				<div class="imageContainer" v-for="idx in images.length" :key="idx">
 					<div class="letter">{{ alphabet[idx-1] }}</div>
@@ -31,11 +35,15 @@
 							:name="'vote'+idx"
 							:id="'vote'+idx"
 							v-model="checked[idx-1]"
-							:disabled="checked.reduce((a, x) => a + (x ? 1 : 0), 0) > 2 && !checked[idx-1]"
+							:disabled="checked.reduce((a, x) => a + (x ? 1 : 0), 0) > allowedVotes-1 && !checked[idx-1]"
 						>
 						<div class="cbLetter">{{ alphabet[idx-1] }}</div>
 					</div>
-					<button @click="submit" class="submitButton" :disabled="checked.reduce((a, x) => a + (x ? 1 : 0), 0) < 1">Submit</button>
+				</div>
+				<div class="submitContainer">
+					<div @click="submit" :class="'submitButton button' + (checked.reduce((a, x) => a + (x ? 1 : 0), 0) < 1 ? ' noHover': '')">
+						Submit My Vote!
+					</div>
 				</div>
 			</div>
 		</div>
@@ -51,67 +59,42 @@ export default defineComponent({
 		return {
 			config: useRuntimeConfig(),
 			name: "",
+			info: "",
+			allowedVotes: 0,
 			images: new Array<string>(),
 			checked: new Array<boolean>(),
 			alphabet: new Array<string>(),
 			voted: false,
 			id: this.$route.params.id,
 			exists: true,
-			ended: false,
 			ready: false,
 			ct: ""
 		};
 	},
 	async mounted() {
-		await this.checkVoted();
 		await this.getPollData();
 		this.ready = true;
 
 	},
 	methods: {
-		async checkVoted() {
-			await fetch(this.config.public.apiBase + "/submit/" + this.id, {
-				method: "GET",
-				headers: {
-					"Accept": "application/json",
-					"Content-Type": "application/json",
-				},
-			})
-				.then(async res => {
-					const data = await res.json();
-					this.voted = data.voted;
-				});
-
-		},
 		async getPollData() {
-			await fetch(this.config.public.apiBase + "/poll/" + this.id, {
-				method: "GET",
-				headers: {
-					"Accept": "application/json",
-					"Content-Type": "application/json",
-				},
-			})
-				.then(async res => {
-					if (res.status !== 200) {
-						this.exists = false;
-						return;
-					}
-					const json = await res.json();
-					this.name = json.name;
-					if (this.voted) {
-						return;
-					}
-					if (json.ended) {
-						this.ended = true;
-						return;
-					}
-					countdown(json.ends, (str: string) => { this.ct = str; });
-					this.images = this.shuffle(json.images);
-					for (let i=0; i<this.images.length; i++) {
-						this.checked.push(false);
-					}
-					this.alphabet = this.makeAlphabet(this.images.length);
-				});
+			if (this.status !== 200) {
+				this.exists = false;
+				return;
+			}
+			this.name = this.data.name as string;
+			countdown(this.data.ends as string, (str: string) => { this.ct = str; });
+			if (this.data.voted) {
+				this.voted = true;
+				return;
+			}
+			this.images = this.shuffle(this.data.images as Array<string>);
+			for (let i=0; i<this.images.length; i++) {
+				this.checked.push(false);
+			}
+			this.alphabet = this.makeAlphabet(this.images.length);
+			this.info = this.data.info as string || "";
+			this.allowedVotes = parseInt(this.data.allowedVotes as string);
 		},
 		async submit() {
 			const votes = [];
@@ -142,19 +125,12 @@ export default defineComponent({
 			const alphabet = alpha.map((x) => String.fromCharCode(x));
 			return alphabet;
 		}
-
 	}
 });
 </script>
 
 <style scoped>
-@font-face {
-	font-family: Eyeglass Condensed Bold;
-	src: url(css/fonts/Eyeglass/EyeglassCondensedBold.ttf);
-}
-
 .container {
-	font-family: Eyeglass Condensed Bold;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -165,10 +141,18 @@ export default defineComponent({
 }
 
 .heading {
-	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	display: flex;
 	font-size: 34px;
-	text-align: left;
+}
+
+.remainingTime {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 20px 0 0 0;
 }
 
 .additionalInfo {
@@ -217,38 +201,27 @@ input[type=checkbox] {
 	cursor: pointer;
 }
 
-.buttonContainer {
-	height: 5vh;
+.submitContainer {
 	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 100%;
-	align-items: center;
-	justify-content: center;
-}
-
-button {
-	display: flex;
-	align-self: center;
-	align-items: center;
-	justify-content: center;
-	font-family: Eyeglass Condensed Bold;
-	cursor: pointer;
-	border: 0px;
-	text-align: center;
-	background: var(--danger);
-	border-radius: 3px;
-	transition: background var(--hover-transition);
-	color: #ffffff;
-	width: 120px;
-	font-size: 24px;;
 	margin: 40px 0 40px 0;
 }
 
-button:disabled {
-	background-color: transparent;
-	cursor: default;
+.submitButton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 120px;
+	padding: 10px 20px;
 }
 
 .resultMessage {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	font-size: 24px;
 	padding-top: 100px;
 }
