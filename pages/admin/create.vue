@@ -168,7 +168,7 @@ export default defineComponent({
 			if (this.images.length < 1) {
 				return;
 			}
-			if (0 > this.allowedVotes || this.allowedVotes > this.images.length) {
+			if ( this.allowedVotes <= 0 || this.allowedVotes > this.images.length) {
 				return;
 			}
 			this.valid = true;
