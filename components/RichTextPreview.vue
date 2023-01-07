@@ -1,17 +1,20 @@
 <script setup lang="ts">
 defineProps<{
 	text: string
-	entries: number
+	allowedVotes: number
 }>();
 </script>
 
 <template>
-	<span v-for="(item, idx) in splits" :key="idx">
-		<span v-if="item.type === 'text'">{{ item.content }}</span>
-		<span v-else-if="item.type === 'bold'"><strong>{{ item.content }}</strong></span>
-		<span v-else-if="item.type === 'underline'"><u>{{ item.content }}</u></span>
-	</span>
-	<u>You may vote for up to {{ entries }} entries!</u> Thanks for your vote!
+	<div>
+		<span v-for="(item, idx) in splits" :key="idx">
+			<span v-if="item.type === 'text'">{{ item.content }}</span>
+			<span v-else-if="item.type === 'bold'"><strong>{{ item.content }}</strong></span>
+			<span v-else-if="item.type === 'underline'"><u>{{ item.content }}</u></span>
+		</span>
+		<span v-if="text">&nbsp;</span>
+		<u>You may vote for up to {{ allowedVotes }} entries!</u> Thanks for your vote!
+	</div>
 </template>
 
 <script lang="ts">

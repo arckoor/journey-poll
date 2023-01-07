@@ -17,7 +17,7 @@ defineProps<{
 			</div>
 			<div v-else>
 				<div class="additionalInfo">
-					<RichTextPreview :text="info" :entries="allowedVotes"/>
+					<RichTextPreview :text="info" :allowed-votes="allowedVotes"/>
 				</div>
 				<div class="imageContainer" v-for="idx in images.length" :key="idx">
 					<div class="letter">{{ alphabet[idx-1] }}</div>
