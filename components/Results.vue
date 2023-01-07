@@ -5,6 +5,7 @@ defineProps<{
 </script>
 
 <template>
+	<!-- todo what if the poll doesn't even exist???? -->
 	<div class="nameHeading">{{ name }}</div>
 	<div v-if="ended && !private">
 		<div class="winnerContainer">
@@ -20,9 +21,9 @@ defineProps<{
 		</div>
 		<div class="distContainer">
 			<div class="heading">Vote Distribution:</div>
+			<div class="voteAmount">Voters: {{ voteAmount }}</div>
 			<div v-for="item in Object.keys(images)" :key="item" class="distItem">
 				<div class="distText">Votes: {{ images[item] }}</div>
-				<!-- todo test with different image sizes -->
 				<img
 					class="distImage"
 					:src="config.public.apiBase + '/images/' + item"
@@ -48,6 +49,7 @@ export default defineComponent({
 			id: this.$route.params.id,
 			name: "",
 			max: 0,
+			voteAmount: 0,
 			winners: new Array<string>(),
 			votes: new Array<number>(),
 			images: {} as Record<string, string>,
@@ -92,6 +94,7 @@ export default defineComponent({
 						this.winners.push(this.getExtension(item, data.images));
 					}
 				}
+				this.voteAmount = data.voteAmount;
 			});
 		},
 		getExtension(key: string, images: Array<string>) {
@@ -133,7 +136,7 @@ export default defineComponent({
 img {
 	margin: 30px 0 auto;
 	width: 50%;
-    border: 4px solid #ffffff;
+    border: var(--image-width--border) solid var(--color-accent--border);
 }
 
 .distContainer {
@@ -145,6 +148,11 @@ img {
 	text-align: center;
 }
 
+.voteAmount {
+	margin: 10px 0;
+	font-size: 22px;
+}
+
 .distItem {
 	display: flex;
 	flex-direction: row-reverse;
@@ -154,7 +162,7 @@ img {
 
 .distText {
 	font-size: 25px;
-	margin: 0 40px;
+	width: 200px;
 }
 
 .distImage {

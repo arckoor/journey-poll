@@ -1,14 +1,4 @@
 :root {
-	--bg: #141414;
-	--border: #2b2b2b;
-	--input-bg: #262626;
-	--popup-bg: #000000d2;
-	--spin-bg: #383838;
-	--danger: #ef1f42;
-	--success: #1dd144;
-	--hover-transition: .3s;
-	--delete-transition: .5s;
-
 	/* todo font sizes */
 
 	/* Stolen from the Hetzner Cloud Console */
@@ -24,8 +14,18 @@
 
 	--color-background--layer-50: #000000d2;
 	--color-primary--success:	  #1dd144;
+	--color-accent--border: 	  #505050;
 
 	--sidebar-width: 80px;
+	--image-width--border: 4px;
+
+	/* todo */
+	--transition-short: .3s;
+	--transition-middle: .5s;
+	--transition-long: .7s;
+
+	--hover-transition: .3s;
+	--delete-transition: .5s;
 }
 
 
@@ -47,32 +47,16 @@ body {
 	margin: 0px;
 }
 
-.button {
-	text-align: center;
-	cursor: pointer;
-	border-radius: 5px;
-	border: 2px solid var(--color-background--layer-10);
-	transition: border-color var(--hover-transition);
 
-	/* https://stackoverflow.com/a/4407335 */
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-webkit-user-select: none;
-	user-select: none;
-}
-
-.button:hover {
-	/* background-color: var(--color-background--layer-10); */
-	border-color: var(--color-primary--hover)
-}
 
 .noHover {
 	pointer-events: none;
 }
 
+textarea,
 input[type=date],
 input[type=text],
+input[type=number],
 input[type=password] {
 	color: inherit;
 	font-size: 18px;
@@ -83,9 +67,10 @@ input[type=password] {
 	height: 100%;
 }
 
+textarea:focus,
 input:focus {
 	outline: none;
-	border-color: var(--danger);
+	border-color: var(--color-primary--hover);
 }
 
 a:visited,
