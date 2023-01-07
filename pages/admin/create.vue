@@ -133,7 +133,7 @@ export default defineComponent({
 			dZ: HTMLInputElement,
 			valid: false,
 			published: false,
-			working: false,
+			working: true,
 			id: "",
 		};
 	},
@@ -316,7 +316,7 @@ img {
 	animation: .6s linear infinite spinner;
 	animation-play-state: inherit;
 	border: solid 4px var(--color-background--layer-40);
-	border-bottom-color: var(--color-primary-hover);
+	border-bottom-color: var(--color-primary--hover);
 	border-radius: 50%;
 	content: "";
 	height: 20px;
