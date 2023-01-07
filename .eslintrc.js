@@ -77,7 +77,7 @@ module.exports = {
 		],
 		"curly": [
 			"error",
-			"all"
+			"multi-line"
 		],
 		"comma-spacing": [
 			"error"
