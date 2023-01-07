@@ -138,9 +138,10 @@ export default defineComponent({
 		};
 	},
 	mounted() {
-		for (let item of ["name", "allowedVotes", "ends", "expires", "images"]) {
+		for (let item of ["name", "allowedVotes", "ends", "expires"]) {
 			this.$watch(item, () => this.validate());
 		}
+		this.$watch("images", () => this.validate(), { deep: true });
 
 		this.ends = toDateInputValue(addDays(new Date(), 1));
 		this.expires = toDateInputValue(addDays(new Date(), 3));
