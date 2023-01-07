@@ -40,7 +40,6 @@ definePageMeta({
 				id="votes"
 				v-model="allowedVotes"
 				min="1"
-				:max="images.length"
 				:disabled="published"
 			>
 		</div>
@@ -113,7 +112,7 @@ definePageMeta({
 		</div>
 		<div v-else>
 			<div class="successMsg">Poll successfully published!</div>
-			<Button text="Copy Link" @click="copyLink(config.public.base + '/' + id)" />
+			<Button text="Copy Link" @click="copyLink(config.public.base + '/p/' + id)" />
 		</div>
 	</div>
 </template>
@@ -159,6 +158,7 @@ export default defineComponent({
 			}
 		},
 		validate() {
+			// todo warning message
 			this.valid = false;
 			if (this.name === "") {
 				return;
@@ -186,6 +186,7 @@ export default defineComponent({
 			const formData = new FormData();
 			formData.append("name", this.name);
 			formData.append("info", this.info);
+			formData.append("allowedVotes", this.allowedVotes.toString());
 			formData.append("ends", new Date(this.ends).getTime().toString());
 			formData.append("expires", new Date(this.expires).getTime().toString());
 			for (let item of this.images) {
