@@ -33,7 +33,7 @@ export default defineComponent({
 			this.splits = [];
 			const regex = [
 				/(\*\*[^*.]+\*\*)/g, // bold
-				/(__[^*.]+__)/g		 // underline
+				/(__[^_.]+__)/g		 // underline
 			];
 			let info = [input] as Array<string | string[]>;
 			for (const re of regex) {
