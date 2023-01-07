@@ -10,9 +10,37 @@ definePageMeta({
 			<label for="pollName">Poll name:</label>
 			<input
 				type="text"
-				name="pollName"
 				id="pollName"
 				v-model="name"
+				:disabled="published"
+			>
+		</div>
+		<div class="inputItem">
+			<label for="pollInfo">Poll info:</label>
+			<textarea
+				rows="5"
+				id="pollInfo"
+				v-model="info"
+				:disabled="published"
+				@input="removeNewlines"
+			/>
+		</div>
+		<div class="inputItem">
+			<label for="infoPreview">Info preview:</label>
+			<RichTextPreview
+				class="textPreview"
+				:text="info"
+				:allowed-votes="allowedVotes"
+			/>
+		</div>
+		<div class="inputItem">
+			<label for="allowedVotes">Votes:</label>
+			<input
+				type="number"
+				id="votes"
+				v-model="allowedVotes"
+				min="1"
+				:max="images.length"
 				:disabled="published"
 			>
 		</div>
@@ -20,7 +48,6 @@ definePageMeta({
 			<label for="pollEnd">Poll end:</label>
 			<input
 				type="date"
-				name="pollEnd"
 				id="pollEnd"
 				:min="toDateInputValue(addDays(new Date(), 1))"
 				v-model="ends"
@@ -31,7 +58,6 @@ definePageMeta({
 			<label for="pollExpiry">Poll expiry:</label>
 			<input
 				type="date"
-				name="pollExpiry"
 				id="pollExpiry"
 				:min="ends"
 				v-model="expires"
@@ -40,10 +66,10 @@ definePageMeta({
 		</div>
 	</div>
 	<div class="fileWrapper">
+		<!-- todo a drop zone would be cool -->
 		<Button text="Choose files" @click="($refs.fileIn as HTMLInputElement).click()" />
 		<input
 			type="file"
-			name="fileIn"
 			id="fileIn"
 			ref="fileIn"
 			multiple
@@ -53,19 +79,31 @@ definePageMeta({
 			:disabled="published"
 		>
 		<div class="imgGrid">
-			<img
-				v-for="image of previews"
-				:key="image"
-				:src="image"
-				alt="Uploaded image"
-			>
+			<div class="imageContainer" v-for="(image, idx) in previews" :key="idx">
+				<img
+					class="img"
+					:src="image"
+					alt="Uploaded image"
+				>
+				<div class="removeImage" @click="removeImage(idx)">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 48 48"
+						height="30"
+						width="30"
+						class="icon"
+					>
+						<path d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z"/>
+					</svg>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="buttonContainer">
 		<div v-if="!published && !working">
 			<Button
 				text="Create Poll!"
-				:disabled="!(name !== '' && expires > ends && images.length > 0)"
+				:disabled="!valid"
 				@click="create"
 			/>
 		</div>
@@ -86,25 +124,30 @@ export default defineComponent({
 		return {
 			config: useRuntimeConfig(),
 			name: "",
+			info: "**Please check out the entries and then on the bottom of this page vote for your favourites!** The entry letter (A, B, C) is assigned at the top of the image.",
+			allowedVotes: 3,
 			ends: "",
 			expires: "",
 			images: new Array<File>(),
 			previews: new Array<string>(),
 			dZ: HTMLInputElement,
+			valid: false,
 			published: false,
 			working: false,
-			id: ""
+			id: "",
 		};
 	},
 	mounted() {
+		for (let item of ["name", "allowedVotes", "ends", "expires", "images"]) {
+			this.$watch(item, () => this.validate());
+		}
+
 		this.ends = toDateInputValue(addDays(new Date(), 1));
-		this.expires = toDateInputValue(addDays(new Date(), 2));
+		this.expires = toDateInputValue(addDays(new Date(), 3));
 	},
 	methods: {
 		preview(event: Event) {
 			const files = (event.target as HTMLInputElement).files;
-			this.images = [];
-			this.previews = [];
 			if (files) {
 				for (let i=0; i < files.length; i++) {
 					const reader = new FileReader();
@@ -114,10 +157,34 @@ export default defineComponent({
 				}
 			}
 		},
+		validate() {
+			this.valid = false;
+			if (this.name === "") {
+				return;
+			}
+			if (this.ends > this.expires) {
+				return;
+			}
+			if (this.images.length < 1) {
+				return;
+			}
+			if (0 > this.allowedVotes || this.allowedVotes > this.images.length) {
+				return;
+			}
+			this.valid = true;
+		},
+		removeImage(idx: number) {
+			this.images.splice(idx, 1);
+			this.previews.splice(idx, 1);
+		},
+		removeNewlines() {
+			this.info = this.info.replaceAll(/\n/g, "");
+		},
 		async create() {
 			this.working = true;
 			const formData = new FormData();
 			formData.append("name", this.name);
+			formData.append("info", this.info);
 			formData.append("ends", new Date(this.ends).getTime().toString());
 			formData.append("expires", new Date(this.expires).getTime().toString());
 			for (let item of this.images) {
@@ -156,17 +223,30 @@ export default defineComponent({
 	margin: 20px 0 0 0;
 }
 
+.textPreview,
+textarea,
 input[type=text],
-input[type=date] {
+input[type=date],
+input[type=number] {
 	width: 500px;
 }
 
 label {
-	width: 100px;
+	width: 120px;
 }
 
 input[type=file] {
 	display: none;
+}
+
+textarea {
+	resize: none;
+}
+
+.textPreview {
+	padding: 9px 10px;
+	border: 2px solid var(--color-background--layer-10);
+	border-radius: 5px;
 }
 
 .fileWrapper {
@@ -189,10 +269,30 @@ input[type=file] {
 	column-gap: 20px;
 }
 
+.imageContainer {
+	position: relative;
+	margin: 20px 10px 0 0;
+}
+
+.imageContainer:hover > .removeImage {
+	opacity: 1;
+}
+
 img {
-	margin: 30px 0 auto;
+	margin: auto;
+	width: calc(100% - var(--image-width--border));
 	width: 100%;
-    border: 4px solid #ffffff;
+    outline: var(--image-width--border) solid var(--color-accent--border);
+}
+
+.removeImage {
+	position: absolute;
+	top: 0;
+	right: 0;
+	fill: var(--color-text);
+	opacity: 0;
+	transition: opacity var(--transition-short);
+	cursor: pointer;
 }
 
 .buttonContainer {
@@ -214,8 +314,8 @@ img {
 .spin::before {
 	animation: .6s linear infinite spinner;
 	animation-play-state: inherit;
-	border: solid 4px var(--spin-bg);
-	border-bottom-color: var(--danger);
+	border: solid 4px var(--color-background--layer-40);
+	border-bottom-color: var(--color-primary-hover);
 	border-radius: 50%;
 	content: "";
 	height: 20px;
