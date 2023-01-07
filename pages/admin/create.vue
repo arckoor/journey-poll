@@ -133,7 +133,7 @@ export default defineComponent({
 			dZ: HTMLInputElement,
 			valid: false,
 			published: false,
-			working: true,
+			working: false,
 			id: "",
 		};
 	},
