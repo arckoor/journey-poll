@@ -17,7 +17,7 @@ const config = useRuntimeConfig();
 		<div :class="'pollEnd' + (new RegExp(/^[0-9]*m|^[0-9]*s/).test(expires) ? ' red' : '')">Expires in: {{ expires }}</div>
 		<div class="voteAmount">Votes: {{ voteAmount }}</div>
 		<div class="linkSection">
-			<Button class="linkItem" text="Click to copy link" @click="copyLink(config.public.base + '/p/' + id)" />
+			<Button class="linkItem" text="Click to copy link" @click="copyLink(config.public.base + '/' + id)" />
 			<Button class="linkItem" text="Edit" @click="navigateTo('/admin/edit/' + id)" />
 			<Button
 				class="linkItem"

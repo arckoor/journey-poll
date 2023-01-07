@@ -112,7 +112,7 @@ definePageMeta({
 		</div>
 		<div v-else>
 			<div class="successMsg">Poll successfully published!</div>
-			<Button text="Copy Link" @click="copyLink(config.public.base + '/p/' + id)" />
+			<Button text="Copy Link" @click="copyLink(config.public.base + '/' + id)" />
 		</div>
 	</div>
 </template>
