@@ -25,7 +25,12 @@
 			/>
 		</div>
 		<div class="loginContainer">
-			<div :class="'button login' + ((username === '' || password === '') ? ' noHover' : '')" @click="login" :disabled="username === '' || password === ''">Login!</div>
+			<Button
+				class="login"
+				text="Login!"
+				:disabled="username === '' || password === ''"
+				@click="login"
+			/>
 			<div class="error">{{ errorMessage }}</div>
 		</div>
 	</div>

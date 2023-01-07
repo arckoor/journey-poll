@@ -6,15 +6,16 @@ definePageMeta({
 
 <template>
 	<div class=refreshContainer>
-		<div class="refresh button" @click="getPolls">Refresh</div>
+		<Button class="refresh" text="Refresh" @click="getPolls" />
 	</div>
 	<div v-if="polls.length > 0">
 		<ListItem
 			v-for="poll of polls"
 			:key="poll.id"
 			:name="poll.name"
-			:countdown="countdowns[poll.id]"
+			:ends="ends[poll.id]"
 			:expires="expires[poll.id]"
+			:vote-amount="poll.voteAmount"
 			:id="poll.id"
 			:cb="enableDeletion"
 		/>
@@ -41,7 +42,8 @@ interface Poll {
 	id: string,
 	name: string,
 	ends: string,
-	expires: string
+	expires: string,
+	voteAmount: number
 }
 
 export default defineComponent({
@@ -49,8 +51,8 @@ export default defineComponent({
 		return {
 			config: useRuntimeConfig(),
 			polls: new Array<Poll>(),
-			countdowns: {} as Record<string, string>,
-			countdownRefs: {} as Record<string, NodeJS.Timer>,
+			ends: {} as Record<string, string>,
+			endRefs: {} as Record<string, NodeJS.Timer>,
 			expires: {} as Record<string, string>,
 			expireRefs: {} as Record<string, NodeJS.Timer>,
 			deletion: false,
@@ -75,10 +77,12 @@ export default defineComponent({
 					const data = await res.json();
 					this.polls = [];
 					for (let item in data) {
-						this.countdowns[item] = "";
+						this.ends[item] = "";
 						this.expires[item] = "";
-						const ref = countdown(data[item].ends, (str: string) => { this.countdowns[item] = str; });
-						this.countdownRefs[item] = ref;
+						const ref = countdown(data[item].ends, (str: string) => {
+							this.ends[item] = str;
+						});
+						this.endRefs[item] = ref;
 						const eRef = countdown(data[item].expires, (str: string) => {
 							this.expires[item] = str;
 							if (str === "0s") {
@@ -115,19 +119,19 @@ export default defineComponent({
 				method: "DELETE",
 				credentials: "include"
 			});
-			clearInterval(this.countdownRefs[id]);
-			delete this.countdownRefs[id];
+			clearInterval(this.endRefs[id]);
+			delete this.endRefs[id];
 			await this.getPolls();
 		},
 		destroyCountdowns() {
-			for (let ct in this.countdownRefs) {
+			for (let ct in this.endRefs) {
 				clearInterval(ct);
 			}
 			for (let ct in this.expireRefs) {
 				clearInterval(ct);
 			}
-			this.countdownRefs = {};
-			this.countdowns = {};
+			this.endRefs = {};
+			this.ends = {};
 			this.expireRefs = {};
 			this.expires = {};
 		}
@@ -209,6 +213,7 @@ export default defineComponent({
 
 .deleteConfirm {
 	border-color: var(--color-primary--hover);
+	transition: background var(--hover-transition);
 }
 
 .deleteConfirm:hover {

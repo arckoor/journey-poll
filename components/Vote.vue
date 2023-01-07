@@ -41,9 +41,11 @@ defineProps<{
 					</div>
 				</div>
 				<div class="submitContainer">
-					<div @click="submit" :class="'submitButton button' + (checked.reduce((a, x) => a + (x ? 1 : 0), 0) < 1 ? ' noHover': '')">
-						Submit My Vote!
-					</div>
+					<Button
+						text="Submit My Vote!"
+						:disabled="checked.reduce((a, x) => a + (x ? 1 : 0), 0) < 1"
+						@click="submit"
+					/>
 				</div>
 			</div>
 		</div>
@@ -176,7 +178,7 @@ export default defineComponent({
 .voteImage {
 	margin: auto;
 	width: 100%;
-    border: 4px solid #ffffff;
+    border: var(--image-width--border) solid var(--color-accent--border);
 }
 
 .checkboxContainer {
@@ -213,7 +215,7 @@ input[type=checkbox] {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 120px;
+	width: 150px;
 	padding: 10px 20px;
 }
 

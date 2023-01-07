@@ -40,7 +40,7 @@ definePageMeta({
 		</div>
 	</div>
 	<div class="fileWrapper">
-		<div class="button" @click="($refs.fileIn as HTMLInputElement).click()">Choose files</div>
+		<Button text="Choose files" @click="($refs.fileIn as HTMLInputElement).click()" />
 		<input
 			type="file"
 			name="fileIn"
@@ -63,7 +63,11 @@ definePageMeta({
 	</div>
 	<div class="buttonContainer">
 		<div v-if="!published && !working">
-			<div @click="create" :class="'button' + (!(name !== '' && expires > ends && images.length > 0) ? ' noHover' : '')" >Create Poll!</div>
+			<Button
+				text="Create Poll!"
+				:disabled="!(name !== '' && expires > ends && images.length > 0)"
+				@click="create"
+			/>
 		</div>
 		<div v-else-if="!published && working" class="working">
 			<div class="spin"></div>
@@ -71,7 +75,7 @@ definePageMeta({
 		</div>
 		<div v-else>
 			<div class="successMsg">Poll successfully published!</div>
-			<div class="button" @click="copyLink(config.public.base + '/' + id)">Copy Link</div>
+			<Button text="Copy Link" @click="copyLink(config.public.base + '/' + id)" />
 		</div>
 	</div>
 </template>
