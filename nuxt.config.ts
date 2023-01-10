@@ -10,6 +10,7 @@ export default defineNuxtConfig({
 	},
 	alias: {
 		"components": fileURLToPath(new URL("./components", import.meta.url)),
+		"utils": fileURLToPath(new URL("./utils", import.meta.url)),
 		"assets": fileURLToPath(new URL("./assets", import.meta.url)),
 		"css": fileURLToPath(new URL("./assets/css", import.meta.url))
 	},
