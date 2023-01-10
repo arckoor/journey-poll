@@ -31,8 +31,18 @@
 
 @font-face {
 	font-family: Roboto;
-	src: url(css/fonts/Roboto/Roboto-Medium.ttf); 
-	/* todo https://fonts.google.com/?query=roboto variable font https://stackoverflow.com/a/74618718/12203337 */
+	font-style: normal;
+	font-weight: 100 1000;
+	font-stretch: 0% 200%;
+	src: url(css/fonts/Roboto/Roboto-Flex.ttf);
+}
+
+h1 {
+	font-weight: 600;
+}
+
+strong {
+	font-weight: 800;
 }
 
 html {
@@ -45,9 +55,8 @@ html {
 
 body {
 	margin: 0px;
+	font-weight: 550;
 }
-
-
 
 .noHover {
 	pointer-events: none;
