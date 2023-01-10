@@ -5,7 +5,6 @@ defineProps<{
 </script>
 
 <template>
-	<!-- todo what if the poll doesn't even exist???? -->
 	<div class="nameHeading">{{ name }}</div>
 	<div v-if="ended && !private">
 		<div class="winnerContainer">
@@ -33,8 +32,8 @@ defineProps<{
 		</div>
 	</div>
 	<div v-else-if="private" class="endMessage">
-		The results of this poll are not public. <br />
-		The poll results are not public.
+		<span>This poll has ended.</span>
+		<span>The results of this poll are not public.</span>
 	</div>
 	<div v-else class="endMessage">
 		This poll will end in {{ ends }}.
@@ -87,7 +86,6 @@ export default defineComponent({
 					if (data.votes[item] > this.max) {
 						this.max = data.votes[item];
 					}
-
 				}
 				for (let item in data.votes) {
 					if (data.votes[item] === this.max) {
@@ -172,6 +170,7 @@ img {
 .endMessage {
 	height: 90vh;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	font-size: 30px;
