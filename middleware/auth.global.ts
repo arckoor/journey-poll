@@ -9,4 +9,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 			return navigateTo("/");
 		}
 	}
+	if (to.fullPath === "/admin") {
+		return navigateTo("/admin/list");
+	}
 });
