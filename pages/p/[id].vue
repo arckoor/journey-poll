@@ -1,6 +1,6 @@
 <template>
 	<div v-if="ready">
-		<Vote :status="status" :data="data" v-if="vote" />
+		<Vote :data="data" v-if="vote" />
 		<Results :base="config.public.apiBase" v-else/>
 	</div>
 </template>
@@ -11,7 +11,6 @@ export default defineComponent({
 		return {
 			config: useRuntimeConfig(),
 			id: this.$route.params.id,
-			status: 0,
 			data: {} as Record<string, string | Array<string>>,
 			vote: true,
 			ready: false
@@ -34,7 +33,6 @@ export default defineComponent({
 					const data = await res.json();
 					this.data.voted = data.voted;
 				});
-
 		},
 		async getPollData() {
 			await fetch(this.config.public.apiBase + "/poll/" + this.id, {
@@ -45,7 +43,9 @@ export default defineComponent({
 				},
 			})
 				.then(async res => {
-					this.status = res.status;
+					if (res.status === 400) {
+						navigateTo("/404");
+					}
 					if (res.status === 200) {
 						const json = await res.json();
 						this.data = { ...this.data, ...json };
@@ -56,7 +56,6 @@ export default defineComponent({
 					this.ready = true;
 				});
 		}
-
 	}
 });
 </script>

@@ -1,56 +1,50 @@
 <script setup lang="ts">
 defineProps<{
-	status: number,
 	data: Record<string, string | Array<string>>
 }>();
 </script>
 
 <template>
 	<div class="container" v-if="ready">
-		<div v-if="exists">
-			<div class="heading">{{ name }}</div>
-			<div class="remainingTime">
-				<div :class="new RegExp(/^[0-9]*m|^[0-9]*s/).test(ct) ? ' red' : ''">This polls ends in {{ ct }}.</div>
-			</div>
-			<div v-if="voted" class="resultMessage">
-				Thank you for voting!
-			</div>
-			<div v-else>
-				<div class="additionalInfo">
-					<RichTextPreview :text="info" :allowed-votes="allowedVotes"/>
-				</div>
-				<div class="imageContainer" v-for="idx in images.length" :key="idx">
-					<div class="letter">{{ alphabet[idx-1] }}</div>
-					<img
-						class="voteImage"
-						:src="config.public.apiBase + '/images/' + images[idx-1]"
-						:alt="'Voting image ' + alphabet[idx-1]"
-						:key="images[idx]"
-					>
-				</div>
-				<div class="checkboxContainer">
-					<div class="checkboxItem" v-for="idx in images.length" :key="'box'+idx">
-						<input
-							type="checkbox"
-							:name="'vote'+idx"
-							:id="'vote'+idx"
-							v-model="checked[idx-1]"
-							:disabled="checked.reduce((a, x) => a + (x ? 1 : 0), 0) > allowedVotes-1 && !checked[idx-1]"
-						>
-						<div class="cbLetter">{{ alphabet[idx-1] }}</div>
-					</div>
-				</div>
-				<div class="submitContainer">
-					<Button
-						text="Submit My Vote!"
-						:disabled="checked.reduce((a, x) => a + (x ? 1 : 0), 0) < 1"
-						@click="submit"
-					/>
-				</div>
-			</div>
+		<div class="heading">{{ name }}</div>
+		<div class="remainingTime">
+			<div :class="new RegExp(/^[0-9]*m|^[0-9]*s/).test(ct) ? ' red' : ''">This polls ends in {{ ct }}.</div>
 		</div>
-		<div v-else-if="!exists" class="resultMessage">
-			This poll wasn't found...
+		<div v-if="voted" class="resultMessage">
+			Thank you for voting!
+		</div>
+		<div v-else>
+			<div class="additionalInfo">
+				<RichTextPreview :text="info" :allowed-votes="allowedVotes"/>
+			</div>
+			<div class="imageContainer" v-for="idx in images.length" :key="idx">
+				<div class="letter">{{ alphabet[idx-1] }}</div>
+				<img
+					class="voteImage"
+					:src="config.public.apiBase + '/images/' + images[idx-1]"
+					:alt="'Voting image ' + alphabet[idx-1]"
+					:key="images[idx]"
+				>
+			</div>
+			<div class="checkboxContainer">
+				<div class="checkboxItem" v-for="idx in images.length" :key="'box'+idx">
+					<input
+						type="checkbox"
+						:name="'vote'+idx"
+						:id="'vote'+idx"
+						v-model="checked[idx-1]"
+						:disabled="checked.reduce((a, x) => a + (x ? 1 : 0), 0) > allowedVotes-1 && !checked[idx-1]"
+					>
+					<div class="cbLetter">{{ alphabet[idx-1] }}</div>
+				</div>
+			</div>
+			<div class="submitContainer">
+				<Button
+					text="Submit My Vote!"
+					:disabled="checked.reduce((a, x) => a + (x ? 1 : 0), 0) < 1"
+					@click="submit"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -68,7 +62,6 @@ export default defineComponent({
 			alphabet: new Array<string>(),
 			voted: false,
 			id: this.$route.params.id,
-			exists: true,
 			ready: false,
 			ct: ""
 		};
@@ -80,10 +73,6 @@ export default defineComponent({
 	},
 	methods: {
 		async getPollData() {
-			if (this.status !== 200) {
-				this.exists = false;
-				return;
-			}
 			this.name = this.data.name as string;
 			countdown(this.data.ends as string, (str: string) => { this.ct = str; });
 			if (this.data.voted) {
@@ -134,6 +123,7 @@ export default defineComponent({
 <style scoped>
 .container {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	width: 900px;
