@@ -6,7 +6,7 @@ export function addDays(date: Date, days: number) {
 export function toDateInputValue(date: Date) {
 	const local = new Date(date);
 	local.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-	return local.toJSON().slice(0, 10);
+	return local.toJSON().slice(0, 16);
 }
 
 export function countdown(date: string, callback: (str: string) => void) {
