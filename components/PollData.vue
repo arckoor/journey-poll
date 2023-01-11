@@ -5,7 +5,6 @@ defineProps<{
 	pAllowedVotes: number,
 	pEnds: string,
 	pExpires: string,
-	pImages: File[],
 	pPreviews: string[],
 	disabled: boolean,
 	validCallback: (valid: boolean) => void
@@ -54,7 +53,7 @@ defineProps<{
 		<div class="inputItem">
 			<label for="pollEnd">Poll end:</label>
 			<input
-				type="date"
+				type="datetime-local"
 				id="pollEnd"
 				:min="toDateInputValue(addDays(new Date(), 1))"
 				v-model="ends"
@@ -64,7 +63,7 @@ defineProps<{
 		<div class="inputItem">
 			<label for="pollExpiry">Poll expiry:</label>
 			<input
-				type="date"
+				type="datetime-local"
 				id="pollExpiry"
 				:min="ends"
 				v-model="expires"
@@ -98,7 +97,6 @@ defineProps<{
 						viewBox="0 0 48 48"
 						height="30"
 						width="30"
-						class="icon"
 					>
 						<path d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z"/>
 					</svg>
@@ -122,22 +120,23 @@ export default defineComponent({
 			images: new Array<File>(),
 			previews: new Array<string>(),
 			removedImages: new Array<string>(),
-			errorMessage: ""
+			errorMessage: "",
+			outsideIndex: -1
 		};
 	},
 	mounted() {
 		this.name = this.pPollName;
 		this.info = this.pPollInfo;
 		this.allowedVotes = this.pAllowedVotes;
-		this.ends = this.pEnds;
-		this.expires = this.pExpires;
-		this.images = this.pImages;
+		this.ends = this.pEnds.replace("Z", "");
+		this.expires = this.pExpires.replace("Z", "");
 		this.previews = this.pPreviews;
+		this.outsideIndex = this.previews.length;
 
 		for (let item of ["name", "allowedVotes", "ends", "expires"]) {
 			this.$watch(item, () => this.validate());
 		}
-		this.$watch("images", () => this.validate(), { deep: true });
+		this.$watch("previews", () => this.validate(), { deep: true });
 
 		this.$emit("interface", {
 			dataInterface: () => this.getData()
@@ -160,7 +159,13 @@ export default defineComponent({
 		},
 		removeImage(idx: number) {
 			this.images.splice(idx, 1);
-			this.previews.splice(idx, 1);
+			const img = this.previews.splice(idx, 1);
+			if (idx < this.outsideIndex) {
+				this.removedImages.push(img[0].split("/").at(-1) as string);
+				this.outsideIndex--;
+			}
+			console.log(this.removedImages);
+			console.log(this.outsideIndex);
 		},
 		assignError(error: string) {
 			if (this.errorMessage == "") {
@@ -174,15 +179,15 @@ export default defineComponent({
 				valid = false;
 				this.assignError("Poll name must not be empty.");
 			}
-			if (this.ends > this.expires) {
+			if (this.ends >= this.expires) {
 				valid = false;
 				this.assignError("Poll cannot expire before it ends.");
 			}
-			if (this.images.length < 1) {
+			if (this.previews.length < 1) {
 				valid = false;
 				this.assignError("At least one image is required.");
 			}
-			if ( this.allowedVotes <= 0 || this.allowedVotes > this.images.length) {
+			if ( this.allowedVotes <= 0 || this.allowedVotes > this.previews.length) {
 				valid = false;
 				this.assignError("Number of votes cannot be larger than number of images provided.");
 			}
@@ -195,7 +200,8 @@ export default defineComponent({
 				allowedVotes: this.allowedVotes,
 				ends: this.ends,
 				expires: this.expires,
-				images: this.images
+				images: this.images,
+				removedImages: this.removedImages
 			};
 		}
 	}
@@ -221,7 +227,7 @@ export default defineComponent({
 .textPreview,
 textarea,
 input[type=text],
-input[type=date],
+input[type=datetime-local],
 input[type=number] {
 	width: 500px;
 }

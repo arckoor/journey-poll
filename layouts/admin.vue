@@ -29,6 +29,17 @@
 						</svg>
 					</NuxtLink>
 				</li>
+				<li :class="'navItem' + ($route.fullPath.startsWith('/admin/edit') ? '' : ' inactive')">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 48 48"
+						height="34"
+						width="34"
+						:class="'icon' + ($route.path.startsWith('/admin/edit') ? ' highlight' : '')"
+					>
+						<path d="M9 39h2.2l22.15-22.15-2.2-2.2L9 36.8Zm30.7-24.3-6.4-6.4 2.1-2.1q.85-.85 2.1-.85t2.1.85l2.2 2.2q.85.85.85 2.1t-.85 2.1Zm-2.1 2.1L12.4 42H6v-6.4l25.2-25.2Zm-5.35-1.05-1.1-1.1 2.2 2.2Z"/>
+					</svg>
+				</li>
 			</ul>
 			<div @click="logout" class="logout">
 				<svg
@@ -69,6 +80,7 @@ export default defineComponent({
 			if (path.startsWith("/admin/results")) return "Results";
 			else if (path.startsWith("/admin/list")) return "Created polls";
 			else if (path.startsWith("/admin/create")) return "Create new poll";
+			else if (path.startsWith("/admin/edit")) return "Edit Poll";
 		}
 	}
 });
@@ -108,6 +120,7 @@ export default defineComponent({
 
 .navItem {
 	display: grid;
+	transition: opacity var(--transition-short);
 }
 
 .icon {
@@ -125,6 +138,14 @@ export default defineComponent({
 .highlight {
 	background-color: var(--color-background--layer-40) !important;
 	border-left: 3px solid var(--color-primary--hover);
+}
+
+.inactive {
+	pointer-events: none;
+}
+
+.inactive > .icon {
+	fill: var(--color-text--disabled)
 }
 
 svg {

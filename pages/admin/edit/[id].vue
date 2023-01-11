@@ -5,32 +5,30 @@ definePageMeta({
 </script>
 
 <template>
-	<PollData
-		:p-poll-name="name"
-		:p-poll-info="info"
-		:p-allowed-votes="allowedVotes"
-		:p-ends="ends"
-		:p-expires="expires"
-		:p-previews="[]"
-		:disabled="published"
-		:valid-callback="validCallback"
-		@interface="assignData"
-	/>
+	<div v-if="ready">
+		<PollData
+			:p-poll-name="name"
+			:p-poll-info="info"
+			:p-allowed-votes="allowedVotes"
+			:p-ends="ends"
+			:p-expires="expires"
+			:p-previews="previews"
+			:disabled="false"
+			:valid-callback="validCallback"
+			@interface="assignData"
+		/>
+	</div>
 	<div class="buttonContainer">
-		<div v-if="!published && !working">
+		<div v-if="!working">
 			<Button
-				text="Create Poll!"
+				text="Save changes!"
 				:disabled="!valid"
-				@click="create"
+				@click="save"
 			/>
 		</div>
-		<div v-else-if="!published && working" class="working">
+		<div v-else-if="working" class="working">
 			<div class="spin"></div>
-			<div class="spinMsg">Working on creating your poll...</div>
-		</div>
-		<div v-else>
-			<div class="successMsg">Poll successfully published!</div>
-			<Button text="Copy Link" @click="copyLink(config.public.base + '/' + id)" />
+			<div class="spinMsg">Working on saving your poll...</div>
 		</div>
 	</div>
 </template>
@@ -42,17 +40,22 @@ export default defineComponent({
 	data() {
 		return {
 			config: useRuntimeConfig(),
+			id: this.$route.params.id,
 			name: "",
-			info: "**Please check out the entries and then on the bottom of this page vote for your favourites!** The entry letter (A, B, C) is assigned at the top of the image.",
-			allowedVotes: 3,
-			ends: toDateInputValue(addDays(new Date(), 1)),
-			expires: toDateInputValue(addDays(new Date(), 3)),
+			info: "",
+			allowedVotes: 0,
+			ends: "",
+			expires: "",
+			previews: new Array<string>(),
 			valid: false,
-			published: false,
+			ready: false,
 			working: false,
-			id: "",
 			dataCallback: () => <IPollData>{}
 		};
+	},
+	async mounted() {
+		await this.getPollData();
+		this.ready = true;
 	},
 	methods: {
 		validCallback(valid: boolean) {
@@ -61,7 +64,29 @@ export default defineComponent({
 		assignData(dataInterface: { dataInterface: () => IPollData; }) {
 			this.dataCallback = dataInterface.dataInterface;
 		},
-		async create() {
+		async getPollData() {
+			await fetch(this.config.public.apiBase + "/admin/poll/" + this.id, {
+				method: "GET",
+				credentials: "include",
+				headers: {
+					"Accept": "application/json",
+					"Content-Type": "application/json",
+				},
+			})
+				.then(async res => {
+					const data = await res.json();
+					this.name = data.name;
+					this.info = data.info;
+					this.allowedVotes = data.allowedVotes;
+					this.ends = data.ends;
+					this.expires = data.expires;
+					this.previews = data.images;
+					for (let i=0; i<this.previews.length; i++) {
+						this.previews[i] = this.config.public.apiBase + "/images/" + this.previews[i];
+					}
+				});
+		},
+		async save() {
 			this.working = true;
 			const data = this.dataCallback();
 			const formData = new FormData();
@@ -73,18 +98,15 @@ export default defineComponent({
 			for (const item of data.images) {
 				formData.append("images", item);
 			}
-			await fetch(this.config.public.apiBase + "/admin/create", {
+			for (const item of data.removedImages) {
+				formData.append("removedImages", item);
+			}
+			await fetch(this.config.public.apiBase + "/admin/edit/" + this.id, {
 				method: "POST",
 				credentials: "include",
 				body: formData
-			})
-				.then(async res => {
-					const data = await res.json();
-					console.log(data);
-					this.id = data;
-				});
+			});
 			this.working = false;
-			this.published = true;
 		}
 	}
 });

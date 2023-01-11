@@ -63,7 +63,7 @@ body {
 }
 
 textarea,
-input[type=date],
+input[type=datetime-local],
 input[type=text],
 input[type=number],
 input[type=password] {

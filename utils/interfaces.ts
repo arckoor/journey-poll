@@ -5,5 +5,5 @@ export interface IPollData {
 	ends: string
 	expires: string
 	images: File[]
-	removedFiles: string[]
+	removedImages: string[]
 }
