@@ -7,12 +7,12 @@ defineProps<{
 
 <template>
 	<div>
-		<span v-for="(item, idx) in splits" :key="idx">
+		<template v-for="(item, idx) in splits" :key="idx">
 			<span v-if="item.type === 'text'">{{ item.content }}</span>
 			<span v-else-if="item.type === 'bold'"><strong>{{ item.content }}</strong></span>
 			<span v-else-if="item.type === 'underline'"><u>{{ item.content }}</u></span>
 			<span v-else-if="item.type === 'italic'"><i>{{ item.content }}</i></span>
-		</span>
+		</template>
 		<span v-if="text">&nbsp;</span>
 		<u>You may vote for up to {{ allowedVotes }} entries!</u> Thanks for your vote!
 	</div>
@@ -43,7 +43,7 @@ export default defineComponent({
 				for (let i=0; i<length; i++) {
 					info[i] = (info[i] as string).split(re);
 					info = info.flat();
-					info = info.filter((x) => { return x != ""; });
+					info = info.filter((x) => x != "");
 				}
 			}
 			const finalInfo = info as Array<string>;
