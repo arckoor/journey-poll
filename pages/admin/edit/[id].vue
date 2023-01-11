@@ -13,13 +13,13 @@ definePageMeta({
 			:p-ends="ends"
 			:p-expires="expires"
 			:p-previews="previews"
-			:disabled="false"
+			:disabled="saved"
 			:valid-callback="validCallback"
 			@interface="assignData"
 		/>
 	</div>
 	<div class="buttonContainer">
-		<div v-if="!working">
+		<div v-if="!working && !saved">
 			<Button
 				text="Save changes!"
 				:disabled="!valid"
@@ -29,6 +29,10 @@ definePageMeta({
 		<div v-else-if="working" class="working">
 			<div class="spin"></div>
 			<div class="spinMsg">Working on saving your poll...</div>
+		</div>
+		<div v-else>
+			<div class="successMsg">Poll successfully saved!</div>
+			<Button text="Copy Link" @click="copyLink(config.public.base + '/' + id)" />
 		</div>
 	</div>
 </template>
@@ -50,6 +54,7 @@ export default defineComponent({
 			valid: false,
 			ready: false,
 			working: false,
+			saved: false,
 			dataCallback: () => <IPollData>{}
 		};
 	},
@@ -106,6 +111,7 @@ export default defineComponent({
 				credentials: "include",
 				body: formData
 			});
+			this.saved = true;
 			this.working = false;
 		}
 	}
