@@ -9,6 +9,12 @@ export function toDateInputValue(date: Date) {
 	return local.toJSON().slice(0, 16);
 }
 
+export function toLocalTimeZone(date: Date) {
+	const offset = new Date().getTimezoneOffset();
+	date.setMinutes(date.getMinutes() - offset);
+	return date.toISOString().replace("Z", "");
+}
+
 export function countdown(date: string, callback: (str: string) => void) {
 	const countdownDate = new Date(date).getTime();
 	const ct = setInterval(() => {

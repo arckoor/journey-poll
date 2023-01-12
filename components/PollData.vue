@@ -128,8 +128,8 @@ export default defineComponent({
 		this.name = this.pPollName;
 		this.info = this.pPollInfo;
 		this.allowedVotes = this.pAllowedVotes;
-		this.ends = this.pEnds.replace("Z", "");
-		this.expires = this.pExpires.replace("Z", "");
+		this.ends = toLocalTimeZone(new Date(this.pEnds));
+		this.expires = toLocalTimeZone(new Date(this.pExpires));
 		this.previews = this.pPreviews;
 		this.outsideIndex = this.previews.length;
 
