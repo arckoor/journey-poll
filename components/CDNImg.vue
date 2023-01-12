@@ -36,7 +36,7 @@ export default defineComponent({
 				${this.config.public.apiBase}/cdn-cgi/image/fit=contain,width=640/poll/images/${this.src}   640w,
 				${this.config.public.apiBase}/cdn-cgi/image/fit=contain,width=960/poll/images/${this.src}   960w,
 				${this.config.public.apiBase}/cdn-cgi/image/fit=contain,width=1280/poll/images/${this.src} 1280w,
-				${this.config.public.apiBase}/cdn-cgi/image/fit=contain,width=2560/poll/images/${this.src} 2560w
+				${this.config.public.apiBase}/cdn-cgi/image/fit=contain,width=1920/poll/images/${this.src} 1920w
 			`;
 		}
 	}
