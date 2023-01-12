@@ -64,7 +64,7 @@ export default defineComponent({
 	},
 	methods: {
 		async getPolls() {
-			await fetch(this.config.public.apiBase + "/admin/polls", {
+			await fetch(this.config.public.pollApiBase + "/admin/polls", {
 				method: "GET",
 				credentials: "include",
 				headers: {
@@ -115,7 +115,7 @@ export default defineComponent({
 			this.deletionData = {};
 		},
 		async deletePoll(id: string) {
-			await fetch(this.config.public.apiBase + "/admin/delete/" + id, {
+			await fetch(this.config.public.pollApiBase + "/admin/delete/" + id, {
 				method: "DELETE",
 				credentials: "include"
 			});

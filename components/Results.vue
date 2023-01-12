@@ -11,11 +11,11 @@ defineProps<{
 			<div class="heading">{{ "Winner" + (winners.length > 1 ? "s" : "") + ":"}}</div>
 			<div v-for="item of winners" :key="item" class="distItem">
 				<div class="distText">Votes: {{ images[item] }}</div>
-				<img
-					class="winnerImage"
-					:src="config.public.apiBase + '/images/' + item"
+				<CDNImg
+					class=" img"
+					:src="item"
 					alt="The winning image"
-				>
+				/>
 			</div>
 		</div>
 		<div class="distContainer">
@@ -23,11 +23,11 @@ defineProps<{
 			<div class="voteAmount">Voters: {{ voteAmount }}</div>
 			<div v-for="item in Object.keys(images)" :key="item" class="distItem">
 				<div class="distText">Votes: {{ images[item] }}</div>
-				<img
-					class="distImage"
-					:src="config.public.apiBase + '/images/' + item"
+				<CDNImg
+					class="distImage img"
+					:src="item"
 					alt="Vote distribution image"
-				>
+				/>
 			</div>
 		</div>
 	</div>
@@ -131,7 +131,7 @@ export default defineComponent({
 	font-size: 40px;
 }
 
-img {
+.img {
 	margin: 30px 0 auto;
 	width: 50%;
     border: var(--image-width--border) solid var(--color-accent--border);

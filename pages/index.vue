@@ -55,7 +55,7 @@ export default defineComponent({
 				return;
 			}
 			const password = await this.hashPassword();
-			const response = await fetch(this.config.public.apiBase + "/login", {
+			const response = await fetch(this.config.public.pollApiBase + "/login", {
 				method: "POST",
 				credentials: "include",
 				headers: {

@@ -86,11 +86,12 @@ defineProps<{
 		>
 		<div class="imgGrid">
 			<div class="imageContainer" v-for="(image, idx) in previews" :key="idx">
-				<img
+				<CDNImg
 					class="img"
 					:src="image"
 					alt="Uploaded image"
-				>
+					:from-client="idx >= outsideIndex"
+				/>
 				<div class="removeImage" @click="removeImage(idx)">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -164,8 +165,6 @@ export default defineComponent({
 				this.removedImages.push(img[0].split("/").at(-1) as string);
 				this.outsideIndex--;
 			}
-			console.log(this.removedImages);
-			console.log(this.outsideIndex);
 		},
 		assignError(error: string) {
 			if (this.errorMessage == "") {
@@ -279,7 +278,7 @@ textarea {
 	opacity: 1;
 }
 
-img {
+.img {
 	margin: auto;
 	width: calc(100% - var(--image-width--border));
 	width: 100%;

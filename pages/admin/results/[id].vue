@@ -6,5 +6,5 @@ definePageMeta({
 </script>
 
 <template>
-	<Results :base="config.public.apiBase + '/admin'" />
+	<Results :base="config.public.pollApiBase + '/admin'" />
 </template>

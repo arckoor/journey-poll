@@ -70,7 +70,7 @@ export default defineComponent({
 			this.dataCallback = dataInterface.dataInterface;
 		},
 		async getPollData() {
-			await fetch(this.config.public.apiBase + "/admin/poll/" + this.id, {
+			await fetch(this.config.public.pollApiBase + "/admin/poll/" + this.id, {
 				method: "GET",
 				credentials: "include",
 				headers: {
@@ -86,9 +86,6 @@ export default defineComponent({
 					this.ends = data.ends;
 					this.expires = data.expires;
 					this.previews = data.images;
-					for (let i=0; i<this.previews.length; i++) {
-						this.previews[i] = this.config.public.apiBase + "/images/" + this.previews[i];
-					}
 				});
 		},
 		async save() {
@@ -106,7 +103,7 @@ export default defineComponent({
 			for (const item of data.removedImages) {
 				formData.append("removedImages", item);
 			}
-			await fetch(this.config.public.apiBase + "/admin/edit/" + this.id, {
+			await fetch(this.config.public.pollApiBase + "/admin/edit/" + this.id, {
 				method: "POST",
 				credentials: "include",
 				body: formData

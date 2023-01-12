@@ -1,7 +1,7 @@
 <template>
 	<div v-if="ready">
 		<Vote :data="data" v-if="vote" />
-		<Results :base="config.public.apiBase" v-else/>
+		<Results :base="config.public.pollApiBase" v-else/>
 	</div>
 </template>
 
@@ -22,7 +22,7 @@ export default defineComponent({
 	},
 	methods: {
 		async checkVoted() {
-			await fetch(this.config.public.apiBase + "/submit/" + this.id, {
+			await fetch(this.config.public.pollApiBase + "/submit/" + this.id, {
 				method: "GET",
 				headers: {
 					"Accept": "application/json",
@@ -35,7 +35,7 @@ export default defineComponent({
 				});
 		},
 		async getPollData() {
-			await fetch(this.config.public.apiBase + "/poll/" + this.id, {
+			await fetch(this.config.public.pollApiBase + "/poll/" + this.id, {
 				method: "GET",
 				headers: {
 					"Accept": "application/json",

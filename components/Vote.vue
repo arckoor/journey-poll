@@ -19,12 +19,12 @@ defineProps<{
 			</div>
 			<div class="imageContainer" v-for="idx in images.length" :key="idx">
 				<div class="letter">{{ alphabet[idx-1] }}</div>
-				<img
+				<CDNImg
 					class="voteImage"
-					:src="config.public.apiBase + '/images/' + images[idx-1]"
+					:src="images[idx-1]"
 					:alt="'Voting image ' + alphabet[idx-1]"
 					:key="images[idx]"
-				>
+				/>
 			</div>
 			<div class="checkboxContainer">
 				<div class="checkboxItem" v-for="idx in images.length" :key="'box'+idx">
@@ -94,7 +94,7 @@ export default defineComponent({
 					votes.push(this.images[item]);
 				}
 			}
-			await fetch(this.config.public.apiBase + "/submit/" + this.id, {
+			await fetch(this.config.public.pollApiBase + "/submit/" + this.id, {
 				method: "POST",
 				headers: {
 					"Accept": "application/json",

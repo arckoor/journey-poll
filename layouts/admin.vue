@@ -69,7 +69,7 @@ export default defineComponent({
 	},
 	methods: {
 		async logout() {
-			await fetch(this.config.public.apiBase + "/admin/logout", {
+			await fetch(this.config.public.pollApiBase + "/admin/logout", {
 				method: "POST",
 				credentials: "include"
 			});

@@ -73,7 +73,7 @@ export default defineComponent({
 			for (const item of data.images) {
 				formData.append("images", item);
 			}
-			await fetch(this.config.public.apiBase + "/admin/create", {
+			await fetch(this.config.public.pollApiBase + "/admin/create", {
 				method: "POST",
 				credentials: "include",
 				body: formData
