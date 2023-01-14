@@ -147,11 +147,12 @@ export default defineComponent({
 		preview(event: Event) {
 			const files = (event.target as HTMLInputElement).files;
 			if (files) {
+				const offset = this.previews.length;
 				for (let i=0; i < files.length; i++) {
 					const reader = new FileReader();
-					reader.onload = (event) => this.previews.push(event.target?.result as string);
+					reader.onload = (event) => { this.previews[offset+i] = event.target?.result as string; };
 					reader.readAsDataURL(files[i]);
-					this.images.push(files[i]);
+					this.images[offset+i] = files[i];
 				}
 			}
 		},
