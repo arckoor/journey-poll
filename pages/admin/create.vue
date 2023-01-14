@@ -80,7 +80,6 @@ export default defineComponent({
 			})
 				.then(async res => {
 					const data = await res.json();
-					console.log(data);
 					this.id = data;
 				});
 			this.working = false;
