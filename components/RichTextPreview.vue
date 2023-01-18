@@ -33,9 +33,9 @@ export default defineComponent({
 		makeSplits(input: string) {
 			this.splits = [];
 			const regex = [
-				/(\*\*[^*.]+\*\*)/g, // bold
-				/(__[^_.]+__)/g,	 // underline
-				/((?<!_)_[^_.]+_)/g	 // italic
+				/(\*\*[^*]+\*\*)/g,  // bold
+				/(__[^_]+__)/g,	     // underline
+				/((?<!_)_[^_]+_)/g	 // italic
 			];
 			let info = [input] as Array<string | string[]>;
 			for (const re of regex) {
