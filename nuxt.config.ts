@@ -19,7 +19,7 @@ export default defineNuxtConfig({
 	css: [
 		"css/style.css"
 	],
-	ssr: false,
+	ssr: true,
 	app: {
 		head: {
 			link: [
