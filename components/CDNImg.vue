@@ -2,6 +2,7 @@
 defineProps<{
 	src: string,
 	alt: string,
+	sizes: string,
 	fromClient?: boolean
 }>();
 
@@ -9,15 +10,10 @@ defineProps<{
 
 <template>
 	<img
-		v-if="fromClient"
-		:alt="alt"
-		:src="src"
-	>
-	<img
-		v-else
-		:src="config.public.apiBase + '/images/' + src"
+		:src="srcMod"
 		:srcset="srcset"
 		:alt="alt"
+		:sizes="sizes"
 	>
 </template>
 
@@ -27,16 +23,24 @@ export default defineComponent({
 		return {
 			config: useRuntimeConfig(),
 			srcset: "",
+			srcMod: this.src
 		};
 	},
 	mounted() {
+		if (!this.fromClient) {
+			this.srcMod = this.config.public.pollApiBase + "/images/" + this.src;
+		}
 		if (!this.fromClient && !this.config.public.dev) {
+			const pre = this.config.public.apiBase + "/cdn-cgi/image";
+			const common = "fit=scale-down,format=auto,quality=lossless,metadata=none,onerror=redirect";
+			const post = "poll/images/" + this.src;
 			this.srcset = `
-				${this.config.public.apiBase}/cdn-cgi/image/fit=contain,width=320/poll/images/${this.src}   320w,
-				${this.config.public.apiBase}/cdn-cgi/image/fit=contain,width=640/poll/images/${this.src}   640w,
-				${this.config.public.apiBase}/cdn-cgi/image/fit=contain,width=960/poll/images/${this.src}   960w,
-				${this.config.public.apiBase}/cdn-cgi/image/fit=contain,width=1280/poll/images/${this.src} 1280w,
-				${this.config.public.apiBase}/cdn-cgi/image/fit=contain,width=1920/poll/images/${this.src} 1920w
+				${pre}/${common},width=320/${post}   320w,
+				${pre}/${common},width=640/${post}   640w,
+				${pre}/${common},width=960/${post}   960w,
+				${pre}/${common},width=1280/${post} 1280w,
+				${pre}/${common},width=1920/${post} 1920w,
+				${pre}/${common},width=2560/${post} 2560w
 			`;
 		}
 	}

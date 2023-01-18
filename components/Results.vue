@@ -12,8 +12,9 @@ defineProps<{
 			<div v-for="item of winners" :key="item" class="distItem">
 				<div class="distText">Votes: {{ images[item] }}</div>
 				<CDNImg
-					class=" img"
+					class="img"
 					:src="item"
+					sizes="50vw"
 					alt="The winning image"
 				/>
 			</div>
@@ -26,6 +27,7 @@ defineProps<{
 				<CDNImg
 					class="distImage img"
 					:src="item"
+					sizes="30vw"
 					alt="Vote distribution image"
 				/>
 			</div>
@@ -132,8 +134,8 @@ export default defineComponent({
 }
 
 .img {
-	margin: 30px 0 auto;
-	width: 50%;
+	margin: auto 0;
+	width: 50vw;
     border: var(--image-width--border) solid var(--color-accent--border);
 }
 
@@ -156,15 +158,18 @@ export default defineComponent({
 	flex-direction: row-reverse;
 	justify-content: center;
 	align-items: center;
+	margin-top: 25px;
 }
 
 .distText {
+	margin-left: 30px;
 	font-size: 25px;
 	width: 200px;
+	white-space: nowrap;
 }
 
 .distImage {
-	width: 30%;
+	width: 30vw;
 }
 
 .endMessage {

@@ -24,6 +24,7 @@ defineProps<{
 					:src="images[idx-1]"
 					:alt="'Voting image ' + alphabet[idx-1]"
 					:key="images[idx]"
+					sizes="(max-width: 90vw) 900px"
 				/>
 			</div>
 			<div class="checkboxContainer">
@@ -161,13 +162,13 @@ export default defineComponent({
 .imageContainer {
 	flex-direction: column;
 	justify-content: center;
-	width: 100%;
 	margin: auto;
 }
 
 .voteImage {
 	margin: auto;
-	width: 100%;
+	width: 900px;
+	max-width: 90vw;
     border: var(--image-width--border) solid var(--color-accent--border);
 }
 

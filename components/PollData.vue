@@ -85,10 +85,11 @@ defineProps<{
 			:disabled="disabled"
 		>
 		<div class="imgGrid">
-			<div class="imageContainer" v-for="(image, idx) in previews" :key="idx">
+			<div class="imageContainer" v-for="(image, idx) in previews" :key="image">
 				<CDNImg
 					class="img"
 					:src="image"
+					sizes="310px"
 					alt="Uploaded image"
 					:from-client="idx >= outsideIndex"
 				/>
@@ -259,20 +260,15 @@ textarea {
 	width: 1000px;
 }
 
-.button {
-	padding: 10px 20px;
-	text-align: center;
-}
-
 .imgGrid {
+	margin-top: 20px;
 	display: grid;
 	grid-template-columns: auto auto auto;
-	column-gap: 20px;
 }
 
 .imageContainer {
 	position: relative;
-	margin: 20px 10px 0 0;
+	margin: 10px 10px;
 }
 
 .imageContainer:hover > .removeImage {
@@ -282,7 +278,7 @@ textarea {
 .img {
 	margin: auto;
 	width: calc(100% - var(--image-width--border));
-	width: 100%;
+	width: 310px;
     outline: var(--image-width--border) solid var(--color-accent--border);
 }
 
