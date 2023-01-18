@@ -279,7 +279,6 @@ textarea {
 	margin: auto;
 	width: calc(100% - var(--image-width--border));
 	width: 310px;
-    outline: var(--image-width--border) solid var(--color-accent--border);
 }
 
 .removeImage {

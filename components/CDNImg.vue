@@ -9,12 +9,26 @@ defineProps<{
 </script>
 
 <template>
-	<img
-		:src="srcMod"
-		:srcset="srcset"
-		:alt="alt"
-		:sizes="sizes"
-	>
+	<div>
+		<img
+			class="img-small"
+			:src="srcMod"
+			:srcset="srcset"
+			:alt="alt"
+			:sizes="sizes"
+			@click="makeBig"
+		>
+		<div class="big-container" v-if="big" @click="makeSmall">
+			<div :class="bigClass">
+				<img
+					v-if="big"
+					class="img-fullscreen"
+					:src="srcMod"
+					:alt="alt"
+				>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -23,7 +37,9 @@ export default defineComponent({
 		return {
 			config: useRuntimeConfig(),
 			srcset: "",
-			srcMod: this.src
+			srcMod: this.src,
+			big: false,
+			bigClass: "big-fullscreen big-fullscreen--hide"
 		};
 	},
 	mounted() {
@@ -43,6 +59,54 @@ export default defineComponent({
 				${pre}/${common},width=2560/${post} 2560w
 			`;
 		}
+	},
+	methods: {
+		makeBig() {
+			this.big = true;
+			setTimeout(() => { this.bigClass = "big-fullscreen"; });
+		},
+		makeSmall() {
+			this.big = false;
+			this.bigClass = "big-fullscreen big-fullscreen--hide";
+		}
 	}
 });
 </script>
+
+<style scoped>
+img {
+	border: var(--image-width--border) solid var(--color-accent--border);
+}
+
+.img-small {
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
+.big-container {
+	cursor: pointer;
+}
+
+.big-fullscreen {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: var(--color-background--layer-50);
+	display: flex;
+    justify-content: center;
+    align-items: center;
+	flex-direction: column;
+	transition: opacity var(--transition-short);
+}
+
+.big-fullscreen--hide {
+	opacity: 0;
+}
+
+.img-fullscreen {
+	width: 90vw
+}
+</style>

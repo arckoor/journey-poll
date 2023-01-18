@@ -169,7 +169,6 @@ export default defineComponent({
 	margin: auto;
 	width: 900px;
 	max-width: 90vw;
-    border: var(--image-width--border) solid var(--color-accent--border);
 }
 
 .checkboxContainer {

@@ -136,7 +136,6 @@ export default defineComponent({
 .img {
 	margin: auto 0;
 	width: 50vw;
-    border: var(--image-width--border) solid var(--color-accent--border);
 }
 
 .distContainer {
