@@ -17,6 +17,7 @@ defineProps<{
 			:alt="alt"
 			:sizes="sizes"
 			@click="makeBig"
+			@dragstart.prevent
 		>
 		<div class="big-container" v-if="big" @click="makeSmall">
 			<div :class="bigClass">
@@ -25,6 +26,7 @@ defineProps<{
 					class="img-fullscreen"
 					:src="srcMod"
 					:alt="alt"
+					@dragstart.prevent
 				>
 			</div>
 		</div>
