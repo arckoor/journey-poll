@@ -15,6 +15,8 @@ defineProps<{
 		</template>
 		<span v-if="text">&nbsp;</span>
 		<u>You may vote for up to {{ allowedVotes }} entries!</u> Thanks for your vote!
+		<br /><br />
+		<strong>Tap or click an image to view it in high resolution.</strong>
 	</div>
 </template>
 
