@@ -7,6 +7,14 @@ defineProps<{
 <template>
 	<div class="nameHeading">{{ name }}</div>
 	<div v-if="ended && !private">
+		<div class="publishContainer" v-if="base.endsWith('/admin')">
+			<Button
+				v-if="!public"
+				text="Publish results"
+				@click="publishResults"
+			/>
+			<div v-else>Results published!</div>
+		</div>
 		<div class="winnerContainer">
 			<div class="heading">{{ "Winner" + (winners.length > 1 ? "s" : "") + ":"}}</div>
 			<div v-for="item of winners" :key="item" class="distItem">
@@ -56,6 +64,7 @@ export default defineComponent({
 			images: {} as Record<string, string>,
 			ended: true,
 			private: false,
+			public: false,
 			ends: ""
 		};
 	},
@@ -78,6 +87,7 @@ export default defineComponent({
 					this.private = true;
 					return;
 				}
+				this.public = data.public;
 				if (data.ends) {
 					countdown(data.ends, (str: string) => { this.ends = str; if (str === "0s") { this.showResults(); } });
 					this.ended = false;
@@ -105,6 +115,16 @@ export default defineComponent({
 				}
 			}
 			return result;
+		},
+		async publishResults() {
+			await fetch(this.base + "/publishResults/" + this.id, {
+				method: "POST",
+				credentials: "include"
+			}).then(async res => {
+				if (res.status === 200) {
+					this.public = true;
+				}
+			});
 		}
 	}
 });
@@ -112,6 +132,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.publishContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+}
+
 .winnerContainer {
 	display: flex;
 	padding: 40px 100px;
