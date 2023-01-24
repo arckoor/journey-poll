@@ -94,7 +94,7 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     width: var(--sidebar-width);
-    height: 100vh;
+    height: 100%;
     background-color: var(--color-background--layer-10);
     z-index: 999;
     overflow-x: hidden;
