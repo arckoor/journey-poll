@@ -12,9 +12,13 @@ const config = useRuntimeConfig();
 
 <template>
 	<div class="pollItem">
-		<div class="pollName">{{ name }}</div>
-		<div :class="'pollEnd' + (ends === '0s' ? ' green' : '')">Ends in: {{ ends }}</div>
-		<div :class="'pollEnd' + (new RegExp(/^[0-9]*m|^[0-9]*s/).test(expires) ? ' red' : '')">Expires in: {{ expires }}</div>
+		<div class="pollInfo">
+			<div class="pollName">{{ name }}</div>
+			<div class="timeRow">
+				<div class="pollEnd pollEnd--normal">Ends in: <span :class="ends === '0s' ? ' pollEnd--normal' : ' green'">{{ ends }}</span></div>
+				<div class="pollEnd pollEnd--normal">Expires in: <span :class="new RegExp(/^[0-9]*m|^[0-9]*s/).test(expires) ? ' red' : ' pollEnd--normal'">{{ expires }}</span></div>
+			</div>
+		</div>
 		<div class="voteAmount">Votes: {{ voteAmount }}</div>
 		<div class="linkSection">
 			<Button class="linkItem" text="Click to copy link" @click="copyLink(config.public.base + '/' + id)" />
@@ -41,9 +45,31 @@ const config = useRuntimeConfig();
 	align-items: center;
 }
 
+.pollInfo {
+	display: flex;
+	flex-direction: column;
+}
+
+.timeRow {
+	display: flex;
+	flex-direction: row;
+}
+
+
+.pollEnd {
+	font-size: 18px;
+	margin-right: 20px;
+	min-width: 205px;
+}
+
+.pollEnd--normal {
+	color: var(--color-text--disabled)
+}
+
 .linkItem {
 	padding: 10px 10px;
 	margin: 0 5px;
+	flex-basis: content;
 }
 
 .pollName {
@@ -51,16 +77,12 @@ const config = useRuntimeConfig();
 	font-size: 24px;
 }
 
-.pollEnd {
-	flex-basis: 15%;
-}
-
 .voteAmount {
 	flex-basis: 7%;
 }
 
 .linkSection {
-	flex-basis: 30%;
+	flex-basis: content;
 	display: flex;
 	flex-direction: row;
 	justify-content: right;
