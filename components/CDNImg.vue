@@ -102,6 +102,7 @@ img {
     align-items: center;
 	flex-direction: column;
 	transition: opacity var(--transition-short);
+	z-index: 999;
 }
 
 .big-fullscreen--hide {
