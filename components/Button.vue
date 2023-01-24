@@ -10,7 +10,7 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-	<div :class="'button' + (disabled ? ' disabled' : '')">{{ text }}</div>
+	<div :class="'button no-select' + (disabled ? ' disabled' : '')">{{ text }}</div>
 </template>
 
 <style>
@@ -28,13 +28,6 @@ withDefaults(defineProps<Props>(), {
 		color var(--hover-transition),
 		background-color var(--hover-transition);
 	padding: 10px 20px;
-
-	/* https://stackoverflow.com/a/4407335 */
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-webkit-user-select: none;
-	user-select: none;
 }
 
 .button:hover {

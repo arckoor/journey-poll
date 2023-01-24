@@ -18,17 +18,8 @@ defineProps<{
 				<RichTextPreview :text="info" :allowed-votes="allowedVotes"/>
 			</div>
 			<div class="imageContainer" v-for="idx in images.length" :key="idx">
-				<div class="letter">{{ alphabet[idx-1] }}</div>
-				<CDNImg
-					class="voteImage"
-					:src="images[idx-1]"
-					:alt="'Voting image ' + alphabet[idx-1]"
-					:key="images[idx]"
-					sizes="(max-width: 90vw) 900px"
-				/>
-			</div>
-			<div class="checkboxContainer">
-				<div class="checkboxItem" v-for="idx in images.length" :key="'box'+idx">
+				<div class="voteContainer">
+					<div class="letter no-select">{{ alphabet[idx-1] }}</div>
 					<input
 						type="checkbox"
 						:name="'vote'+idx"
@@ -36,8 +27,14 @@ defineProps<{
 						v-model="checked[idx-1]"
 						:disabled="checked.reduce((a, x) => a + (x ? 1 : 0), 0) > allowedVotes-1 && !checked[idx-1]"
 					>
-					<div class="cbLetter">{{ alphabet[idx-1] }}</div>
 				</div>
+				<CDNImg
+					class="voteImage"
+					:src="images[idx-1]"
+					:alt="'Voting image ' + alphabet[idx-1]"
+					:key="images[idx]"
+					sizes="(max-width: 90vw) 900px"
+				/>
 			</div>
 			<div class="submitContainer">
 				<Button
@@ -155,14 +152,23 @@ export default defineComponent({
 }
 
 .letter {
-	font-size: 26px;
-	padding-top: 20px;
+	font-size: 34px;
+	margin-right: 10px;
 }
 
 .imageContainer {
 	flex-direction: column;
 	justify-content: center;
 	margin: auto;
+	margin-top: 40px;
+}
+
+.voteContainer {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-direction: row;
+	margin-bottom: 20px;
 }
 
 .voteImage {
@@ -171,25 +177,9 @@ export default defineComponent({
 	max-width: 90vw;
 }
 
-.checkboxContainer {
-	padding-top: 20px;
-	display: flex;
-	flex-direction: column;
-}
-
-.checkboxItem {
-	display: flex;
-	padding: 12px 0 0px 0;
-	align-items: center;
-}
-
-.cbLetter {
-	padding-left: 10px;
-}
-
 input[type=checkbox] {
-	width: 18px;
-	height: 18px;
+	width: 25px;
+	height: 25px;
 	cursor: pointer;
 }
 
