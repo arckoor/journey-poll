@@ -40,7 +40,7 @@
 export default defineComponent({
 	data() {
 		return {
-			username: "",
+			username: useUsername(),
 			password: "",
 			config: useRuntimeConfig(),
 			errorMessage: ""
