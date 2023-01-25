@@ -81,8 +81,8 @@ img {
 }
 
 .img-small {
-	width: 100%;
-	height: 100%;
+	width: calc(100% - var(--image-width--border));
+	height: calc(100% - var(--image-width--border));
 	cursor: pointer;
 }
 

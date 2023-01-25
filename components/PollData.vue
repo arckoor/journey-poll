@@ -277,7 +277,6 @@ textarea {
 
 .img {
 	margin: auto;
-	width: calc(100% - var(--image-width--border));
 	width: 310px;
 }
 
@@ -285,6 +284,7 @@ textarea {
 	position: absolute;
 	top: 0;
 	right: 0;
+	padding-top: var(--image-width--border);
 	fill: var(--color-text);
 	opacity: 0;
 	transition: opacity var(--transition-short);
