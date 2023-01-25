@@ -132,6 +132,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@media only screen and (max-device-width : 1024px) {
+	.winnerContainer,
+	.distContainer {
+		padding: 10px 30px;
+	}
+}
+@media only screen and (min-device-width : 1024px) {
+	.winnerContainer,
+	.distContainer {
+		padding: 40px 100px;
+	}
+}
 .publishContainer {
 	display: flex;
 	justify-content: center;
@@ -141,7 +153,6 @@ export default defineComponent({
 
 .winnerContainer {
 	display: flex;
-	padding: 40px 100px;
 	flex-direction: column;
 	justify-content: center;
 	margin: auto;
@@ -167,7 +178,6 @@ export default defineComponent({
 
 .distContainer {
 	display: flex;
-	padding: 40px 100px;
 	flex-direction: column;
 	justify-content: center;
 	margin: auto;
