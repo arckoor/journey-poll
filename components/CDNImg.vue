@@ -110,6 +110,9 @@ img {
 }
 
 .img-fullscreen {
-	height: 95vh;
+	max-width: 90vw;
+	max-height: 95vh;
+	height: auto;
+	width: auto;
 }
 </style>
