@@ -43,7 +43,7 @@ export default defineComponent({
 		return {
 			config: useRuntimeConfig(),
 			name: "",
-			info: "**Please check out the entries and then on the bottom of this page vote for your favourites!** The entry letter (A, B, C) is assigned at the top of the image.",
+			info: "**Please check out the entries and vote for your favourites!** The entry letter (A, B, C) is assigned at the top of the image. Use the checkbox next to the entry letter to select your choices, then submit them at the bottom of the page!",
 			allowedVotes: 3,
 			ends: toDateInputValue(addDays(new Date(), 1)),
 			expires: toDateInputValue(addDays(new Date(), 3)),
