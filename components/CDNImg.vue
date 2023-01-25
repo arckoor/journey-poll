@@ -110,6 +110,6 @@ img {
 }
 
 .img-fullscreen {
-	width: 90vw
+	height: 95vh;
 }
 </style>
