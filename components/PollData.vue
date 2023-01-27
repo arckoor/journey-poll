@@ -80,7 +80,7 @@ defineProps<{
 			ref="fileIn"
 			multiple
 			required
-			accept=".jpg,.png,.jpeg"
+			accept="image/*"
 			@change="preview"
 			:disabled="disabled"
 		>
@@ -139,7 +139,6 @@ export default defineComponent({
 			this.$watch(item, () => this.validate());
 		}
 		this.$watch("previews", () => this.validate(), { deep: true });
-
 		this.$emit("interface", {
 			dataInterface: () => this.getData()
 		});
@@ -188,7 +187,7 @@ export default defineComponent({
 				valid = false;
 				this.assignError("At least one image is required.");
 			}
-			if ( this.allowedVotes <= 0 || this.allowedVotes > this.previews.length) {
+			if (this.allowedVotes <= 0 || this.allowedVotes > this.previews.length) {
 				valid = false;
 				this.assignError("Number of votes cannot be larger than number of images provided.");
 			}
