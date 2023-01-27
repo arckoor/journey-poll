@@ -17,13 +17,17 @@ defineProps<{
 			<div class="additionalInfo">
 				<RichTextPreview :text="info" :allowed-votes="allowedVotes"/>
 			</div>
-			<div class="imageContainer" v-for="idx in images.length" :key="idx">
+			<div class="imageContainer"
+				v-for="idx in images.length"
+				:key="idx-1"
+				:ref="'vote'+(idx-1)"
+			>
 				<div class="voteContainer">
 					<div class="letter no-select">{{ alphabet[idx-1] }}</div>
 					<input
 						type="checkbox"
-						:name="'vote'+idx"
-						:id="'vote'+idx"
+						:name="'vote'+(idx-1)"
+						:id="'vote'+(idx-1)"
 						v-model="checked[idx-1]"
 						:disabled="checked.reduce((a, x) => a + (x ? 1 : 0), 0) > allowedVotes-1 && !checked[idx-1]"
 					>
@@ -32,11 +36,28 @@ defineProps<{
 					class="voteImage"
 					:src="images[idx-1]"
 					:alt="'Voting image ' + alphabet[idx-1]"
-					:key="images[idx]"
+					:key="images[idx-1]"
 					sizes="(max-width: 90vw) 900px"
 				/>
 			</div>
 			<div class="submitContainer">
+				<div class="recapHeading"><strong>Selected Images:</strong></div>
+				<div class="recapContainer" >
+					<div class="recapImageContainer"
+						v-for="idx in [...checked.keys()].filter(i => checked[i])"
+						:key="idx"
+						@click="(($refs['vote'+idx] as HTMLElement[])[0] as HTMLElement).scrollIntoView()"
+					>
+						<div class="recapLetter">{{ alphabet[idx] }}</div>
+						<CDNImg
+							class="recapImage"
+							:src="images[idx]"
+							:alt="'Recap image ' + alphabet[idx]"
+							:click-disabled="true"
+							sizes="280px"
+						/>
+					</div>
+				</div>
 				<Button
 					text="Submit My Vote!"
 					:disabled="checked.reduce((a, x) => a + (x ? 1 : 0), 0) < 1"
@@ -183,12 +204,49 @@ input[type=checkbox] {
 	cursor: pointer;
 }
 
+.recapHeading {
+	font-size: 25px;
+}
+
+@media only screen and (max-device-width : 1024px) {
+	.recapContainer {
+		grid-template-columns: 1fr;
+	}
+}
+@media only screen and (min-device-width : 1024px) {
+	.recapContainer {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
+
+.recapContainer {
+	margin: 20px 0 30px 0;
+	display: grid;
+}
+
+.recapImageContainer {
+	position: relative;
+	margin: 10px 10px;
+}
+
+.recapLetter {
+	font-size: 25px;
+	margin-bottom: 10px;
+}
+
+.recapImage {
+	max-width: 80vw;
+	width: 280px;
+	margin: auto;
+}
+
 .submitContainer {
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
-	margin: 40px 0 40px 0;
+	margin: 60px 0 40px 0;
 }
 
 .submitButton {

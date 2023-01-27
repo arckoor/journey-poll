@@ -3,7 +3,8 @@ defineProps<{
 	src: string,
 	alt: string,
 	sizes: string,
-	fromClient?: boolean
+	fromClient?: boolean,
+	clickDisabled?: boolean
 }>();
 
 </script>
@@ -64,10 +65,12 @@ export default defineComponent({
 	},
 	methods: {
 		makeBig() {
+			if (this.clickDisabled) return;
 			this.big = true;
 			setTimeout(() => { this.bigClass = "big-fullscreen"; });
 		},
 		makeSmall() {
+			if (this.clickDisabled) return;
 			this.big = false;
 			this.bigClass = "big-fullscreen big-fullscreen--hide";
 		}
