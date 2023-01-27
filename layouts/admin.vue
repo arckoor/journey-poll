@@ -128,7 +128,7 @@ export default defineComponent({
 	border-left: 3px solid transparent;
 	border-radius: 3px;
 	background-color: transparent;
-	transition: background-color var(--hover-transition), border-left var(--hover-transition);
+	transition: background-color var(--transition-short), border-left var(--transition-short);
 }
 
 .icon:hover {
@@ -163,7 +163,7 @@ svg {
 .sectionHeading {
 	display: flex;
 	justify-content: center;
-	font-size: 50px;
+	font-size: var(--font-size--heading);
 	align-items: center;
 }
 </style>

@@ -16,16 +16,20 @@
 	--color-primary--success:	  #1dd144;
 	--color-accent--border: 	  #505050;
 
-	--sidebar-width: 80px;
-	--image-width--border: 4px;
+	--sidebar-width:              80px;
+	--image-width--border:        4px;
 
-	/* todo */
-	--transition-short: .3s;
-	--transition-middle: .5s;
-	--transition-long: .7s;
+	--transition-short:           .3s;
+	--transition-middle:          .5s;
+	--transition-long:            .7s;
 
-	--hover-transition: .3s;
-	--delete-transition: .5s;
+
+	--font-size--text:            20px;
+	--font-size--subscript:       18px;
+	--font-size--heading:         50px;
+	--font-size--heading-section: 40px;
+	--font-size--content:         25px;
+	--font-size--content-large:   30px;
 }
 
 
@@ -50,7 +54,8 @@ html {
 	font-family: Roboto, sans-serif;
 	background: var(--color-background--layer-0);
 	color: var(--color-text);
-	font-size: 20px;
+	font-size: var(--font-size--text);
+	scroll-behavior: smooth;
 }
 
 body {
@@ -68,7 +73,7 @@ input[type=text],
 input[type=number],
 input[type=password] {
 	color: inherit;
-	font-size: 18px;
+	font-size: var(--font-size--subscript);
 	width: 200px;
 	background-color: var(--color-background--layer-10);
 	border: 2px solid var(--color-background--layer-0);

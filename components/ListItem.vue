@@ -55,9 +55,8 @@ const config = useRuntimeConfig();
 	flex-direction: row;
 }
 
-
 .pollEnd {
-	font-size: 18px;
+	font-size: var(--font-size--subscript);
 	margin-right: 20px;
 	min-width: 205px;
 }
@@ -74,7 +73,7 @@ const config = useRuntimeConfig();
 
 .pollName {
 	flex-basis: 40%;
-	font-size: 24px;
+	font-size: var(--font-size--content);
 }
 
 .voteAmount {

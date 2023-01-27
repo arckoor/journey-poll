@@ -156,7 +156,7 @@ export default defineComponent({
 	justify-content: center;
 	align-items: center;
 	display: flex;
-	font-size: 34px;
+	font-size: var(--font-size--heading);
 }
 
 .remainingTime {
@@ -169,11 +169,11 @@ export default defineComponent({
 .additionalInfo {
 	padding: 30px 0 50px 0;
 	max-width: 800px;
-	font-size: 24px
+	font-size: var(--font-size--content)
 }
 
 .letter {
-	font-size: 34px;
+	font-size: var(--font-size--content-large);
 	margin-right: 10px;
 }
 
@@ -205,7 +205,7 @@ input[type=checkbox] {
 }
 
 .recapHeading {
-	font-size: 25px;
+	font-size: var(--font-size--content);
 }
 
 @media only screen and (max-device-width : 1024px) {
@@ -230,7 +230,7 @@ input[type=checkbox] {
 }
 
 .recapLetter {
-	font-size: 25px;
+	font-size: var(--font-size--content);
 	margin-bottom: 10px;
 }
 
@@ -262,7 +262,7 @@ input[type=checkbox] {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	font-size: 24px;
+	font-size: var(--font-size--content-large);
 	padding-top: 100px;
 }
 </style>

@@ -24,9 +24,9 @@ withDefaults(defineProps<Props>(), {
 	cursor: pointer;
 	border-radius: 5px;
 	border: 2px solid var(--color-background--layer-10);
-	transition: border-color var(--hover-transition),
-		color var(--hover-transition),
-		background-color var(--hover-transition);
+	transition: border-color var(--transition-short),
+		color var(--transition-short),
+		background-color var(--transition-short);
 	padding: 10px 20px;
 }
 

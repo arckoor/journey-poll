@@ -181,7 +181,7 @@ export default defineComponent({
 }
 
 .deleteContainer {
-	transition: background-color var(--delete-transition);
+	transition: background-color var(--transition-middle);
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -197,7 +197,7 @@ export default defineComponent({
 }
 
 .deleteText {
-	font-size: 30px;
+	font-size: var(--font-size--content-large);
 	text-align: center;
 }
 
@@ -213,7 +213,7 @@ export default defineComponent({
 
 .deleteConfirm {
 	border-color: var(--color-primary--hover);
-	transition: background var(--hover-transition);
+	transition: background var(--transition-short);
 }
 
 .deleteConfirm:hover {

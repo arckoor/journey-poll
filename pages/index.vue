@@ -100,7 +100,7 @@ export default defineComponent({
 	display: flex;
 	flex-direction: row;
 	padding: 20px 0;
-	font-size: 25px;
+	font-size: var(--font-size--content);
 	align-items: center;
 }
 

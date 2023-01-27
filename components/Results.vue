@@ -164,11 +164,11 @@ export default defineComponent({
 	justify-content: center;
 	align-items: center;
 	padding: 30px 0 0 0;
-	font-size: 50px;
+	font-size: var(--font-size--heading);
 }
 
 .heading {
-	font-size: 40px;
+	font-size: var(--font-size--heading-section);
 }
 
 .img {
@@ -186,7 +186,7 @@ export default defineComponent({
 
 .voteAmount {
 	margin: 10px 0;
-	font-size: 22px;
+	font-size: var(--font-size--content);
 }
 
 .distItem {
@@ -199,7 +199,7 @@ export default defineComponent({
 
 .distText {
 	margin-left: 30px;
-	font-size: 25px;
+	font-size: var(--font-size--content);
 	width: 200px;
 	white-space: nowrap;
 }
@@ -214,6 +214,6 @@ export default defineComponent({
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	font-size: 30px;
+	font-size: var(--font-size--heading-section);
 }
 </style>
