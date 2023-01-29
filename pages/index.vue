@@ -33,6 +33,13 @@
 			/>
 			<div class="error">{{ errorMessage }}</div>
 		</div>
+		<div ref="tooltip" :class="'toolTip no-select '" @click="tooltipEnabled = !tooltipEnabled">
+			How can I make an account?
+			<span :class="'toolTipContent '+ (tooltipEnabled ? 'reveal' : '')">
+				Currently, accounts are created on a per-request basis.
+				If you'd like to use this service, please contact arckoor#6568 in the Journey Discord.
+			</span>
+		</div>
 	</div>
 </template>
 
@@ -43,7 +50,8 @@ export default defineComponent({
 			username: useUsername(),
 			password: "",
 			config: useRuntimeConfig(),
-			errorMessage: ""
+			errorMessage: "",
+			tooltipEnabled: false
 		};
 	},
 	mounted() {
@@ -119,6 +127,33 @@ label {
 }
 
 .error {
+	color: var(--color-primary--hover);
 	margin-top: 20px;
+}
+
+.toolTip {
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	cursor: pointer;
+}
+
+.toolTipContent {
+	width: 400px;
+	display: none;
+	position: absolute;
+	padding-top: 50px;
+}
+
+.reveal {
+	display: block;
+}
+
+a,
+a:visited {
+	color: var(--color-primary--hover);
+	text-decoration: none;
 }
 </style>
