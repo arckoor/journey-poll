@@ -24,7 +24,11 @@ export default defineNuxtConfig({
 		head: {
 			link: [
 				{ rel: "icon", type: "icon/ico", href: "/favicon.ico" }
-			]
+			],
+			meta: [{
+				name: "robots",
+				content: "noindex,nofollow"
+			}]
 		}
 	}
 });
