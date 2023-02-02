@@ -30,11 +30,11 @@ defineProps<{
 		<div class="distContainer">
 			<div class="heading">Vote Distribution:</div>
 			<div class="voteAmount">Voters: {{ voteAmount }}</div>
-			<div v-for="item in Object.keys(images)" :key="item" class="distItem">
-				<div class="distText">Votes: {{ images[item] }}</div>
+			<div v-for="item in sortedImages" :key="item[0]" class="distItem">
+				<div class="distText">Votes: {{ item[1] }}</div>
 				<CDNImg
 					class="distImage img"
-					:src="item"
+					:src="(item[0] as string)"
 					sizes="30vw"
 					alt="Vote distribution image"
 				/>
@@ -60,8 +60,8 @@ export default defineComponent({
 			max: 0,
 			voteAmount: 0,
 			winners: new Array<string>(),
-			votes: new Array<number>(),
-			images: {} as Record<string, string>,
+			images: {} as Record<string, number>,
+			sortedImages: [] as Array<Array<string | number>>,
 			ended: true,
 			private: false,
 			public: false,
@@ -105,6 +105,8 @@ export default defineComponent({
 					}
 				}
 				this.voteAmount = data.voteAmount;
+				// https://stackoverflow.com/a/37607084/12203337
+				this.sortedImages = Object.entries(this.images).sort((a, b) => a[1] - b[1]).reverse();
 			});
 		},
 		getExtension(key: string, images: Array<string>) {
