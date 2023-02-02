@@ -5,57 +5,59 @@ defineProps<{
 </script>
 
 <template>
-	<div class="nameHeading">{{ name }}</div>
-	<div v-if="ended && !private">
-		<div class="publishContainer" v-if="base.endsWith('/admin')">
-			<Button
-				v-if="!public"
-				text="Publish results"
-				@click="publishResults"
-			/>
-			<div v-else>Results published!</div>
-		</div>
-		<div class="winnerContainer">
-			<div class="heading">{{ "Winner" + (winners.length > 1 ? "s" : "") + ":"}}</div>
-			<div v-for="item of winners" :key="item" class="distItem">
-				<div class="distText">Votes: {{ images[item] }}</div>
-				<CDNImg
-					class="img"
-					:src="item"
-					sizes="50vw"
-					alt="The winning image"
+	<div v-if="ready" class="container">
+		<div class="nameHeading">{{ name }}</div>
+		<div v-if="ended && !private">
+			<div class="publishContainer" v-if="base.endsWith('/admin')">
+				<Button
+					v-if="!public"
+					text="Publish results"
+					@click="publishResults"
 				/>
+				<div v-else>Results published!</div>
+			</div>
+			<div class="winnerContainer">
+				<div class="heading">{{ "Winner" + (winners.length > 1 ? "s" : "") + ":"}}</div>
+				<div v-for="item of winners" :key="item" class="distItem">
+					<div class="distText">Votes: {{ images[item] }}</div>
+					<CDNImg
+						class="img"
+						:src="item"
+						sizes="50vw"
+						alt="The winning image"
+					/>
+				</div>
+			</div>
+			<div class="displayVotesContainer">
+				<div class="displayVotesText">Display Vote Distribution</div>
+				<input
+					type="checkbox"
+					name="displayVotes"
+					id="displayVotes"
+					v-model="displayVotes"
+				>
+			</div>
+			<div class="distContainer" v-if="displayVotes">
+				<div class="heading">Vote Distribution:</div>
+				<div class="voteAmount">Voters: {{ voteAmount }}</div>
+				<div v-for="item in sortedImages" :key="item[0]" class="distItem">
+					<div class="distText">Votes: {{ item[1] }}</div>
+					<CDNImg
+						class="distImage img"
+						:src="(item[0] as string)"
+						sizes="30vw"
+						alt="Vote distribution image"
+					/>
+				</div>
 			</div>
 		</div>
-		<div class="displayVotesContainer">
-			<div class="displayVotesText">Display Vote Distribution</div>
-			<input
-				type="checkbox"
-				name="displayVotes"
-				id="displayVotes"
-				v-model="displayVotes"
-			>
+		<div v-else-if="private" class="endMessage">
+			<span>This poll has ended.</span>
+			<span>The results of this poll are not public.</span>
 		</div>
-		<div class="distContainer" v-if="displayVotes">
-			<div class="heading">Vote Distribution:</div>
-			<div class="voteAmount">Voters: {{ voteAmount }}</div>
-			<div v-for="item in sortedImages" :key="item[0]" class="distItem">
-				<div class="distText">Votes: {{ item[1] }}</div>
-				<CDNImg
-					class="distImage img"
-					:src="(item[0] as string)"
-					sizes="30vw"
-					alt="Vote distribution image"
-				/>
-			</div>
+		<div v-else class="endMessage">
+			This poll will end in {{ ends }}.
 		</div>
-	</div>
-	<div v-else-if="private" class="endMessage">
-		<span>This poll has ended.</span>
-		<span>The results of this poll are not public.</span>
-	</div>
-	<div v-else class="endMessage">
-		This poll will end in {{ ends }}.
 	</div>
 </template>
 
@@ -76,13 +78,15 @@ export default defineComponent({
 			displayVotesCookie: useDisplayVotes(),
 			private: false,
 			public: false,
-			ends: ""
+			ends: "",
+			ready: false
 		};
 	},
-	mounted() {
+	async mounted() {
 		this.displayVotes = this.displayVotesCookie as boolean;
 		this.$watch("displayVotes", () => this.assignCookie());
-		this.showResults();
+		await this.showResults();
+		this.ready = true;
 	},
 	methods: {
 		async showResults() {
@@ -162,6 +166,17 @@ export default defineComponent({
 		padding: 40px 100px;
 	}
 }
+
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 900px;
+	max-width: 90vw;
+	margin: 0px auto;
+}
+
 .publishContainer {
 	display: flex;
 	justify-content: center;
@@ -182,6 +197,7 @@ export default defineComponent({
 	justify-content: center;
 	align-items: center;
 	padding: 30px 0 0 0;
+	text-align: center;
 	font-size: var(--font-size--heading);
 }
 

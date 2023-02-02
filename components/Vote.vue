@@ -155,7 +155,7 @@ export default defineComponent({
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	display: flex;
+	text-align: center;
 	font-size: var(--font-size--heading);
 }
 
