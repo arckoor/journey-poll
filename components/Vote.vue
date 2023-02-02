@@ -198,12 +198,6 @@ export default defineComponent({
 	max-width: 90vw;
 }
 
-input[type=checkbox] {
-	width: 25px;
-	height: 25px;
-	cursor: pointer;
-}
-
 .recapHeading {
 	font-size: var(--font-size--content);
 }

@@ -81,6 +81,12 @@ input[type=password] {
 	height: 100%;
 }
 
+input[type=checkbox] {
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+}
+
 textarea:focus,
 input:focus {
 	outline: none;

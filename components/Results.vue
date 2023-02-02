@@ -27,7 +27,16 @@ defineProps<{
 				/>
 			</div>
 		</div>
-		<div class="distContainer">
+		<div class="displayVotesContainer">
+			<div class="displayVotesText">Display Vote Distribution</div>
+			<input
+				type="checkbox"
+				name="displayVotes"
+				id="displayVotes"
+				v-model="displayVotes"
+			>
+		</div>
+		<div class="distContainer" v-if="displayVotes">
 			<div class="heading">Vote Distribution:</div>
 			<div class="voteAmount">Voters: {{ voteAmount }}</div>
 			<div v-for="item in sortedImages" :key="item[0]" class="distItem">
@@ -63,12 +72,16 @@ export default defineComponent({
 			images: {} as Record<string, number>,
 			sortedImages: [] as Array<Array<string | number>>,
 			ended: true,
+			displayVotes: false,
+			displayVotesCookie: useDisplayVotes(),
 			private: false,
 			public: false,
 			ends: ""
 		};
 	},
 	mounted() {
+		this.displayVotes = this.displayVotesCookie as boolean;
+		this.$watch("displayVotes", () => this.assignCookie());
 		this.showResults();
 	},
 	methods: {
@@ -127,6 +140,9 @@ export default defineComponent({
 					this.public = true;
 				}
 			});
+		},
+		assignCookie() {
+			this.displayVotesCookie = this.displayVotes;
 		}
 	}
 });
@@ -176,6 +192,19 @@ export default defineComponent({
 .img {
 	margin: auto 0;
 	width: 50vw;
+}
+
+.displayVotesContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: var(--font-size--content);
+}
+
+.displayVotesContainer > input {
+	margin-left: 10px;
+	width: 20px;
+	height: 20px;
 }
 
 .distContainer {
