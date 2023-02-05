@@ -56,7 +56,7 @@ defineProps<{
 			<span>The results of this poll are not public.</span>
 		</div>
 		<div v-else class="endMessage">
-			This poll will end in {{ ends }}.
+			<span>This poll will end in <Countdown :date="ends" color-type="red" />.</span>
 		</div>
 	</div>
 </template>
@@ -106,7 +106,7 @@ export default defineComponent({
 				}
 				this.public = data.public;
 				if (data.ends) {
-					countdown(data.ends, (str: string) => { this.ends = str; if (str === "0s") { this.showResults(); } });
+					this.ends = data.ends;
 					this.ended = false;
 					return;
 				}

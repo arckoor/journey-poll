@@ -15,8 +15,14 @@ const config = useRuntimeConfig();
 		<div class="pollInfo">
 			<div class="pollName">{{ name }}</div>
 			<div class="timeRow">
-				<div class="pollEnd pollEnd--normal">Ends in: <span :class="ends === '0s' ? ' pollEnd--normal' : ' green'">{{ ends }}</span></div>
-				<div class="pollEnd pollEnd--normal">Expires in: <span :class="new RegExp(/^[0-9]*m|^[0-9]*s/).test(expires) ? ' red' : ' pollEnd--normal'">{{ expires }}</span></div>
+				<div class="pollEnd pollEnd--normal">Ends in:
+					<Countdown
+						:date="ends"
+						color-type="green"
+						@timer-expired="ended = true"
+						@timer-reset="ended = false"/>
+				</div>
+				<div class="pollEnd pollEnd--normal">Expires in: <Countdown :date="expires" color-type="red" /></div>
 			</div>
 		</div>
 		<div class="voteAmount">Votes: {{ voteAmount }}</div>
@@ -27,12 +33,22 @@ const config = useRuntimeConfig();
 				class="linkItem"
 				text="Results"
 				@click="navigateTo('/admin/results/' + id)"
-				:disabled="ends != '0s'"
+				:disabled="!ended"
 			/>
 			<Button class="linkItem delete" text="Delete" @click="cb(id, name)" />
 		</div>
 	</div>
 </template>
+
+<script lang="ts">
+export default defineComponent({
+	data() {
+		return {
+			ended: false
+		};
+	}
+});
+</script>
 
 <style scoped>
 .pollItem {

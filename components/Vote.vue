@@ -8,7 +8,7 @@ defineProps<{
 	<div class="container" v-if="ready">
 		<div class="heading">{{ name }}</div>
 		<div class="remainingTime">
-			<div :class="new RegExp(/^[0-9]*m|^[0-9]*s/).test(ct) ? ' red' : ''">This polls ends in {{ ct }}.</div>
+			<div>This polls ends in <Countdown :date="ends" color-type="red" />.</div>
 		</div>
 		<div v-if="voted" class="resultMessage">
 			Thank you for voting!
@@ -82,7 +82,7 @@ export default defineComponent({
 			voted: false,
 			id: this.$route.params.id,
 			ready: false,
-			ct: ""
+			ends: ""
 		};
 	},
 	async mounted() {
@@ -93,7 +93,7 @@ export default defineComponent({
 	methods: {
 		async getPollData() {
 			this.name = this.data.name as string;
-			countdown(this.data.ends as string, (str: string) => { this.ct = str; });
+			this.ends = this.data.ends as string;
 			if (this.data.voted) {
 				this.voted = true;
 				return;

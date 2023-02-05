@@ -52,9 +52,7 @@ export default defineComponent({
 			config: useRuntimeConfig(),
 			polls: new Array<Poll>(),
 			ends: {} as Record<string, string>,
-			endRefs: {} as Record<string, NodeJS.Timer>,
 			expires: {} as Record<string, string>,
-			expireRefs: {} as Record<string, NodeJS.Timer>,
 			deletion: false,
 			deletionData: {} as Record<string, string>
 		};
@@ -73,24 +71,11 @@ export default defineComponent({
 				},
 			})
 				.then(async res => {
-					this.destroyCountdowns();
 					const data = await res.json();
 					this.polls = [];
 					for (let item in data) {
-						this.ends[item] = "";
-						this.expires[item] = "";
-						const ref = countdown(data[item].ends, (str: string) => {
-							this.ends[item] = str;
-						});
-						this.endRefs[item] = ref;
-						const eRef = countdown(data[item].expires, (str: string) => {
-							this.expires[item] = str;
-							if (str === "0s") {
-								this.getPolls();
-							}
-						});
-						this.expireRefs[item] = eRef;
-
+						this.ends[item] = data[item].ends;
+						this.expires[item] = data[item].expires;
 						this.polls.push({
 							id: item,
 							...data[item]
@@ -119,22 +104,8 @@ export default defineComponent({
 				method: "DELETE",
 				credentials: "include"
 			});
-			clearInterval(this.endRefs[id]);
-			delete this.endRefs[id];
 			await this.getPolls();
 		},
-		destroyCountdowns() {
-			for (let ct in this.endRefs) {
-				clearInterval(ct);
-			}
-			for (let ct in this.expireRefs) {
-				clearInterval(ct);
-			}
-			this.endRefs = {};
-			this.ends = {};
-			this.expireRefs = {};
-			this.expires = {};
-		}
 	}
 });
 </script>
