@@ -80,7 +80,7 @@ defineProps<{
 			ref="fileIn"
 			multiple
 			required
-			accept="image/*"
+			accept=".png,.jpg,.jpeg,.webp,.svg,.ico,.gif"
 			@change="preview"
 			:disabled="disabled"
 		>
@@ -149,6 +149,7 @@ export default defineComponent({
 			if (files) {
 				const offset = this.previews.length;
 				for (let i=0; i < files.length; i++) {
+					this.previews[offset+i] = "";
 					const reader = new FileReader();
 					reader.onload = (event) => { this.previews[offset+i] = event.target?.result as string; };
 					reader.readAsDataURL(files[i]);

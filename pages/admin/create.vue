@@ -28,6 +28,9 @@ definePageMeta({
 			<div class="spin"></div>
 			<div class="spinMsg">Working on creating your poll...</div>
 		</div>
+		<div v-else-if="error">
+			<div class="successMsg">An error occurred. Have you submitted the correct file formats?</div>
+		</div>
 		<div v-else>
 			<div class="successMsg">Poll successfully published!</div>
 			<Button text="Copy Link" @click="copyLink(config.public.base + '/' + id)" />
@@ -50,6 +53,7 @@ export default defineComponent({
 			valid: false,
 			published: false,
 			working: false,
+			error: false,
 			id: "",
 			dataCallback: () => <IPollData>{}
 		};
@@ -62,6 +66,7 @@ export default defineComponent({
 			this.dataCallback = dataInterface.dataInterface;
 		},
 		async create() {
+			this.error = false;
 			this.working = true;
 			const data = this.dataCallback();
 			const formData = new FormData();
@@ -79,6 +84,11 @@ export default defineComponent({
 				body: formData
 			})
 				.then(async res => {
+					if (res.status === 500) {
+						this.working = false;
+						this.error = true;
+						return;
+					}
 					const data = await res.json();
 					this.id = data;
 				});

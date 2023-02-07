@@ -30,6 +30,9 @@ definePageMeta({
 			<div class="spin"></div>
 			<div class="spinMsg">Working on saving your poll...</div>
 		</div>
+		<div v-else-if="error">
+			<div class="successMsg">An error occurred. Have you submitted the correct file formats?</div>
+		</div>
 		<div v-else>
 			<div class="successMsg">Poll successfully saved!</div>
 			<Button text="Copy Link" @click="copyLink(config.public.base + '/' + id)" />
@@ -54,6 +57,7 @@ export default defineComponent({
 			valid: false,
 			ready: false,
 			working: false,
+			error: false,
 			saved: false,
 			dataCallback: () => <IPollData>{}
 		};
@@ -107,6 +111,12 @@ export default defineComponent({
 				method: "POST",
 				credentials: "include",
 				body: formData
+			}).then(res => {
+				if (res.status === 500) {
+					this.working = false;
+					this.error = true;
+					return;
+				}
 			});
 			this.saved = true;
 			this.working = false;
