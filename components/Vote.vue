@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-	data: Record<string, string | Array<string>>
+	data: Record<string, string | Array<string> | { [key: string]: string }>
 }>();
 </script>
 
@@ -37,6 +37,7 @@ defineProps<{
 					:src="images[idx-1]"
 					:alt="'Voting image ' + alphabet[idx-1]"
 					:key="images[idx-1]"
+					:aspect-ratio="aspectRatios[trimExt(images[idx-1])]"
 					sizes="(max-width: 90vw) 900px"
 				/>
 			</div>
@@ -54,6 +55,7 @@ defineProps<{
 							:src="images[idx]"
 							:alt="'Recap image ' + alphabet[idx]"
 							:click-disabled="true"
+							:aspect-ratio="aspectRatios[trimExt(images[idx])]"
 							sizes="280px"
 						/>
 					</div>
@@ -77,6 +79,7 @@ export default defineComponent({
 			info: "",
 			allowedVotes: 0,
 			images: new Array<string>(),
+			aspectRatios: {} as { [key: string]: string },
 			checked: new Array<boolean>(),
 			alphabet: new Array<string>(),
 			voted: false,
@@ -99,6 +102,7 @@ export default defineComponent({
 				return;
 			}
 			this.images = this.shuffle(this.data.images as Array<string>);
+			this.aspectRatios = this.data.aspectRatios as { [key: string]: string };
 			for (let i=0; i<this.images.length; i++) {
 				this.checked.push(false);
 			}

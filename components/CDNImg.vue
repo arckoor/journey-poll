@@ -3,14 +3,14 @@ defineProps<{
 	src: string,
 	alt: string,
 	sizes: string,
+	aspectRatio?: string,
 	fromClient?: boolean,
 	clickDisabled?: boolean
 }>();
-
 </script>
 
 <template>
-	<div>
+	<div class="no-select center">
 		<img
 			class="img-small"
 			:src="srcMod"
@@ -19,6 +19,8 @@ defineProps<{
 			:sizes="sizes"
 			@click="makeBig"
 			@dragstart.prevent
+			loading="lazy"
+			:style="aspectStyle"
 		>
 		<div class="big-container" v-if="big" @click="makeSmall">
 			<div :class="bigClass">
@@ -28,6 +30,7 @@ defineProps<{
 					:src="srcMod"
 					:alt="alt"
 					@dragstart.prevent
+					loading="lazy"
 				>
 			</div>
 		</div>
@@ -42,12 +45,14 @@ export default defineComponent({
 			srcset: "",
 			srcMod: this.src,
 			big: false,
-			bigClass: "big-fullscreen big-fullscreen--hide"
+			bigClass: "big-fullscreen big-fullscreen--hide",
+			aspectStyle: ""
 		};
 	},
 	mounted() {
 		if (!this.fromClient) {
 			this.srcMod = this.config.public.pollApiBase + "/images/" + this.src;
+			this.aspectStyle = "aspect-ratio: " + this.aspectRatio + "; --ratio: " + this.aspectRatio + ";";
 		}
 		if (!this.fromClient && !this.config.public.dev) {
 			const pre = this.config.public.apiBase + "/cdn-cgi/image";
@@ -79,13 +84,23 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.center {
+	display: flex;
+	justify-content: center;
+}
+
 img {
+	/* https://stackoverflow.com/a/65705018/12203337 */
+	--width: calc(100% - var(--image-width--border));
+	--height: 95vh;
 	border: var(--image-width--border) solid var(--color-accent--border);
+	width: var(--width);
+	max-width: min(var(--width), calc(var(--height) * var(--ratio)));
+	object-fit: contain;
+	display: block;
 }
 
 .img-small {
-	width: calc(100% - var(--image-width--border));
-	height: calc(100% - var(--image-width--border));
 	cursor: pointer;
 }
 

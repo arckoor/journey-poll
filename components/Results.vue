@@ -23,6 +23,7 @@ defineProps<{
 					<CDNImg
 						class="img"
 						:src="item"
+						:aspect-ratio="aspectRatios[trimExt(item)]"
 						sizes="50vw"
 						alt="The winning image"
 					/>
@@ -45,6 +46,7 @@ defineProps<{
 					<CDNImg
 						class="distImage img"
 						:src="(item[0] as string)"
+						:aspect-ratio="aspectRatios[trimExt((item[0] as string))]"
 						sizes="30vw"
 						alt="Vote distribution image"
 					/>
@@ -72,6 +74,7 @@ export default defineComponent({
 			voteAmount: 0,
 			winners: new Array<string>(),
 			images: {} as Record<string, number>,
+			aspectRatios: {} as { [key: string]: string },
 			sortedImages: [] as Array<Array<string | number>>,
 			ended: true,
 			displayVotes: false,
@@ -121,6 +124,7 @@ export default defineComponent({
 						this.winners.push(this.getExtension(item, data.images));
 					}
 				}
+				this.aspectRatios = data.aspectRatios;
 				this.voteAmount = data.voteAmount;
 				// https://stackoverflow.com/a/37607084/12203337
 				this.sortedImages = Object.entries(this.images).sort((a, b) => a[1] - b[1]).reverse();
