@@ -10,11 +10,11 @@ defineProps<{
 		<div v-if="ended && !private">
 			<div class="publishContainer" v-if="base.endsWith('/admin')">
 				<Button
-					v-if="!public"
-					text="Publish results"
-					@click="publishResults"
+					v-if="!working"
+					:text="!public ? 'Publish results' : 'Unpublish results'"
+					@click="!public ? publishResults() : unPublishResults()"
 				/>
-				<div v-else>Results published!</div>
+				<div v-else>Working on changing the status...</div>
 			</div>
 			<div class="winnerContainer">
 				<div class="heading">{{ "Winner" + (winners.length > 1 ? "s" : "") + ":"}}</div>
@@ -81,6 +81,7 @@ export default defineComponent({
 			displayVotesCookie: useDisplayVotes(),
 			private: false,
 			public: false,
+			working: false,
 			ends: "",
 			ready: false
 		};
@@ -103,6 +104,7 @@ export default defineComponent({
 			}).then(async res => {
 				const data = await res.json();
 				this.name = data.name;
+
 				if (data.private) {
 					this.private = true;
 					return;
@@ -140,14 +142,28 @@ export default defineComponent({
 			return result;
 		},
 		async publishResults() {
+			this.working = true;
 			await fetch(this.base + "/publishResults/" + this.id, {
 				method: "POST",
 				credentials: "include"
 			}).then(async res => {
-				if (res.status === 200) {
+				if (res.ok) {
 					this.public = true;
 				}
 			});
+			this.working = false;
+		},
+		async unPublishResults() {
+			this.working = true;
+			await fetch(this.base + "/unpublishResults/" + this.id, {
+				method: "POST",
+				credentials: "include"
+			}).then(async res => {
+				if (res.ok) {
+					this.public = false;
+				}
+			});
+			this.working = false;
 		},
 		assignCookie() {
 			this.displayVotesCookie = this.displayVotes;
