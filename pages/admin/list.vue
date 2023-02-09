@@ -13,6 +13,7 @@ definePageMeta({
 			v-for="poll of polls"
 			:key="poll.id"
 			:name="poll.name"
+			:created-by="poll.createdBy"
 			:ends="ends[poll.id]"
 			:expires="expires[poll.id]"
 			:vote-amount="poll.voteAmount"
@@ -39,10 +40,11 @@ definePageMeta({
 
 <script lang="ts">
 interface Poll {
-	id: string,
-	name: string,
-	ends: string,
-	expires: string,
+	id: string
+	createdBy: string
+	name: string
+	ends: string
+	expires: string
 	voteAmount: number
 }
 

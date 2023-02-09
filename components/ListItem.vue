@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
 	name: string,
+	createdBy: string,
 	ends: string,
 	expires: string,
 	voteAmount: number,
@@ -15,14 +16,15 @@ const config = useRuntimeConfig();
 		<div class="pollInfo">
 			<div class="pollName">{{ name }}</div>
 			<div class="timeRow">
-				<div class="pollEnd pollEnd--normal">Ends in:
+				<div class="subscript subscript--normal">Ends in:
 					<Countdown
 						:date="ends"
 						color-type="green"
 						@timer-expired="ended = true"
 						@timer-reset="ended = false"/>
 				</div>
-				<div class="pollEnd pollEnd--normal">Expires in: <Countdown :date="expires" color-type="red" /></div>
+				<div class="subscript subscript--normal">Expires in: <Countdown :date="expires" color-type="red" /></div>
+				<div class="subscript subscript--normal">Created by: @{{ createdBy }}</div>
 			</div>
 		</div>
 		<div class="voteAmount">Votes: {{ voteAmount }}</div>
@@ -71,13 +73,13 @@ export default defineComponent({
 	flex-direction: row;
 }
 
-.pollEnd {
+.subscript {
 	font-size: var(--font-size--subscript);
 	margin-right: 20px;
 	min-width: 205px;
 }
 
-.pollEnd--normal {
+.subscript--normal {
 	color: var(--color-text--disabled)
 }
 
