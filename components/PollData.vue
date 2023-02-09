@@ -80,7 +80,7 @@ defineProps<{
 			ref="fileIn"
 			multiple
 			required
-			accept=".png,.jpg,.jpeg,.webp,.svg,.ico,.gif"
+			accept=".png,.jpg,.jpeg,.webp,.svg"
 			@change="preview"
 			:disabled="disabled"
 		>
@@ -93,7 +93,7 @@ defineProps<{
 					alt="Uploaded image"
 					:from-client="idx >= outsideIndex"
 				/>
-				<div class="removeImage" @click="removeImage(idx)">
+				<div class="removeImage" @click="removeImage(idx)" v-if="!disabled">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 48 48"
@@ -135,7 +135,7 @@ export default defineComponent({
 		this.previews = this.pPreviews;
 		this.outsideIndex = this.previews.length;
 
-		for (let item of ["name", "allowedVotes", "ends", "expires"]) {
+		for (let item of ["name", "allowedVotes", "ends", "expires", "info"]) {
 			this.$watch(item, () => this.validate());
 		}
 		this.$watch("previews", () => this.validate(), { deep: true });
@@ -147,13 +147,17 @@ export default defineComponent({
 		preview(event: Event) {
 			const files = (event.target as HTMLInputElement).files;
 			if (files) {
-				const offset = this.previews.length;
-				for (let i=0; i < files.length; i++) {
-					this.previews[offset+i] = "";
+				let len = files.length;
+				for (let i=0; i < len; i++) {
+					if (!["image/png", "image/jpeg", "image/webp", "image/svg+xml"].includes(files[i].type)) {
+						continue;
+					}
 					const reader = new FileReader();
-					reader.onload = (event) => { this.previews[offset+i] = event.target?.result as string; };
+					reader.onload = event => {
+						this.previews.push(event.target?.result as string);
+						this.images.push(files[i]);
+					};
 					reader.readAsDataURL(files[i]);
-					this.images[offset+i] = files[i];
 				}
 			}
 		},
