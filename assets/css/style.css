@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,600;8..144,800&display=swap');
+
 :root {
 	/* todo font sizes */
 
@@ -23,7 +25,6 @@
 	--transition-middle:          .5s;
 	--transition-long:            .7s;
 
-
 	--font-size--text:            20px;
 	--font-size--subscript:       18px;
 	--font-size--heading:         50px;
@@ -32,26 +33,15 @@
 	--font-size--content-large:   30px;
 }
 
-
-@font-face {
-	font-family: Roboto;
-	font-style: normal;
-	font-weight: 100 1000;
-	font-stretch: 0% 200%;
-	src: url(css/fonts/Roboto/Roboto-Flex.ttf);
-}
-
-h1 {
-	font-weight: 600;
-}
-
+h1,
 strong {
 	font-weight: 800;
 }
 
 html {
 	overflow-x: hidden;
-	font-family: Roboto, sans-serif;
+	font-family: Roboto Flex, sans-serif;
+	font-weight: 600;
 	background: var(--color-background--layer-0);
 	color: var(--color-text);
 	font-size: var(--font-size--text);
@@ -60,7 +50,6 @@ html {
 
 body {
 	margin: 0px;
-	font-weight: 550;
 }
 
 .noHover {
