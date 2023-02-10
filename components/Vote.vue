@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
 	<div class="container" v-if="ready">
-		<div class="heading">{{ name }}</div>
+		<h1 class="heading">{{ name }}</h1>
 		<div class="remainingTime">
 			<div>This polls ends in <Countdown :date="ends" color-type="red" />.</div>
 		</div>

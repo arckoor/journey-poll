@@ -87,6 +87,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+h1 {
+	margin: 30px
+}
+
 .sidenav {
 	position: fixed;
     top: 0;
