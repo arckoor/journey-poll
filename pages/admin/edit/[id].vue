@@ -13,30 +13,28 @@ definePageMeta({
 			:p-ends="ends"
 			:p-expires="expires"
 			:p-previews="previews"
-			:disabled="saved"
+			:disabled="working"
 			:valid-callback="validCallback"
 			@interface="assignData"
 		/>
 	</div>
 	<div class="buttonContainer">
-		<div v-if="!working && !saved">
+		<div v-if="!working">
 			<Button
 				text="Save changes!"
 				:disabled="!valid"
 				@click="save"
 			/>
 		</div>
-		<div v-else-if="working" class="working">
+		<div v-if="working" class="working">
 			<div class="spin"></div>
 			<div class="spinMsg">Working on saving your poll...</div>
 		</div>
-		<div v-else-if="error">
-			<div class="successMsg">An error occurred. Have you submitted the correct file formats?</div>
-		</div>
-		<div v-else>
+		<div v-if="saved" class="subContainer">
 			<div class="successMsg">Poll successfully saved!</div>
 			<Button text="Copy Link" @click="copyLink(config.public.base + '/' + id)" />
 		</div>
+
 	</div>
 </template>
 
@@ -94,6 +92,7 @@ export default defineComponent({
 		},
 		async save() {
 			this.working = true;
+			this.saved = false;
 			const data = this.dataCallback();
 			const formData = new FormData();
 			formData.append("name", data.name);
@@ -118,6 +117,7 @@ export default defineComponent({
 					return;
 				}
 			});
+			this.valid = false;
 			this.saved = true;
 			this.working = false;
 		}
@@ -131,7 +131,17 @@ export default defineComponent({
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-direction: column;
 }
+
+.subContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin-top: 40px;
+}
+
 
 @keyframes spinner {
 	0% {
