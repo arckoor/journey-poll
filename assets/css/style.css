@@ -21,6 +21,8 @@
 	--sidebar-width:              80px;
 	--image-width--border:        4px;
 
+	--checkbox--border: 		  4px;
+
 	--transition-short:           .3s;
 	--transition-middle:          .5s;
 	--transition-long:            .7s;
@@ -72,12 +74,6 @@ input[type=password] {
 	border: 2px solid var(--color-background--layer-0);
 	padding: 3px 10px;
 	height: 100%;
-}
-
-input[type=checkbox] {
-	width: 25px;
-	height: 25px;
-	cursor: pointer;
 }
 
 textarea:focus,

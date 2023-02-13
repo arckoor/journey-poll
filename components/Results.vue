@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
 	<div v-if="ready" class="container">
-		<div class="nameHeading">{{ name }}</div>
+		<h1 class="nameHeading">{{ name }}</h1>
 		<div v-if="ended && !private">
 			<div class="publishContainer" v-if="base.endsWith('/admin')">
 				<Button
@@ -29,14 +29,15 @@ defineProps<{
 					/>
 				</div>
 			</div>
-			<div class="displayVotesContainer">
+			<div class="displayVotesContainer no-select">
 				<div class="displayVotesText">Display Vote Distribution</div>
-				<input
-					type="checkbox"
+				<Checkbox
+					@checked="displayVotes = true"
+					@unchecked="displayVotes = false"
 					name="displayVotes"
 					id="displayVotes"
-					v-model="displayVotes"
-				>
+					:initial-value="displayVotes"
+				/>
 			</div>
 			<div class="distContainer" v-if="displayVotes">
 				<div class="heading">Vote Distribution:</div>
@@ -237,10 +238,8 @@ export default defineComponent({
 	font-size: var(--font-size--content);
 }
 
-.displayVotesContainer > input {
-	margin-left: 10px;
-	width: 20px;
-	height: 20px;
+.displayVotesText {
+	margin-right: 10px;
 }
 
 .distContainer {

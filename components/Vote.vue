@@ -24,13 +24,13 @@ defineProps<{
 			>
 				<div class="voteContainer">
 					<div class="letter no-select">{{ alphabet[idx-1] }}</div>
-					<input
-						type="checkbox"
+					<Checkbox
+						@checked="checked[idx-1] = true"
+						@unchecked="checked[idx-1] = false"
 						:name="'vote'+(idx-1)"
 						:id="'vote'+(idx-1)"
-						v-model="checked[idx-1]"
 						:disabled="checked.reduce((a, x) => a + (x ? 1 : 0), 0) > allowedVotes-1 && !checked[idx-1]"
-					>
+					/>
 				</div>
 				<CDNImg
 					class="voteImage"
