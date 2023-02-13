@@ -13,7 +13,7 @@ withDefaults(defineProps<Props>(), {
 	<div :class="'button no-select' + (disabled ? ' disabled' : '')">{{ text }}</div>
 </template>
 
-<style>
+<style scoped>
 .disabled {
 	color: var(--color-text--disabled);
 	pointer-events: none;

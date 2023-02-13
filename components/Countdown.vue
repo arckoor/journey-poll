@@ -47,18 +47,10 @@ export default defineComponent({
 			const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 			const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 			let endStr = "";
-			if (days) {
-				endStr += `${days}d `;
-			}
-			if (hours) {
-				endStr += `${hours}h `;
-			}
-			if (minutes) {
-				endStr += `${minutes}m `;
-			}
-			if (!days) {
-				endStr += `${seconds}s`;
-			}
+			if (days) endStr += `${days}d `;
+			if (hours) endStr += `${hours}h `;
+			if (minutes) endStr += `${minutes}m `;
+			if (!days) endStr += `${seconds}s`;
 			this.dateText = endStr.trim();
 		},
 		resetTimer() {
@@ -89,7 +81,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .color-normal {
 	color: var(--color-text--disabled)
 }
