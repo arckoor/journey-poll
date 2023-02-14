@@ -17,7 +17,7 @@ defineProps<{
 				<div v-else>Working on changing the status...</div>
 			</div>
 			<div class="winnerContainer">
-				<div class="heading">{{ "Winner" + (winners.length > 1 ? "s" : "") + ":"}}</div>
+				<h2 class="heading">{{ "Winner" + (winners.length > 1 ? "s" : "") + ":"}}</h2>
 				<div v-for="item of winners" :key="item" class="distItem">
 					<div class="distText">Votes: {{ images[item] }}</div>
 					<CDNImg
@@ -40,7 +40,7 @@ defineProps<{
 				/>
 			</div>
 			<div class="distContainer" v-if="displayVotes">
-				<div class="heading">Vote Distribution:</div>
+				<h2 class="heading">Vote Distribution:</h2>
 				<div class="voteAmount">Voters: {{ voteAmount }}</div>
 				<div v-for="item in sortedImages" :key="item[0]" class="distItem">
 					<div class="distText">Votes: {{ item[1] }}</div>

@@ -42,7 +42,7 @@ defineProps<{
 				/>
 			</div>
 			<div class="submitContainer">
-				<div class="recapHeading" v-if="[...checked.keys()].filter(i => checked[i]).length > 0"><strong>Selected Images:</strong></div>
+				<h2 class="recapHeading" v-if="[...checked.keys()].filter(i => checked[i]).length > 0"><strong>Selected Images:</strong></h2>
 				<div class="recapContainer" >
 					<div class="recapImageContainer"
 						v-for="idx in [...checked.keys()].filter(i => checked[i])"

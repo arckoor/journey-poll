@@ -60,6 +60,7 @@ h1 {
 }
 
 .sidenav {
+	border-radius: 0 7px 7px 0;
 	position: fixed;
     top: 0;
     left: 0;

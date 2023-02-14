@@ -35,7 +35,8 @@
 	--font-size--content-large:   30px;
 }
 
-h1 {
+h1,
+h2 {
 	font-weight: 600;
 	margin: 0;
 }
