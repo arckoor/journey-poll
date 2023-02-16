@@ -8,13 +8,26 @@ defineProps<{
 	<div v-if="ready" class="container">
 		<h1 class="nameHeading">{{ name }}</h1>
 		<div v-if="ended && !private">
-			<div class="publishContainer" v-if="base.endsWith('/admin')">
-				<Button
-					v-if="!working"
-					:text="!public ? 'Publish results' : 'Unpublish results'"
-					@click="!public ? publishResults() : unPublishResults()"
-				/>
-				<div v-else>Working on changing the status...</div>
+			<div v-if="base.endsWith('/admin')">
+				<div v-if="!inProgress">
+					<div class="buttonContainer">
+						<Button
+							v-if="!working"
+							:text="!public ? 'Publish results' : 'Unpublish results'"
+							@click="!public ? publishResults() : unPublishResults()"
+						/>
+						<div v-else>Working on changing the status...</div>
+					</div>
+					<div class="buttonContainer" v-if="winners.length > 1 && ended">
+						<Button
+							text="Create Tiebreaker"
+							@click="createTiebreaker"
+						/>
+					</div>
+				</div>
+				<div v-else class="progressMessage red">
+					This poll is still in progress!
+				</div>
 			</div>
 			<div class="winnerContainer">
 				<h2 class="heading">{{ "Winner" + (winners.length > 1 ? "s" : "") + ":"}}</h2>
@@ -83,6 +96,7 @@ export default defineComponent({
 			private: false,
 			public: false,
 			working: false,
+			inProgress: true,
 			ends: "",
 			ready: false
 		};
@@ -105,7 +119,7 @@ export default defineComponent({
 			}).then(async res => {
 				const data = await res.json();
 				this.name = data.name;
-
+				this.inProgress = data.inProgress ?? true;
 				if (data.private) {
 					this.private = true;
 					return;
@@ -166,6 +180,17 @@ export default defineComponent({
 			});
 			this.working = false;
 		},
+		async createTiebreaker() {
+			await fetch(this.base + "/createTiebreaker/" + this.id, {
+				method: "POST",
+				credentials: "include"
+			}).then(async res => {
+				if (res.ok) {
+					const data = await res.json();
+					navigateTo("/admin/edit/" + data);
+				}
+			});
+		},
 		assignCookie() {
 			this.displayVotesCookie = this.displayVotes;
 		}
@@ -198,11 +223,19 @@ export default defineComponent({
 	margin: 0px auto;
 }
 
-.publishContainer {
+.buttonContainer {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-top: 20px;
+}
+
+.progressMessage {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+	font-size: var(--font-size--heading);
 }
 
 .winnerContainer {
