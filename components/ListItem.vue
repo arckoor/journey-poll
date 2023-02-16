@@ -31,12 +31,7 @@ const config = useRuntimeConfig();
 		<div class="linkSection">
 			<Button class="linkItem" text="Click to copy link" @click="copyLink(config.public.base + '/' + id)" />
 			<Button class="linkItem" text="Edit" @click="navigateTo('/admin/edit/' + id)" />
-			<Button
-				class="linkItem"
-				text="Results"
-				@click="navigateTo('/admin/results/' + id)"
-				:disabled="!ended"
-			/>
+			<Button class="linkItem" text="Results" @click="navigateTo('/admin/results/' + id)" />
 			<Button class="linkItem delete" text="Delete" @click="cb(id, name)" />
 		</div>
 	</div>
