@@ -23,17 +23,17 @@ definePageMeta({
 	</div>
 	<div v-else class="noPoll">
 		<div class="noPollMsg">There are no polls.</div>
-		<NuxtLink class="button" to="/admin/create">Create one now!</NuxtLink>
+		<Button text="Create one now!" @click="navigateTo('/admin/create')" />
 	</div>
-	<div :class="'deleteBG ' + (deletion ? 'deleteContainer' : ' deleteHide')">
+	<div :class="'deleteBG' + (deletion ? ' deleteContainer' : ' deleteHide')">
 		<div class="deleteText">
 			Are you sure you want to delete "{{ deletionData.name }}"? <br />
 			The poll ID is {{ deletionData.id }}. <br />
 			This action is not reversible.
 		</div>
 		<div class="buttonContainer">
-			<div class="button deleteButton" @click="cancelDeletion">No, take me back.</div>
-			<div class="button deleteButton deleteConfirm" @click="confirmDeletion">Yes, delete!</div>
+			<Button class="deleteButton" text="No, take me back." @click="cancelDeletion" />
+			<Button class="deleteButton deleteConfirm" text="Yes, delete!" @click="confirmDeletion" />
 		</div>
 	</div>
 </template>
