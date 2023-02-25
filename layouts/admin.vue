@@ -41,7 +41,7 @@ export default defineComponent({
 				method: "POST",
 				credentials: "include"
 			});
-			navigateTo("/");
+			await navigateTo("/");
 		},
 		determineHeading() {
 			const path = this.$route.fullPath;

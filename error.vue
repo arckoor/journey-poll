@@ -1,7 +1,16 @@
+<script setup lang="ts">
+defineProps<{
+	error: {
+		message: string,
+		statusCode: number
+	}
+}>();
+</script>
+
 <template>
 	<div class="container">
-		<div class="errorCode">404</div>
-		<div class="message">Whatever you're looking for, it's not here.</div>
+		<div class="errorCode">{{ error.statusCode }}</div>
+		<div class="message">{{error.message}}</div>
 	</div>
 </template>
 

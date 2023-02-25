@@ -6,10 +6,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
 			credentials: "include"
 		});
 		if (!(auth.status === 200)) {
-			return navigateTo("/");
+			return await navigateTo("/");
 		}
 	}
 	if (to.fullPath === "/admin") {
-		return navigateTo("/admin/list");
+		return await navigateTo("/admin/list");
 	}
 });

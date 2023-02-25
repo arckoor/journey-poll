@@ -6,6 +6,8 @@
 </template>
 
 <script lang="ts">
+import { showError } from "#app";
+
 export default defineComponent({
 	data() {
 		return {
@@ -44,7 +46,7 @@ export default defineComponent({
 			})
 				.then(async res => {
 					if (res.status === 400) {
-						navigateTo("/404");
+						showError({ message: "This poll doesn't exist :/", statusCode: 404 });
 					}
 					if (res.status === 200) {
 						const json = await res.json();
@@ -52,8 +54,8 @@ export default defineComponent({
 						if (json.ended) {
 							this.vote = false;
 						}
+						this.ready = true;
 					}
-					this.ready = true;
 				});
 		}
 	}
