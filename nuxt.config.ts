@@ -23,11 +23,20 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			link: [
-				{ rel: "icon", type: "icon/ico", href: "/favicon.ico" }
+				{ rel: "icon", type: "icon/ico", href: "/favicon.ico" },
+				{ rel: "preconnect",   href: "https://fonts.gstatic.com",    crossorigin: "" },
+				{ rel: "dns-prefetch", href: "https://fonts.gstatic.com" },
+				{ rel: "preconnect",   href: "https://fonts.googleapis.com", crossorigin: "" },
+				{ rel: "dns-prefetch", href: "https://fonts.googleapis.com" },
+				{ rel: "preconnect",   href: process.env.NUXT_API_BASE_URL,  crossorigin: "use-credentials" },
+				{ rel: "dns-prefetch", href: process.env.NUXT_API_BASE_URL }
 			],
 			meta: [{
 				name: "robots",
 				content: "noindex,nofollow"
+			}, {
+				name: "viewport",
+				content: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
 			}]
 		}
 	}
