@@ -49,7 +49,7 @@ export default defineComponent({
 			let endStr = "";
 			if (days) endStr += `${days}d `;
 			if (hours) endStr += `${hours}h `;
-			if (minutes) endStr += `${minutes}m `;
+			if (minutes && !(days > 100)) endStr += `${minutes}m `;
 			if (!days) endStr += `${seconds}s`;
 			this.dateText = endStr.trim();
 		},
