@@ -96,6 +96,16 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@media only screen and (max-width: 599px) {
+	.inputContainer {
+		flex-direction: column;
+	}
+	.inputContainer > label {
+		align-self: flex-start;
+		margin: 0 0 10px 0;
+	}
+}
+
 .container {
 	display: flex;
 	flex-direction: column;
@@ -106,7 +116,6 @@ export default defineComponent({
 
 .inputContainer {
 	display: flex;
-	flex-direction: row;
 	padding: 20px 0;
 	font-size: var(--font-size--content);
 	align-items: center;

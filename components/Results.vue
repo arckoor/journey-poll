@@ -42,7 +42,7 @@ defineProps<{
 					/>
 				</div>
 			</div>
-			<div class="displayVotesContainer no-select">
+			<div :class="'displayVotesContainer no-select' + (!displayVotes ? ' displayVotesContainerMargin' : '')">
 				<div class="displayVotesText">Display Vote Distribution</div>
 				<Checkbox
 					@checked="displayVotes = true"
@@ -187,7 +187,7 @@ export default defineComponent({
 			}).then(async res => {
 				if (res.ok) {
 					const data = await res.json();
-					navigateTo("/admin/edit/" + data);
+					await navigateTo("/admin/edit/" + data);
 				}
 			});
 		},
@@ -200,16 +200,43 @@ export default defineComponent({
 </script>
 
 <style scoped>
-@media only screen and (max-device-width : 1024px) {
-	.winnerContainer,
-	.distContainer {
-		padding: 10px 30px;
+
+@media only screen and (min-width: 700px) {
+	.distItem {
+		flex-direction: row-reverse;
+	}
+	.distText {
+		margin: 0px 0 0 30px;
+	}
+
+}
+
+@media only screen and (max-width: 699px) {
+	.distItem {
+		flex-direction: column;
+	}
+	.distText {
+		margin: 0 0 10px 0;
+	}
+
+}
+
+@media only screen and (min-width: 600px) {
+	.img {
+		width: 50vw;
+	}
+	.distImage {
+		width: 30vw;
 	}
 }
-@media only screen and (min-device-width : 1024px) {
-	.winnerContainer,
-	.distContainer {
-		padding: 40px 100px;
+
+@media only screen and (max-width: 599px) {
+	.img {
+		width: 80vw;
+	}
+
+	.distImage {
+		width: 60vw;
 	}
 }
 
@@ -244,6 +271,7 @@ export default defineComponent({
 	justify-content: center;
 	margin: auto;
 	text-align: center;
+	padding: 40px 100px;
 }
 
 .nameHeading {
@@ -261,7 +289,6 @@ export default defineComponent({
 
 .img {
 	margin: auto 0;
-	width: 50vw;
 }
 
 .displayVotesContainer {
@@ -269,6 +296,10 @@ export default defineComponent({
 	justify-content: center;
 	align-items: center;
 	font-size: var(--font-size--content);
+}
+
+.displayVotesContainerMargin {
+	margin: 0 0 100px 0;
 }
 
 .displayVotesText {
@@ -281,6 +312,7 @@ export default defineComponent({
 	justify-content: center;
 	margin: auto;
 	text-align: center;
+	padding: 40px 100px 80px 100px;
 }
 
 .voteAmount {
@@ -290,21 +322,15 @@ export default defineComponent({
 
 .distItem {
 	display: flex;
-	flex-direction: row-reverse;
 	justify-content: center;
 	align-items: center;
 	margin-top: 25px;
 }
 
 .distText {
-	margin-left: 30px;
 	font-size: var(--font-size--content);
 	width: 200px;
 	white-space: nowrap;
-}
-
-.distImage {
-	width: 30vw;
 }
 
 .endMessage {

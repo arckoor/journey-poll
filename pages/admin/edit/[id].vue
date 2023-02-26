@@ -139,7 +139,7 @@ export default defineComponent({
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	margin-top: 40px;
+	margin: 40px 0 20px 0;
 }
 
 

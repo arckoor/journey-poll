@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,600;8..144,800&display=swap');
 
 :root {
-	/* todo font sizes */
-
 	/* Stolen from the Hetzner Cloud Console */
     --color-primary--hover: 	  #ed0d32;
     --color-text: 				  #ededed;
@@ -33,6 +31,13 @@
 	--font-size--heading-section: 40px;
 	--font-size--content:         25px;
 	--font-size--content-large:   30px;
+}
+
+@media only screen and (max-width: 599px) {
+	body {
+		overflow-x: hidden;
+		height: 100vh;
+	}
 }
 
 h1,

@@ -16,6 +16,9 @@
 				<li :class="'navItem' + ($route.path.startsWith('/admin/edit') ? '' : ' inactive')">
 					<SvgEdit :class="'icon' + ($route.path.startsWith('/admin/edit') ? ' highlight' : '')" />
 				</li>
+				<li :class="'navItem' + ($route.path.startsWith('/admin/results') ? '' : ' inactive')">
+					<SvgResults :class="'icon' + ($route.path.startsWith('/admin/results') ? ' highlight' : '')" />
+				</li>
 			</ul>
 			<div @click="logout" class="logout">
 				<SvgLogout class="icon" />
@@ -55,19 +58,65 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@media only screen and (max-width: 599px) {
+	.sidenav {
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: fit-content;
+		position: fixed;
+		flex-direction: row;
+		border-radius: 7px 7px 0 0;
+	}
+
+	.navList {
+		flex-direction: row;
+		width: 100%;
+	}
+
+	.logout {
+		margin-right: 10px;
+	}
+
+	ul {
+		margin: 5px 0px 0 10px;
+	}
+
+	li {
+		margin-right: 5px;
+	}
+}
+
+@media only screen and (min-width: 600px) {
+	.sidenav {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: var(--sidebar-width);
+		height: 100%;
+		flex-direction: column;
+		border-radius: 0 7px 7px 0;
+	}
+
+	.navList {
+		flex-direction: column;
+		height: 100%;
+	}
+
+	.logout {
+		margin-bottom: 10px;
+	}
+	.slotContainer {
+		padding-left: var(--sidebar-width);
+	}
+}
+
 h1 {
 	margin: 30px
 }
 
 .sidenav {
-	border-radius: 0 7px 7px 0;
-	position: fixed;
-    top: 0;
-    left: 0;
     display: flex;
-    flex-direction: column;
-    width: var(--sidebar-width);
-    height: 100%;
     background-color: var(--color-background--layer-10);
     z-index: 999;
     overflow-x: hidden;
@@ -80,15 +129,12 @@ h1 {
 
 .slotContainer {
 	width: 100%;
-	padding-left: var(--sidebar-width);
 }
 
 .navList {
 	display: flex;
-	flex-direction: column;
 	align-items: center;
 	padding: 0;
-	height: 100%;
 }
 
 .navItem {
@@ -97,7 +143,6 @@ h1 {
 }
 
 .icon {
-	fill: var(--color-text);
 	border-left: 3px solid transparent;
 	border-radius: 3px;
 	background-color: transparent;
@@ -129,14 +174,14 @@ svg {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-bottom: 10px;
 	cursor: pointer;
 }
 
 .sectionHeading {
 	display: flex;
 	justify-content: center;
-	font-size: var(--font-size--heading);
 	align-items: center;
+	text-align: center;
+	font-size: var(--font-size--heading);
 }
 </style>

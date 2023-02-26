@@ -25,7 +25,8 @@ defineProps<{
 		<div class="inputItem">
 			<label for="pollInfo">Poll info:</label>
 			<textarea
-				rows="5"
+				style="resize:vertical;"
+				rows="6"
 				id="pollInfo"
 				v-model="info"
 				:disabled="disabled"
@@ -207,15 +208,67 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@media only screen and (min-width: 1200px) {
+	.imgGrid {
+		grid-template-columns: auto auto auto;
+	}
+	.inputItem > label {
+		margin: 0 20px 0 0;
+	}
+}
+
+@media only screen and (max-width: 1199px) {
+	.inputItem {
+		flex-direction: column;
+	}
+	.inputItem > label {
+		align-self: flex-start;
+		margin: 0 0 5px 0;
+	}
+}
+
+@media only screen and (min-width: 900px) and (max-width: 1199px) {
+	.imgGrid {
+		grid-template-columns: auto auto;
+	}
+}
+
+@media only screen and (max-width: 899px) {
+	.imgGrid {
+		grid-template-columns: auto;
+	}
+}
+
+@media only screen and (min-width: 600px) and (max-width: 899px) {
+	.textPreview,
+	textarea,
+	input[type=text],
+	input[type=datetime-local],
+	input[type=number] {
+		max-width: 70vw;
+	}
+}
+
+@media only screen and (max-width: 599px) {
+	.textPreview,
+	textarea,
+	input[type=text],
+	input[type=datetime-local],
+	input[type=number] {
+		max-width: 85vw;
+	}
+}
+
+
 .inputContainer {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	margin: 20px;
 }
 
 .inputItem {
-	width: 700px;
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
@@ -254,13 +307,12 @@ textarea {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	width: 1000px;
+	width: fit-content;
 }
 
 .imgGrid {
 	margin-top: 20px;
 	display: grid;
-	grid-template-columns: auto auto auto;
 }
 
 .imageContainer {

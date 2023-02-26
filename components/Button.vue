@@ -1,6 +1,6 @@
 <script setup lang="ts">
 interface Props {
-	text: string,
+	text?: string
 	disabled?: boolean
 }
 
@@ -10,7 +10,10 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-	<div :class="'button no-select' + (disabled ? ' disabled' : '')">{{ text }}</div>
+	<div :class="'button no-select' + (disabled ? ' disabled' : '')">
+		{{ text }}
+		<div class="slot" v-if="$slots.buttonSlot"><slot name="buttonSlot" ></slot></div>
+	</div>
 </template>
 
 <style scoped>
@@ -34,4 +37,9 @@ withDefaults(defineProps<Props>(), {
 	border-color: var(--color-primary--hover)
 }
 
+.slot {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 </style>

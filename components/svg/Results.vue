@@ -13,11 +13,11 @@ withDefaults(defineProps<Props>(), {
 <template>
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
-		viewBox="0 0 48 48"
+		viewBox="0 96 960 960"
 		:height="height"
 		:width="width"
 	>
-		<path d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z"/>
+		<path d="M120 936v-76l60-60v136h-60Zm165 0V700l60-60v296h-60Zm165 0V640l60 61v235h-60Zm165 0V701l60-60v295h-60Zm165 0V540l60-60v456h-60ZM120 700v-85l280-278 160 160 280-281v85L560 582 400 422 120 700Z"/>
 	</svg>
 </template>
 

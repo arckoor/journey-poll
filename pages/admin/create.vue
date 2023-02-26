@@ -101,7 +101,7 @@ export default defineComponent({
 
 <style scoped>
 .buttonContainer {
-	padding: 20px 0 60px 0;
+	padding: 20px 0 80px 0;
 	display: flex;
 	justify-content: center;
 	align-items: center;

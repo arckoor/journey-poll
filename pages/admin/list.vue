@@ -18,7 +18,7 @@ definePageMeta({
 			:expires="expires[poll.id]"
 			:vote-amount="poll.voteAmount"
 			:id="poll.id"
-			:cb="enableDeletion"
+			:callback="enableDeletion"
 		/>
 	</div>
 	<div v-else class="noPoll">
@@ -113,6 +113,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@media only screen and (max-width: 600px) {
+	.buttonContainer {
+		flex-direction: column;
+	}
+}
+
 .refreshContainer {
 	display: flex;
 	justify-content: center;
@@ -154,6 +160,7 @@ export default defineComponent({
 }
 
 .deleteContainer {
+	z-index: 9999;
 	transition: background-color var(--transition-middle);
 	position: fixed;
 	top: 0;
@@ -177,6 +184,8 @@ export default defineComponent({
 .buttonContainer {
 	display: flex;
 	width: 500px;
+	justify-content: center;
+	align-items: center;
 }
 
 .deleteButton {
