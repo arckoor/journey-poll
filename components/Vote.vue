@@ -101,7 +101,7 @@ export default defineComponent({
 				this.voted = true;
 				return;
 			}
-			this.images = this.shuffle(this.data.images as Array<string>);
+			this.images = shuffle(this.data.images as Array<string>);
 			this.aspectRatios = this.data.aspectRatios as { [key: string]: string };
 			for (let i=0; i<this.images.length; i++) {
 				this.checked.push(false);
@@ -128,11 +128,6 @@ export default defineComponent({
 				})
 			});
 			this.voted = true;
-		},
-		// https://stackoverflow.com/a/46545530/12203337
-		/* eslint-disable-next-line @typescript-eslint/no-explicit-any*/
-		shuffle(a: Array<any>) {
-			return a.map(v => ({ v, sort: Math.random() })).sort((q, s) => q.sort - s.sort).map(({ v }) => v);
 		},
 		makeAlphabet(length: number) {
 			const alpha = Array.from(Array(length)).map((e, i) => i + 65);

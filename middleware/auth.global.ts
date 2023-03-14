@@ -5,7 +5,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
 			method: "POST",
 			credentials: "include"
 		});
-		if (!(auth.status === 200)) {
+		const data = await auth.json();
+		if (!data.auth) {
 			return await navigateTo("/");
 		}
 	}

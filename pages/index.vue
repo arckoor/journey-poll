@@ -36,7 +36,7 @@
 		<div ref="tooltip" :class="'toolTip no-select '" @click="tooltipEnabled = !tooltipEnabled">
 			How can I make an account?
 			<span :class="'toolTipContent '+ (tooltipEnabled ? 'reveal' : '')">
-				Currently, accounts are created on a per-request basis.
+				Currently, accounts are issued on a per-request basis.
 				If you'd like to use this service, please contact arckoor#6568 in the Journey Discord.
 			</span>
 		</div>
@@ -63,7 +63,7 @@ export default defineComponent({
 				return;
 			}
 			const password = await this.hashPassword();
-			const response = await fetch(this.config.public.pollApiBase + "/login", {
+			const res = await fetch(this.config.public.pollApiBase + "/login", {
 				method: "POST",
 				credentials: "include",
 				headers: {
@@ -75,13 +75,21 @@ export default defineComponent({
 					password: password
 				})
 			});
-			if (response.status === 200) {
-				navigateTo("/admin/list");
-			} else if (response.status === 429) {
-				this.errorMessage = "You are being rate limited.";
+			if (res.ok) {
+				const data = await res.json();
+				if (data.auth) {
+					await navigateTo("/admin/list");
+				} else {
+					this.errorMessage = "Invalid login credentials.";
+				}
 			} else {
-				this.errorMessage = "Invalid login credentials.";
+				if (res.status === 429) {
+					this.errorMessage = "You are being rate limited.";
+				} else {
+					this.errorMessage = "Something went wrong :/";
+				}
 			}
+
 		},
 		async hashPassword() {
 			const salt = this.password + this.username;

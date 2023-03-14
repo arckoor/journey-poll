@@ -19,23 +19,9 @@ export default defineComponent({
 		};
 	},
 	async mounted() {
-		await this.checkVoted();
 		await this.getPollData();
 	},
 	methods: {
-		async checkVoted() {
-			await fetch(this.config.public.pollApiBase + "/submit/" + this.id, {
-				method: "GET",
-				headers: {
-					"Accept": "application/json",
-					"Content-Type": "application/json",
-				},
-			})
-				.then(async res => {
-					const data = await res.json();
-					this.data.voted = data.voted;
-				});
-		},
 		async getPollData() {
 			await fetch(this.config.public.pollApiBase + "/poll/" + this.id, {
 				method: "GET",
@@ -45,7 +31,7 @@ export default defineComponent({
 				},
 			})
 				.then(async res => {
-					if (res.status === 400) {
+					if (res.status === 404) {
 						showError({ message: "This poll doesn't exist :/", statusCode: 404 });
 					}
 					if (res.status === 200) {
