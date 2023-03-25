@@ -10,10 +10,19 @@ defineProps<{
 		<div v-if="public">
 			<div class="voteAmount">Voters: {{ voteAmount }}</div>
 			<div class="winnerContainer">
-				<h2 class="heading">{{ "Winner" + (first.length > 1 ? "s" : "") + ":"}}</h2>
+				<div class="flex-center">
+					<SvgMedal
+						class="medal"
+						:width="45"
+						:height="45"
+						:number="1"
+					/>
+					<h2 class="heading">{{ "Winner" + (first.length > 1 ? "s" : "") + ":"}}</h2>
+				</div>
 				<div v-for="item of first" :key="item" class="distItem">
 					<CDNImg
 						class="img"
+						border-color="gold"
 						:src="item"
 						:aspect-ratio="aspectRatios[trimExt(item)]"
 						sizes="50vw"
@@ -22,11 +31,30 @@ defineProps<{
 				</div>
 			</div>
 			<template v-for="(list, idx) in [second, third, remaining]" :key="idx">
-				<div class="distContainer" v-if="list.length > 0">
-					<h2 class="heading">{{ ["Second place", "Third place", "Remaining entries"][idx] }}:</h2>
+				<div :class="'distContainer' + [' second', ' third', ''][idx]" v-if="list.length > 0">
+					<div class="flex-center">
+						<template v-if="list.length > 0">
+							<SvgMedal
+								v-if="idx == 0"
+								class="medal"
+								:width="45"
+								:height="45"
+								:number="2"
+							/>
+							<SvgMedal
+								v-if="idx == 1"
+								class="medal"
+								:width="45"
+								:height="45"
+								:number="3"
+							/>
+						</template>
+						<h2 class="heading">{{ ["Second place", "Third place", "Remaining entries"][idx] }}:</h2>
+					</div>
 					<div v-for="item of list" :key="item" class="distItem">
 						<CDNImg
 							class="distImage img"
+							:border-color="['silver', 'bronze', ''][idx]"
 							:src="item"
 							:aspect-ratio="aspectRatios[trimExt(item)]"
 							sizes="30vw"
@@ -103,7 +131,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 @media only screen and (min-width: 700px) {
 	.distItem {
 		flex-direction: row-reverse;
@@ -135,6 +162,12 @@ export default defineComponent({
 	.distImage {
 		width: 60vw;
 	}
+}
+
+.flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .voteAmount {
@@ -174,6 +207,10 @@ export default defineComponent({
 
 .heading {
 	font-size: var(--font-size--heading-section);
+}
+
+.medal {
+	margin-right: 10px
 }
 
 .img {

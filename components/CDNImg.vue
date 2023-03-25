@@ -3,6 +3,7 @@ defineProps<{
 	src: string,
 	alt: string,
 	sizes: string,
+	borderColor?: string,
 	aspectRatio?: string,
 	fromClient?: boolean,
 	clickDisabled?: boolean
@@ -20,7 +21,7 @@ defineProps<{
 			@click="makeBig"
 			@dragstart.prevent
 			loading="lazy"
-			:style="aspectStyle"
+			:style="aspectStyle + ' --accent-color: ' + borderStyle + ';'"
 		>
 		<div class="big-container" v-if="big" @click="makeSmall">
 			<div :class="bigClass">
@@ -31,6 +32,7 @@ defineProps<{
 					:alt="alt"
 					@dragstart.prevent
 					loading="lazy"
+					style="--accent-color: var(--color-accent--border);"
 				>
 			</div>
 		</div>
@@ -46,15 +48,25 @@ export default defineComponent({
 			srcMod: this.src,
 			big: false,
 			bigClass: "big-fullscreen big-fullscreen--hide",
-			aspectStyle: ""
+			aspectStyle: "",
+			borderStyle: ""
 		};
 	},
 	mounted() {
-		if (!this.fromClient) {
+		if (["gold", "silver", "bronze"].includes(this.borderColor || "")) { // if specified, it's (hopefully) one of these
+			this.borderStyle = {
+				"gold": "var(--color-accent--gold)",
+				"silver": "var(--color-accent--silver)",
+				"bronze": "var(--color-accent--bronze)"
+			}[this.borderColor as string] as string;
+		} else {
+			this.borderStyle = "var(--color-accent--border)"; // if not just use the default
+		}
+		if (!this.fromClient) { // this sets the aspect ratio to reduce layout shifting
 			this.srcMod = this.config.public.pollApiBase + "/images/" + this.src;
 			this.aspectStyle = "aspect-ratio: " + this.aspectRatio + "; --ratio: " + this.aspectRatio + ";";
 		}
-		if (!this.fromClient && !this.config.public.dev) {
+		if (!this.fromClient && !this.config.public.dev) { // srcset to reduce bandwidth in production
 			const pre = this.config.public.apiBase + "/cdn-cgi/image";
 			const common = "fit=scale-down,format=auto,quality=lossless,metadata=none,onerror=redirect";
 			const post = "poll/images/" + this.src;
@@ -93,7 +105,7 @@ img {
 	/* https://stackoverflow.com/a/65705018/12203337 */
 	--width: calc(100% - var(--image-width--border));
 	--height: 95vh;
-	border: var(--image-width--border) solid var(--color-accent--border);
+	border: var(--image-width--border) solid var(--accent-color);
 	width: var(--width);
 	max-width: min(var(--width), calc(var(--height) * var(--ratio)));
 	object-fit: contain;
@@ -102,6 +114,11 @@ img {
 
 .img-small {
 	cursor: pointer;
+	transition: box-shadow .2s;
+}
+
+.img-small:hover {
+	box-shadow: 0px 0px 20px var(--accent-color);
 }
 
 .big-container {
