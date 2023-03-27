@@ -40,6 +40,7 @@ defineProps<{
 					:aspect-ratio="aspectRatios[trimExt(images[idx-1])]"
 					sizes="(max-width: 90vw) 900px"
 				/>
+				<hr class="imageDivider" v-if="idx !== images.length">
 			</div>
 			<div class="submitContainer">
 				<h2 class="recapHeading" v-if="[...checked.keys()].filter(i => checked[i]).length > 0"><strong>Selected Images:</strong></h2>
@@ -180,7 +181,12 @@ export default defineComponent({
 	flex-direction: column;
 	justify-content: center;
 	margin: auto;
-	margin-top: 40px;
+}
+
+.imageDivider {
+	margin: 50px 0;
+	border: 3px solid var(--color-accent--border);
+	border-radius: 2px;
 }
 
 .voteContainer {
