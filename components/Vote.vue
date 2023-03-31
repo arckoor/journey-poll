@@ -143,8 +143,11 @@ export default defineComponent({
 			this.voted = true;
 		},
 		makeAlphabet(length: number) {
-			const alpha = Array.from(Array(length)).map((e, i) => i + 65);
-			const alphabet = alpha.map((x) => String.fromCharCode(x));
+			const base = Array.from(Array(26)).map((_, i) => i + 65).map(x => String.fromCharCode(x));
+			let alphabet = new Array<string>();
+			for (let i=0; i<length%26; i++) {
+				alphabet = [...alphabet, ...base.map(x => x.repeat(i+1))];
+			}
 			return alphabet;
 		}
 	}
