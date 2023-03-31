@@ -12,6 +12,18 @@ defineProps<{
 		</div>
 		<div v-if="voted" class="resultMessage">
 			Thank you for voting!
+			<br/>
+			These were the submitted entries:
+			<div class="imgGrid">
+				<div class="imageGridContainer" v-for="image in images" :key="image">
+					<CDNImg
+						class="img"
+						:src="image"
+						sizes="310px"
+						alt="Uploaded image"
+					/>
+				</div>
+			</div>
 		</div>
 		<div v-else>
 			<div class="additionalInfo">
@@ -98,12 +110,12 @@ export default defineComponent({
 		async getPollData() {
 			this.name = this.data.name as string;
 			this.ends = this.data.ends as string;
+			this.images = shuffle(this.data.images as Array<string>);
+			this.aspectRatios = this.data.aspectRatios as { [key: string]: string };
 			if (this.data.voted) {
 				this.voted = true;
 				return;
 			}
-			this.images = shuffle(this.data.images as Array<string>);
-			this.aspectRatios = this.data.aspectRatios as { [key: string]: string };
 			for (let i=0; i<this.images.length; i++) {
 				this.checked.push(false);
 			}
@@ -269,11 +281,29 @@ export default defineComponent({
 }
 
 .resultMessage {
+	text-align: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	font-size: var(--font-size--content-large);
-	padding-top: 100px;
+	padding-top: 70px;
+}
+
+.imgGrid {
+	margin: 40px 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 1000px;
+	max-width: 80vw;
+}
+
+.imageGridContainer {
+	flex: 1 0 310px;
+	width: fit-content;
+	max-width: 310px;
+	position: relative;
+	margin: 10px 10px;
 }
 </style>

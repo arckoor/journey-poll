@@ -209,9 +209,6 @@ export default defineComponent({
 
 <style scoped>
 @media only screen and (min-width: 1200px) {
-	.imgGrid {
-		grid-template-columns: auto auto auto;
-	}
 	.inputItem > label {
 		margin: 0 20px 0 0;
 	}
@@ -224,18 +221,6 @@ export default defineComponent({
 	.inputItem > label {
 		align-self: flex-start;
 		margin: 0 0 5px 0;
-	}
-}
-
-@media only screen and (min-width: 900px) and (max-width: 1199px) {
-	.imgGrid {
-		grid-template-columns: auto auto;
-	}
-}
-
-@media only screen and (max-width: 899px) {
-	.imgGrid {
-		grid-template-columns: auto;
 	}
 }
 
@@ -258,7 +243,6 @@ export default defineComponent({
 		max-width: 85vw;
 	}
 }
-
 
 .inputContainer {
 	display: flex;
@@ -312,10 +296,17 @@ textarea {
 
 .imgGrid {
 	margin-top: 20px;
-	display: grid;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 1000px;
+	max-width: 80vw;
 }
 
 .imageContainer {
+	flex: 1 0 310px;
+	width: fit-content;
+	max-width: 310px;
 	position: relative;
 	margin: 10px 10px;
 }
