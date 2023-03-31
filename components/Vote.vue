@@ -140,6 +140,29 @@ export default defineComponent({
 </script>
 
 <style scoped>
+@media only screen and (max-device-width : 1024px) {
+	.recapContainer {
+		grid-template-columns: 1fr;
+	}
+}
+@media only screen and (min-device-width : 1024px) {
+	.recapContainer {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
+
+@media only screen and (max-width: 599px) {
+	.imageDivider {
+		border: 2px solid var(--color-accent--border--dark);
+	}
+}
+
+@media only screen and (min-width: 600px) {
+	.imageDivider {
+		border: 3px solid var(--color-accent--border--dark);
+	}
+}
+
 .container {
 	display: flex;
 	flex-direction: column;
@@ -185,7 +208,6 @@ export default defineComponent({
 
 .imageDivider {
 	margin: 50px 0;
-	border: 3px solid var(--color-accent--border);
 	border-radius: 2px;
 }
 
@@ -207,16 +229,6 @@ export default defineComponent({
 	font-size: var(--font-size--content);
 }
 
-@media only screen and (max-device-width : 1024px) {
-	.recapContainer {
-		grid-template-columns: 1fr;
-	}
-}
-@media only screen and (min-device-width : 1024px) {
-	.recapContainer {
-		grid-template-columns: 1fr 1fr 1fr;
-	}
-}
 
 .recapContainer {
 	margin: 20px 0 30px 0;
