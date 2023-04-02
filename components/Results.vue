@@ -49,7 +49,10 @@ defineProps<{
 								:number="3"
 							/>
 						</template>
-						<h2 class="heading">{{ ["Second place", "Third place", "Remaining entries"][idx] }}:</h2>
+						<div>
+							<h2 class="heading">{{ ["Second place", "Third place", "Remaining entries"][idx] }}:</h2>
+							<div v-if="idx==2">(in random order)</div>
+						</div>
 					</div>
 					<div v-for="item of list" :key="item" class="distItem">
 						<CDNImg
