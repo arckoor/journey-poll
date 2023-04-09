@@ -14,7 +14,7 @@ defineProps<{
 			<span v-else-if="item.type === 'italic'"><i>{{ item.content }}</i></span>
 		</template>
 		<span v-if="text">&nbsp;</span>
-		<u>You may vote for up to {{ allowedVotes }} entries!</u> Thanks for your vote!
+		<u>You may vote for up to {{ allowedVotes }} {{ allowedVotes > 1 ? "entries" : "entry" }}!</u> Thanks for your vote!
 		<br /><br />
 		<strong>Tap or click an image to view it in high resolution.</strong>
 	</div>
@@ -45,7 +45,7 @@ export default defineComponent({
 				for (let i=0; i<length; i++) {
 					info[i] = (info[i] as string).split(re);
 					info = info.flat();
-					info = info.filter((x) => x != "");
+					info = info.filter(x => x != "");
 				}
 			}
 			const finalInfo = info as Array<string>;
