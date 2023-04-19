@@ -25,6 +25,7 @@ export default defineComponent({
 		async getPollData() {
 			await fetch(this.config.public.pollApiBase + "/poll/" + this.id, {
 				method: "GET",
+				credentials: "include",
 				headers: {
 					"Accept": "application/json",
 					"Content-Type": "application/json",

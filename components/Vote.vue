@@ -132,6 +132,7 @@ export default defineComponent({
 			}
 			await fetch(this.config.public.pollApiBase + "/submit/" + this.id, {
 				method: "POST",
+				credentials: "include",
 				headers: {
 					"Accept": "application/json",
 					"Content-Type": "application/json",
