@@ -174,19 +174,31 @@ export default defineComponent({
 		validate() {
 			let valid = true;
 			this.errorMessage = "";
-			if (this.name === "") {
+			if (this.name === "") { // name not empty
 				valid = false;
 				this.assignError("Poll name must not be empty.");
 			}
-			if (this.ends >= this.expires) {
+			{ // dates valid
+				const ends = new Date(this.ends);
+				const expires = new Date(this.expires);
+				if (!(ends instanceof Date && !isNaN(ends.valueOf()))) {
+					valid = false;
+					this.assignError("Poll end date is invalid.");
+				}
+				if(!(expires instanceof Date && !isNaN(expires.valueOf()))) {
+					valid = false;
+					this.assignError("Poll expiry date is invalid.");
+				}
+			}
+			if (this.ends >= this.expires) { // end before expiry
 				valid = false;
 				this.assignError("Poll cannot expire before it ends.");
 			}
-			if (this.previews.length < 1) {
+			if (this.previews.length < 1) { // at least one image
 				valid = false;
 				this.assignError("At least one image is required.");
 			}
-			if (this.allowedVotes <= 0 || this.allowedVotes > this.previews.length) {
+			if (this.allowedVotes <= 0 || this.allowedVotes > this.previews.length) { // valid number of votes
 				valid = false;
 				this.assignError("Number of votes cannot be larger than number of images provided.");
 			}
