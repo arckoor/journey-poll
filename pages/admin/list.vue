@@ -5,7 +5,7 @@ definePageMeta({
 </script>
 
 <template>
-	<div class=refreshContainer>
+	<div class=refresh-container>
 		<Button class="refresh" text="Refresh" @click="getPolls" />
 	</div>
 	<div v-if="polls.length > 0">
@@ -21,19 +21,19 @@ definePageMeta({
 			:callback="enableDeletion"
 		/>
 	</div>
-	<div v-else class="noPoll">
-		<div class="noPollMsg">There are no polls.</div>
+	<div v-else class="no-poll-container">
+		<div class="no-poll-msg">There are no polls.</div>
 		<Button text="Create one now!" @click="navigateTo('/admin/create')" />
 	</div>
-	<div :class="'deleteBG' + (deletion ? ' deleteContainer' : ' deleteHide')">
-		<div class="deleteText">
+	<div :class="'delete-bg' + (deletion ? ' delete-container' : ' delete--hide')">
+		<div class="delete-text">
 			Are you sure you want to delete "{{ deletionData.name }}"? <br />
 			The poll ID is {{ deletionData.id }}. <br />
 			This action is not reversible.
 		</div>
-		<div class="buttonContainer">
-			<Button class="deleteButton" text="No, take me back." @click="cancelDeletion" />
-			<Button class="deleteButton deleteConfirm" text="Yes, delete!" @click="confirmDeletion" />
+		<div class="button-container">
+			<Button class="delete-button" text="No, take me back." @click="cancelDeletion" />
+			<Button class="delete-button delete-confirm" text="Yes, delete!" @click="confirmDeletion" />
 		</div>
 	</div>
 </template>
@@ -114,12 +114,12 @@ export default defineComponent({
 
 <style scoped>
 @media only screen and (max-width: 600px) {
-	.buttonContainer {
+	.button-container {
 		flex-direction: column;
 	}
 }
 
-.refreshContainer {
+.refresh-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -133,7 +133,7 @@ export default defineComponent({
 	cursor: pointer;
 }
 
-.noPoll {
+.no-poll-container {
 	padding: 50px;
 	display: flex;
 	flex-direction: column;
@@ -141,7 +141,7 @@ export default defineComponent({
 	align-items: center;
 }
 
-.noPollMsg {
+.no-poll-msg {
 	padding-bottom: 20px;
 }
 
@@ -149,17 +149,17 @@ export default defineComponent({
 	padding: 10px 20px;
 }
 
-.deleteHide {
+.delete--hide {
 	visibility: hidden;
 	opacity: 0;
 	max-height: 0;
 }
 
-.deleteBG {
+.delete-bg {
 	background-color: transparent
 }
 
-.deleteContainer {
+.delete-container {
 	z-index: 9999;
 	transition: background-color var(--transition-middle);
 	position: fixed;
@@ -176,29 +176,29 @@ export default defineComponent({
 	opacity: 1;
 }
 
-.deleteText {
+.delete-text {
 	font-size: var(--font-size--content-large);
 	text-align: center;
 }
 
-.buttonContainer {
+.button-container {
 	display: flex;
 	width: 500px;
 	justify-content: center;
 	align-items: center;
 }
 
-.deleteButton {
+.delete-button {
 	width: 200px;
 	margin: 40px 20px 0 20px;
 }
 
-.deleteConfirm {
+.delete-confirm {
 	border-color: var(--color-primary--hover);
 	transition: background var(--transition-short);
 }
 
-.deleteConfirm:hover {
+.delete-confirm:hover {
 	background-color: var(--color-primary--hover);
 }
 </style>

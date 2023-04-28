@@ -5,11 +5,11 @@ defineProps<{
 </script>
 
 <template>
-	<div v-if="ready" class="container">
-		<h1 class="nameHeading">{{ name }}</h1>
+	<div class="container">
+		<h1 class="poll-heading">{{ name }}</h1>
 		<div v-if="public">
-			<div class="voteAmount">Voters: {{ voteAmount }}</div>
-			<div class="winnerContainer">
+			<div class="poll-votes">Voters: {{ voteAmount }}</div>
+			<div class="poll-winner-container">
 				<div class="flex-center">
 					<SvgMedal
 						class="medal"
@@ -19,9 +19,9 @@ defineProps<{
 					/>
 					<h2 class="heading">{{ "Winner" + (first.length > 1 ? "s" : "") + ":"}}</h2>
 				</div>
-				<div v-for="item of first" :key="item" class="distItem">
+				<div v-for="item of first" :key="item" class="image-container">
 					<CDNImg
-						class="img"
+						class="image"
 						border-color="gold"
 						:src="item"
 						:aspect-ratio="aspectRatios[trimExt(item)]"
@@ -31,7 +31,7 @@ defineProps<{
 				</div>
 			</div>
 			<template v-for="(list, idx) in [second, third, remaining]" :key="idx">
-				<div :class="'distContainer' + [' second', ' third', ''][idx]" v-if="list.length > 0">
+				<div :class="'poll-participant-container' + [' second', ' third', ''][idx]" v-if="list.length > 0">
 					<div class="flex-center">
 						<template v-if="list.length > 0">
 							<SvgMedal
@@ -54,9 +54,9 @@ defineProps<{
 							<div v-if="idx==2">(in random order)</div>
 						</div>
 					</div>
-					<div v-for="item of list" :key="item" class="distItem">
+					<div v-for="item of list" :key="item" class="image-container">
 						<CDNImg
-							class="distImage img"
+							class="image-small image"
 							:border-color="['silver', 'bronze', ''][idx]"
 							:src="item"
 							:aspect-ratio="aspectRatios[trimExt(item)]"
@@ -67,7 +67,7 @@ defineProps<{
 				</div>
 			</template>
 		</div>
-		<div v-else-if="!public" class="endMessage">
+		<div v-else-if="!public" class="end-message">
 			<span>This poll has ended.</span>
 			<span>The results of this poll are not public.</span>
 		</div>
@@ -106,7 +106,6 @@ export default defineComponent({
 					"Content-Type": "application/json"
 				}
 			});
-			// todo if (!res.ok) { ... }
 			const data = await res.json();
 			this.name = data.name;
 			this.public = data.public;
@@ -135,34 +134,34 @@ export default defineComponent({
 
 <style scoped>
 @media only screen and (min-width: 700px) {
-	.distItem {
+	.image-container {
 		flex-direction: row-reverse;
 	}
 
 }
 
 @media only screen and (max-width: 699px) {
-	.distItem {
+	.image-container  {
 		flex-direction: column;
 	}
 
 }
 
 @media only screen and (min-width: 600px) {
-	.img {
+	.image {
 		width: 50vw;
 	}
-	.distImage {
+	.image-small {
 		width: 30vw;
 	}
 }
 
 @media only screen and (max-width: 599px) {
-	.img {
+	.image {
 		width: 80vw;
 	}
 
-	.distImage {
+	.image-small {
 		width: 60vw;
 	}
 }
@@ -173,7 +172,7 @@ export default defineComponent({
 	align-items: center;
 }
 
-.voteAmount {
+.poll-votes {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -190,7 +189,7 @@ export default defineComponent({
 	margin: 0px auto;
 }
 
-.winnerContainer {
+.poll-winner-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -199,7 +198,7 @@ export default defineComponent({
 	padding: 30px 100px;
 }
 
-.nameHeading {
+.poll-heading {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -216,18 +215,11 @@ export default defineComponent({
 	margin-right: 10px
 }
 
-.img {
+.image {
 	margin: auto 0;
 }
 
-.displayVotesContainer {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: var(--font-size--content);
-}
-
-.distContainer {
+.poll-participant-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -236,18 +228,18 @@ export default defineComponent({
 	padding: 40px 100px 10px 100px;
 }
 
-.distContainer:last-of-type {
+.poll-participant-container:last-of-type {
 	padding-bottom: 100px;
 }
 
-.distItem {
+.image-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-top: 25px;
 }
 
-.endMessage {
+.end-message {
 	height: 90vh;
 	display: flex;
 	flex-direction: column;

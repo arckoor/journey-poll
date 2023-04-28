@@ -6,9 +6,9 @@ definePageMeta({
 
 <template>
 	<div v-if="ready" class="container">
-		<h1 class="nameHeading">{{ name }}</h1>
+		<h1 class="poll-heading">{{ name }}</h1>
 		<div v-if="!inProgress">
-			<div class="buttonContainer">
+			<div class="button-container">
 				<Button
 					v-if="!working"
 					:text="!public ? 'Publish results' : 'Unpublish results'"
@@ -16,20 +16,20 @@ definePageMeta({
 				/>
 				<div v-else>Working on changing the status...</div>
 			</div>
-			<div class="buttonContainer" v-if="winners.length > 1">
+			<div class="button-container" v-if="winners.length > 1">
 				<Button
 					text="Create Tiebreaker"
 					@click="createTiebreaker"
 				/>
 			</div>
 		</div>
-		<div v-else class="progressMessage red">
+		<div v-else class="progress-msg red">
 			This poll is still in progress!
 		</div>
-		<div class="winnerContainer">
+		<div class="winner-container">
 			<h2 class="heading">{{ "Winner" + (winners.length > 1 ? "s" : "") + ":"}}</h2>
-			<div v-for="item of winners" :key="item" class="distItem">
-				<div class="distText">Votes: {{ images[item] }}</div>
+			<div v-for="item of winners" :key="item" class="dist-item">
+				<div class="dist-text">Votes: {{ images[item] }}</div>
 				<CDNImg
 					class="img"
 					:src="item"
@@ -39,13 +39,13 @@ definePageMeta({
 				/>
 			</div>
 		</div>
-		<div class="distContainer">
+		<div class="dist-container">
 			<h2 class="heading">Vote Distribution:</h2>
-			<div class="voteAmount">Voters: {{ voteAmount }}</div>
-			<div v-for="item in sortedImages" :key="item[0]" class="distItem">
-				<div class="distText">Votes: {{ item[1] }}</div>
+			<div class="vote-amount">Voters: {{ voteAmount }}</div>
+			<div v-for="item in sortedImages" :key="item[0]" class="dist-item">
+				<div class="dist-text">Votes: {{ item[1] }}</div>
 				<CDNImg
-					class="distImage img"
+					class="ist-image img"
 					:src="(item[0] as string)"
 					:aspect-ratio="aspectRatios[trimExt((item[0] as string))]"
 					sizes="30vw"
@@ -163,20 +163,20 @@ export default defineComponent({
 <style scoped>
 
 @media only screen and (min-width: 700px) {
-	.distItem {
+	.dist-item {
 		flex-direction: row-reverse;
 	}
-	.distText {
+	.dist-text {
 		margin: 0px 0 0 30px;
 	}
 
 }
 
 @media only screen and (max-width: 699px) {
-	.distItem {
+	.dist-item {
 		flex-direction: column;
 	}
-	.distText {
+	.dist-text {
 		margin: 0 0 10px 0;
 	}
 
@@ -186,13 +186,13 @@ export default defineComponent({
 	.img {
 		width: 50vw;
 	}
-	.distImage {
+	.ist-image {
 		width: 30vw;
 	}
-	.winnerContainer {
+	.winner-container {
 		padding: 40px 100px;
 	}
-	.distContainer {
+	.dist-container {
 		padding: 40px 100px 80px 100px;
 	}
 }
@@ -201,13 +201,13 @@ export default defineComponent({
 	.img {
 		width: 80vw;
 	}
-	.distImage {
+	.ist-image {
 		width: 60vw;
 	}
-	.winnerContainer {
+	.winner-container {
 		padding: 40px 0;
 	}
-	.distContainer {
+	.dist-container {
 		padding: 40px 0 80px 0;
 	}
 }
@@ -221,14 +221,14 @@ export default defineComponent({
 	margin: 0px auto;
 }
 
-.buttonContainer {
+.button-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-top: 20px;
 }
 
-.progressMessage {
+.progress-msg {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -236,7 +236,7 @@ export default defineComponent({
 	font-size: var(--font-size--heading);
 }
 
-.winnerContainer {
+.winner-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -244,7 +244,7 @@ export default defineComponent({
 	text-align: center;
 }
 
-.nameHeading {
+.poll-heading {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -261,7 +261,7 @@ export default defineComponent({
 	margin: auto 0;
 }
 
-.distContainer {
+.dist-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -269,19 +269,19 @@ export default defineComponent({
 	text-align: center;
 }
 
-.voteAmount {
+.vote-amount {
 	margin: 10px 0;
 	font-size: var(--font-size--content);
 }
 
-.distItem {
+.dist-item {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-top: 25px;
 }
 
-.distText {
+.dist-text {
 	font-size: var(--font-size--content);
 	width: 200px;
 	white-space: nowrap;

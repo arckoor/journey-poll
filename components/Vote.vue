@@ -7,15 +7,15 @@ defineProps<{
 <template>
 	<div class="container" v-if="ready">
 		<h1 class="heading">{{ name }}</h1>
-		<div class="remainingTime">
+		<div class="remaining-time">
 			<div>This polls ends in <Countdown :date="ends" color-type="red" />.</div>
 		</div>
-		<div v-if="voted" class="resultMessage">
+		<div v-if="voted" class="result-msg">
 			Thank you for voting!
 			<br/>
 			These were the submitted entries:
-			<div class="imgGrid">
-				<div class="imageGridContainer" v-for="image in images" :key="image">
+			<div class="img-grid img-grid--wide">
+				<div class="img-grid-container" v-for="image in images" :key="image">
 					<CDNImg
 						class="img"
 						:src="image"
@@ -26,15 +26,15 @@ defineProps<{
 			</div>
 		</div>
 		<div v-else>
-			<div class="additionalInfo">
+			<div class="extra-info">
 				<RichTextPreview :text="info" :allowed-votes="allowedVotes"/>
 			</div>
-			<div class="imageContainer"
+			<div class="img-container"
 				v-for="idx in images.length"
 				:key="idx-1"
 				:ref="'vote'+(idx-1)"
 			>
-				<div class="voteContainer">
+				<div class="vote-container">
 					<div class="letter no-select">{{ alphabet[idx-1] }}</div>
 					<Checkbox
 						@checked="checked[idx-1] = true"
@@ -45,26 +45,26 @@ defineProps<{
 					/>
 				</div>
 				<CDNImg
-					class="voteImage"
+					class="vote-image"
 					:src="images[idx-1]"
 					:alt="'Voting image ' + alphabet[idx-1]"
 					:key="images[idx-1]"
 					:aspect-ratio="aspectRatios[trimExt(images[idx-1])]"
 					sizes="(max-width: 90vw) 900px"
 				/>
-				<hr class="imageDivider" v-if="idx !== images.length">
+				<hr class="image-divider" v-if="idx !== images.length">
 			</div>
-			<div class="submitContainer">
-				<h2 class="recapHeading" v-if="[...checked.keys()].filter(i => checked[i]).length > 0"><strong>Selected Images:</strong></h2>
-				<div class="recapContainer" >
-					<div class="recapImageContainer"
+			<div class="submit-container">
+				<h2 class="recap-heading" v-if="[...checked.keys()].filter(i => checked[i]).length > 0"><strong>Selected Images:</strong></h2>
+				<div class="img-grid" >
+					<div class="recap-img-container"
 						v-for="idx in [...checked.keys()].filter(i => checked[i])"
 						:key="idx"
 						@click="(($refs['vote'+idx] as HTMLElement[])[0] as HTMLElement).scrollIntoView()"
 					>
-						<div class="recapLetter">{{ alphabet[idx] }}</div>
+						<div class="recap-letter">{{ alphabet[idx] }}</div>
 						<CDNImg
-							class="recapImage"
+							class="recap-img"
 							:src="images[idx]"
 							:alt="'Recap image ' + alphabet[idx]"
 							:click-disabled="true"
@@ -168,13 +168,13 @@ export default defineComponent({
 }
 
 @media only screen and (max-width: 599px) {
-	.imageDivider {
+	.image-divider {
 		border: 2px solid var(--color-accent--border--dark);
 	}
 }
 
 @media only screen and (min-width: 600px) {
-	.imageDivider {
+	.image-divider {
 		border: 3px solid var(--color-accent--border--dark);
 	}
 }
@@ -198,14 +198,14 @@ export default defineComponent({
 	font-size: var(--font-size--heading);
 }
 
-.remainingTime {
+.remaining-time {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin: 20px 0 0 0;
 }
 
-.additionalInfo {
+.extra-info {
 	padding: 30px 0 50px 0;
 	max-width: 800px;
 	font-size: var(--font-size--content)
@@ -216,18 +216,18 @@ export default defineComponent({
 	margin-right: 10px;
 }
 
-.imageContainer {
+.img-container {
 	flex-direction: column;
 	justify-content: center;
 	margin: auto;
 }
 
-.imageDivider {
+.image-divider {
 	margin: 50px 0;
 	border-radius: 2px;
 }
 
-.voteContainer {
+.vote-container {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
@@ -235,39 +235,33 @@ export default defineComponent({
 	margin-bottom: 20px;
 }
 
-.voteImage {
+.vote-image {
 	margin: auto;
 	width: 900px;
 	max-width: 90vw;
 }
 
-.recapHeading {
+.recap-heading {
 	font-size: var(--font-size--content);
 }
 
-
-.recapContainer {
-	margin: 20px 0 30px 0;
-	display: grid;
-}
-
-.recapImageContainer {
+.recap-img-container {
 	position: relative;
 	margin: 10px 10px;
 }
 
-.recapLetter {
+.recap-letter {
 	font-size: var(--font-size--content);
 	margin-bottom: 10px;
 }
 
-.recapImage {
+.recap-img {
 	max-width: 80vw;
 	width: 280px;
 	margin: auto;
 }
 
-.submitContainer {
+.submit-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -284,7 +278,7 @@ export default defineComponent({
 	padding: 10px 20px;
 }
 
-.resultMessage {
+.result-msg {
 	text-align: center;
 	display: flex;
 	flex-direction: column;
@@ -294,16 +288,19 @@ export default defineComponent({
 	padding-top: 70px;
 }
 
-.imgGrid {
+.img-grid {
 	margin: 40px 0;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
+}
+
+.img-grid--wide {
 	width: 1000px;
 	max-width: 80vw;
 }
 
-.imageGridContainer {
+.img-grid-container {
 	flex: 1 0 310px;
 	width: fit-content;
 	max-width: 310px;

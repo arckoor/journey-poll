@@ -12,11 +12,11 @@ const config = useRuntimeConfig();
 </script>
 
 <template>
-	<div class="pollItem">
-		<div class="infoSection">
-			<div class="pollInfo">
-				<div class="pollName">{{ name }}</div>
-				<div class="timeRow">
+	<div class="item">
+		<div class="info">
+			<div class="poll-info">
+				<div class="poll-name">{{ name }}</div>
+				<div class="poll-time">
 					<div class="subscript--container">
 						<div class="subscript subscript--normal">Ends in:
 							<Countdown
@@ -31,19 +31,19 @@ const config = useRuntimeConfig();
 					<div class="subscript subscript--normal">Created by: @{{ createdBy }}</div>
 				</div>
 			</div>
-			<div class="voteAmount">Votes: {{ voteAmount }}</div>
+			<div class="poll-votes">Votes: {{ voteAmount }}</div>
 		</div>
-		<div class="linkSection">
-			<Button class="linkItem" @click="copyLink(config.public.base + '/' + id)">
+		<div class="link">
+			<Button class="link-item" @click="copyLink(config.public.base + '/' + id)">
 				<template #buttonSlot><SvgLink :width="30" :height="30" /></template>
 			</Button>
-			<Button class="linkItem" @click="navigateTo('/admin/edit/' + id)">
+			<Button class="link-item" @click="navigateTo('/admin/edit/' + id)">
 				<template #buttonSlot><SvgEdit :width="30" :height="30" /></template>
 			</Button>
-			<Button class="linkItem" @click="navigateTo('/admin/results/' + id)">
+			<Button class="link-item" @click="navigateTo('/admin/results/' + id)">
 				<template #buttonSlot><SvgResults :width="30" :height="30" /></template>
 			</Button>
-			<Button class="linkItem delete" @click="callback(id, name)">
+			<Button class="link-item delete" @click="callback(id, name)">
 				<template #buttonSlot><SvgDelete :width="30" :height="30" /></template>
 			</Button>
 		</div>
@@ -62,33 +62,33 @@ export default defineComponent({
 
 <style scoped>
 @media only screen and (max-width: 740px) {
-	.pollItem {
+	.item {
 		padding: 2px 10px 2px 20px;
 		margin: 20px 10px 10px 10px;
 		flex-direction: row;
 		align-items: flex-start;
 		justify-content: flex-start;
 	}
-	.linkSection {
+	.link {
 		flex-direction: column;
 		margin: 10px 0;
 	}
 }
 
 @media only screen and (max-width: 830px) {
-	.infoSection {
+	.info {
 		flex-direction: column;
 	}
-	.voteAmount {
+	.poll-votes {
 		margin: 10px 0 0 0;
 	}
-	.pollInfo {
+	.poll-info {
 		width: 100%;
 	}
 }
 
 @media only screen and (min-width: 741px) {
-	.pollItem {
+	.item {
 		padding: 20px 50px 20px 50px;
 		margin: 20px 50px 10px 50px;
 		flex-direction: row;
@@ -97,58 +97,58 @@ export default defineComponent({
 }
 
 @media only screen and (min-width: 831px) {
-	.voteAmount {
+	.poll-votes {
 		text-align: center;
 	}
 }
 
 @media only screen and (max-width: 1304px) {
 	.subscript--container,
-	.timeRow {
+	.poll-time {
 		flex-direction: column;
 	}
-	.voteAmount{
+	.poll-votes {
 		width: 100%;
 	}
 }
 
 @media only screen and (min-width: 1305px) {
 	.subscript--container,
-	.infoSection,
-	.linkSection {
+	.info,
+	.link {
 		flex-direction: row;
 	}
 }
 
 @media only screen and (max-width: 1599px) {
-	.timeRow {
+	.poll-time {
 		flex-direction: column;
 	}
 }
 
 @media only screen and (min-width: 1600px) {
-	.timeRow {
+	.poll-time {
 		flex-direction: row;
 	}
 }
 
-.pollItem {
+.item {
 	display: flex;
 	border: 2px solid var(--color-background--layer-10);
 	align-items: center;
 }
 
-.pollInfo {
+.poll-info {
 	display: flex;
 	flex-direction: column;
 }
 
 .subscript--container,
-.timeRow {
+.poll-time {
 	display: flex;
 }
 
-.infoSection {
+.info {
 	display: flex;
 	width: 100%;
 	justify-content: space-between;
@@ -164,21 +164,21 @@ export default defineComponent({
 	color: var(--color-text--disabled)
 }
 
-.linkItem {
+.link-item {
 	padding: 10px 10px;
 	margin: 5px;
 }
 
-.pollName {
+.poll-name {
 	font-size: var(--font-size--content);
 }
 
-.voteAmount {
+.poll-votes {
 	white-space: nowrap;
 	flex-basis: 50%;
 }
 
-.linkSection {
+.link {
 	flex-basis: content;
 	display: flex;
 	justify-content: right;

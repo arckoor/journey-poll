@@ -18,7 +18,7 @@ definePageMeta({
 			@interface="assignData"
 		/>
 	</div>
-	<div class="buttonContainer">
+	<div class="button-container">
 		<div v-if="!working">
 			<Button
 				text="Save changes!"
@@ -28,10 +28,10 @@ definePageMeta({
 		</div>
 		<div v-if="working" class="working">
 			<div class="spin"></div>
-			<div class="spinMsg">Working on saving your poll...</div>
+			<div class="spin-msg">Working on saving your poll...</div>
 		</div>
-		<div v-if="saved" class="subContainer">
-			<div class="successMsg">Poll successfully saved!</div>
+		<div v-if="saved" class="saved-container">
+			<div class="success-msg">Poll successfully saved!</div>
 			<Button text="Copy Link" @click="copyLink(config.public.base + '/' + id)" />
 		</div>
 
@@ -126,7 +126,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.buttonContainer {
+.button-container {
 	padding: 20px 0 60px 0;
 	display: flex;
 	justify-content: center;
@@ -134,7 +134,7 @@ export default defineComponent({
 	flex-direction: column;
 }
 
-.subContainer {
+.saved-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -172,12 +172,12 @@ export default defineComponent({
 	align-items: center;
 }
 
-.spinMsg {
+.spin--msg {
 	margin-top: 27px;
 	margin-left: 40px;
 }
 
-.successMsg {
+.success-msg {
 	padding: 20px;
 }
 </style>

@@ -16,7 +16,7 @@ definePageMeta({
 		:valid-callback="validCallback"
 		@interface="assignData"
 	/>
-	<div class="buttonContainer">
+	<div class="button-container">
 		<div v-if="!published && !working">
 			<Button
 				text="Create Poll!"
@@ -26,13 +26,13 @@ definePageMeta({
 		</div>
 		<div v-else-if="!published && working" class="working">
 			<div class="spin"></div>
-			<div class="spinMsg">Working on creating your poll...</div>
+			<div class="spin-msg">Working on creating your poll...</div>
 		</div>
 		<div v-else-if="error">
-			<div class="successMsg">An error occurred. Have you submitted the correct file formats?</div>
+			<div class="success-msg">An error occurred. Have you submitted the correct file formats?</div>
 		</div>
 		<div v-else>
-			<div class="successMsg">Poll successfully published!</div>
+			<div class="success-msg">Poll successfully published!</div>
 			<Button text="Copy Link" @click="copyLink(config.public.base + '/' + id)" />
 		</div>
 	</div>
@@ -100,7 +100,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.buttonContainer {
+.button-container {
 	padding: 20px 0 80px 0;
 	display: flex;
 	justify-content: center;
@@ -136,12 +136,12 @@ export default defineComponent({
 	align-items: center;
 }
 
-.spinMsg {
+.spin-msg {
 	margin-top: 27px;
 	margin-left: 40px;
 }
 
-.successMsg {
+.success-msg {
 	padding: 20px;
 }
 </style>

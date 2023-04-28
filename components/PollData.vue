@@ -12,8 +12,8 @@ defineProps<{
 </script>
 
 <template>
-	<div class="inputContainer">
-		<div class="inputItem">
+	<div class="input-container">
+		<div class="input-item">
 			<label for="pollName">Poll name:</label>
 			<input
 				type="text"
@@ -22,7 +22,7 @@ defineProps<{
 				:disabled="disabled"
 			>
 		</div>
-		<div class="inputItem">
+		<div class="input-item">
 			<label for="pollInfo">Poll info:</label>
 			<textarea
 				style="resize:vertical;"
@@ -33,15 +33,15 @@ defineProps<{
 				@input="removeNewlines"
 			/>
 		</div>
-		<div class="inputItem">
+		<div class="input-item">
 			<label for="infoPreview">Info preview:</label>
 			<RichTextPreview
-				class="textPreview"
+				class="input-text--preview"
 				:text="info"
 				:allowed-votes="allowedVotes"
 			/>
 		</div>
-		<div class="inputItem">
+		<div class="input-item">
 			<label for="allowedVotes">Votes:</label>
 			<input
 				type="number"
@@ -51,7 +51,7 @@ defineProps<{
 				:disabled="disabled"
 			>
 		</div>
-		<div class="inputItem">
+		<div class="input-item">
 			<label for="pollEnd">Poll end:</label>
 			<input
 				type="datetime-local"
@@ -61,7 +61,7 @@ defineProps<{
 				:disabled="disabled"
 			>
 		</div>
-		<div class="inputItem">
+		<div class="input-item">
 			<label for="pollExpiry">Poll expiry:</label>
 			<input
 				type="datetime-local"
@@ -72,7 +72,7 @@ defineProps<{
 			>
 		</div>
 	</div>
-	<div class="fileWrapper">
+	<div class="file-container">
 		<!-- todo a drop zone would be cool -->
 		<Button text="Choose files" @click="($refs.fileIn as HTMLInputElement).click()" />
 		<input
@@ -85,22 +85,22 @@ defineProps<{
 			@change="preview"
 			:disabled="disabled"
 		>
-		<div class="imgGrid">
-			<div class="imageContainer" v-for="(image, idx) in previews" :key="image">
+		<div class="image-display">
+			<div class="image-display--container" v-for="(image, idx) in previews" :key="image">
 				<CDNImg
-					class="img"
+					class="image"
 					:src="image"
 					sizes="310px"
 					alt="Uploaded image"
 					:from-client="idx >= outsideIndex"
 				/>
-				<div class="removeImage" @click="removeImage(idx)" v-if="!disabled">
+				<div class="image--remove" @click="removeImage(idx)" v-if="!disabled">
 					<SvgClose :height="30" :width="30" />
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="errorMessage">{{ errorMessage }}</div>
+	<div class="error-message">{{ errorMessage }}</div>
 </template>
 
 <script lang="ts">
@@ -221,23 +221,23 @@ export default defineComponent({
 
 <style scoped>
 @media only screen and (min-width: 1200px) {
-	.inputItem > label {
+	.input-item > label {
 		margin: 0 20px 0 0;
 	}
 }
 
 @media only screen and (max-width: 1199px) {
-	.inputItem {
+	.input-item {
 		flex-direction: column;
 	}
-	.inputItem > label {
+	.input-item > label {
 		align-self: flex-start;
 		margin: 0 0 5px 0;
 	}
 }
 
 @media only screen and (min-width: 600px) and (max-width: 899px) {
-	.textPreview,
+	.input-text--preview,
 	textarea,
 	input[type=text],
 	input[type=datetime-local],
@@ -247,7 +247,7 @@ export default defineComponent({
 }
 
 @media only screen and (max-width: 599px) {
-	.textPreview,
+	.input-text--preview,
 	textarea,
 	input[type=text],
 	input[type=datetime-local],
@@ -256,7 +256,7 @@ export default defineComponent({
 	}
 }
 
-.inputContainer {
+.input-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -264,14 +264,14 @@ export default defineComponent({
 	margin: 20px;
 }
 
-.inputItem {
+.input-item {
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
 	margin: 20px 0 0 0;
 }
 
-.textPreview,
+.input-text--preview,
 textarea,
 input[type=text],
 input[type=datetime-local],
@@ -291,13 +291,13 @@ textarea {
 	resize: none;
 }
 
-.textPreview {
+.input-text--preview {
 	padding: 9px 10px;
 	border: 2px solid var(--color-background--layer-10);
 	border-radius: 5px;
 }
 
-.fileWrapper {
+.file-container {
 	margin: 40px auto;
 	display: flex;
 	flex-direction: column;
@@ -306,7 +306,7 @@ textarea {
 	width: fit-content;
 }
 
-.imgGrid {
+.image-display {
 	margin-top: 20px;
 	display: flex;
 	flex-wrap: wrap;
@@ -315,7 +315,7 @@ textarea {
 	max-width: 80vw;
 }
 
-.imageContainer {
+.image-display--container {
 	flex: 1 0 310px;
 	width: fit-content;
 	max-width: 310px;
@@ -323,16 +323,16 @@ textarea {
 	margin: 10px 10px;
 }
 
-.imageContainer:hover > .removeImage {
+.image-display--container:hover > .image--remove {
 	opacity: 1;
 }
 
-.img {
+.image {
 	margin: auto;
 	width: 310px;
 }
 
-.removeImage {
+.image--remove {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -343,7 +343,7 @@ textarea {
 	cursor: pointer;
 }
 
-.errorMessage {
+.error-message {
 	display: flex;
 	justify-content: center;
 	align-items: center;

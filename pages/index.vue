@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<div class="inputContainer">
+		<div class="input-container">
 			<label for="username">Username:</label>
 			<input
 				spellcheck="false"
@@ -12,7 +12,7 @@
 				placeholder="Enter your username..."
 			/>
 		</div>
-		<div class="inputContainer">
+		<div class="input-container">
 			<label for="password">Password:</label>
 			<input
 				type="password"
@@ -24,7 +24,7 @@
 				placeholder="Enter your password..."
 			/>
 		</div>
-		<div class="loginContainer">
+		<div class="login-container">
 			<Button
 				class="login"
 				text="Login!"
@@ -33,9 +33,9 @@
 			/>
 			<div class="error">{{ errorMessage }}</div>
 		</div>
-		<div ref="tooltip" :class="'toolTip no-select '" @click="tooltipEnabled = !tooltipEnabled">
+		<div ref="tooltip" :class="'tool-tip no-select '" @click="tooltipEnabled = !tooltipEnabled">
 			How can I make an account?
-			<span :class="'toolTipContent '+ (tooltipEnabled ? 'reveal' : '')">
+			<span :class="'tool-tip--content '+ (tooltipEnabled ? 'reveal' : '')">
 				Currently, accounts are issued on a per-request basis.
 				If you'd like to use this service, please contact arckoor#6568 in the Journey Discord.
 			</span>
@@ -105,10 +105,10 @@ export default defineComponent({
 
 <style scoped>
 @media only screen and (max-width: 599px) {
-	.inputContainer {
+	.input-container {
 		flex-direction: column;
 	}
-	.inputContainer > label {
+	.input-container > label {
 		align-self: flex-start;
 		margin: 0 0 10px 0;
 	}
@@ -122,7 +122,7 @@ export default defineComponent({
 	justify-content: center;
 }
 
-.inputContainer {
+.input-container {
 	display: flex;
 	padding: 20px 0;
 	font-size: var(--font-size--content);
@@ -134,7 +134,7 @@ label {
 	padding-right: 25px;
 }
 
-.loginContainer {
+.login-container {
 	margin-top: 40px;
 }
 
@@ -148,7 +148,7 @@ label {
 	margin-top: 20px;
 }
 
-.toolTip {
+.tool-tip {
 	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
@@ -157,7 +157,7 @@ label {
 	cursor: pointer;
 }
 
-.toolTipContent {
+.tool-tip--content {
 	width: 400px;
 	display: none;
 	position: absolute;

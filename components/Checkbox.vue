@@ -56,7 +56,7 @@ input[type=checkbox]:checked {
 	transition: all var(--transition-short);
 }
 
-.disabled{
+.disabled {
 	cursor: default;
 	border-color: var(--color-text--disabled);
 }
