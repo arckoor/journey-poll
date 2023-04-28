@@ -12,7 +12,17 @@ defineProps<{
 		</div>
 		<div v-if="voted" class="result-msg">
 			Thank you for voting!
-			<br/>
+			You voted for:
+			<div class="img-grid">
+				<div class="img-grid-container" v-for="image in votedImages" :key="image">
+					<CDNImg
+						class="img"
+						:src="image"
+						sizes="310px"
+						alt="Uploaded image"
+					/>
+				</div>
+			</div>
 			These were the submitted entries:
 			<div class="img-grid img-grid--wide">
 				<div class="img-grid-container" v-for="image in images" :key="image">
@@ -96,6 +106,7 @@ export default defineComponent({
 			checked: new Array<boolean>(),
 			alphabet: new Array<string>(),
 			voted: false,
+			votedImages: new Array<string>(),
 			id: this.$route.params.id,
 			ready: false,
 			ends: ""
@@ -112,8 +123,9 @@ export default defineComponent({
 			this.ends = this.data.ends as string;
 			this.images = shuffle(this.data.images as Array<string>);
 			this.aspectRatios = this.data.aspectRatios as { [key: string]: string };
-			if (this.data.voted) {
+			if (this.data.votes.length as number > 0) {
 				this.voted = true;
+				this.votedImages = this.data.votes as Array<string>;
 				return;
 			}
 			for (let i=0; i<this.images.length; i++) {
@@ -142,6 +154,7 @@ export default defineComponent({
 				})
 			});
 			this.voted = true;
+			this.votedImages = votes;
 		},
 		makeAlphabet(length: number) {
 			const base = Array.from(Array(26)).map((_, i) => i + 65).map(x => String.fromCharCode(x));
