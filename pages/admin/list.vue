@@ -5,12 +5,19 @@ definePageMeta({
 </script>
 
 <template>
-	<div class=refresh-container>
+	<div class="refresh-container">
 		<Button class="refresh" text="Refresh" @click="getPolls" />
+		<Dropdown
+			class="sort-order"
+			text="Sort"
+			:options="sortOptions"
+			:current-option="sortOrder"
+			:option-change-cb="fn"
+		/>
 	</div>
-	<div v-if="polls.length > 0">
+	<div v-if="sortedPolls.length > 0">
 		<ListItem
-			v-for="poll of polls"
+			v-for="poll of sortedPolls"
 			:key="poll.id"
 			:name="poll.name"
 			:created-by="poll.createdBy"
@@ -53,6 +60,14 @@ export default defineComponent({
 		return {
 			config: useRuntimeConfig(),
 			polls: new Array<Poll>(),
+			sortedPolls: new Array<Poll>(),
+			sortOrder: "newestFirst",
+			sortOptions: {
+				newestFirst: "Created - Newest",
+				oldestFirst: "Created - Oldest",
+				nameAscending: "Name - Ascending",
+				nameDescending: "Name - Descending"
+			},
 			ends: {} as Record<string, string>,
 			expires: {} as Record<string, string>,
 			deletion: false,
@@ -83,7 +98,28 @@ export default defineComponent({
 							...data[item]
 						});
 					}
+					this.setSortOrder();
 				});
+		},
+		setSortOrder() {
+			this.sortedPolls = this.polls.slice(0);
+			switch(this.sortOrder) {
+				case "nameAscending":
+					this.sortedPolls.sort((a, b) => {
+						return ("" + a.name).localeCompare(b.name, "en", { numeric: true });
+					});
+					return;
+				case "nameDescending":
+					this.sortedPolls.sort((a, b) => {
+						return -("" + a.name).localeCompare(b.name, "en", { numeric: true });
+					});
+					return;
+				case "newestFirst":
+					this.sortedPolls.reverse();
+					return;
+				case "oldestFirst":
+					return;
+			}
 		},
 		enableDeletion(id: string, name: string) {
 			this.deletion = true;
@@ -108,6 +144,11 @@ export default defineComponent({
 			});
 			await this.getPolls();
 		},
+		fn(option: string) {
+			if (option === this.sortOrder) return;
+			this.sortOrder = option;
+			this.setSortOrder();
+		},
 	}
 });
 </script>
@@ -123,14 +164,11 @@ export default defineComponent({
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin: 10px 0;
 }
 
-.refresh {
-	margin: 10px 0;
-	padding: 10px 20px 10px 20px;
-	border-radius: 5px;
-	width: fit-content;
-	cursor: pointer;
+.sort-order {
+	margin-left: 20px;
 }
 
 .no-poll-container {
