@@ -12,7 +12,7 @@ definePageMeta({
 			text="Sort"
 			:options="sortOptions"
 			:current-option="sortOrder"
-			:option-change-cb="fn"
+			:option-change-cb="sortCallback"
 		/>
 	</div>
 	<div v-if="sortedPolls.length > 0">
@@ -121,6 +121,11 @@ export default defineComponent({
 					return;
 			}
 		},
+		sortCallback(option: string) {
+			if (option === this.sortOrder) return;
+			this.sortOrder = option;
+			this.setSortOrder();
+		},
 		enableDeletion(id: string, name: string) {
 			this.deletion = true;
 			this.deletionData = {
@@ -143,12 +148,7 @@ export default defineComponent({
 				credentials: "include"
 			});
 			await this.getPolls();
-		},
-		fn(option: string) {
-			if (option === this.sortOrder) return;
-			this.sortOrder = option;
-			this.setSortOrder();
-		},
+		}
 	}
 });
 </script>
