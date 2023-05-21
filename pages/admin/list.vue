@@ -6,7 +6,7 @@ definePageMeta({
 
 <template>
 	<div class="refresh-container">
-		<Button class="refresh" text="Refresh" @click="getPolls" />
+		<Button text="Refresh" @click="getPolls" />
 		<Dropdown
 			class="sort-order"
 			text="Sort"
@@ -25,24 +25,25 @@ definePageMeta({
 			:expires="expires[poll.id]"
 			:vote-amount="poll.voteAmount"
 			:id="poll.id"
-			:callback="enableDeletion"
+			:duplicate-callback="duplicatePoll"
+			:delete-callback="enableDeletion"
 		/>
 	</div>
 	<div v-else class="no-poll-container">
 		<div class="no-poll-msg">There are no polls.</div>
 		<Button text="Create one now!" @click="navigateTo('/admin/create')" />
 	</div>
-	<div :class="'delete-bg' + (deletion ? ' delete-container' : ' delete--hide')">
-		<div class="delete-text">
+	<DeleteDialogue
+		:deletion="deletion"
+		:cancel-callback="cancelDeletion"
+		:confirm-callback="confirmDeletion"
+	>
+		<template #deleteSlot>
 			Are you sure you want to delete "{{ deletionData.name }}"? <br />
 			The poll ID is {{ deletionData.id }}. <br />
 			This action is not reversible.
-		</div>
-		<div class="button-container">
-			<Button class="delete-button" text="No, take me back." @click="cancelDeletion" />
-			<Button class="delete-button delete-confirm" text="Yes, delete!" @click="confirmDeletion" />
-		</div>
-	</div>
+		</template>
+	</DeleteDialogue>
 </template>
 
 <script lang="ts">
@@ -59,6 +60,7 @@ export default defineComponent({
 	data() {
 		return {
 			config: useRuntimeConfig(),
+			authState: useAuth(),
 			polls: new Array<Poll>(),
 			sortedPolls: new Array<Poll>(),
 			sortOrder: "newestFirst",
@@ -126,6 +128,13 @@ export default defineComponent({
 			this.sortOrder = option;
 			this.setSortOrder();
 		},
+		async duplicatePoll(id: string) {
+			await fetch(this.config.public.pollApiBase + "/admin/root/duplicate/" + id, {
+				method: "POST",
+				credentials: "include"
+			});
+			await this.getPolls();
+		},
 		enableDeletion(id: string, name: string) {
 			this.deletion = true;
 			this.deletionData = {
@@ -185,58 +194,5 @@ export default defineComponent({
 
 .button {
 	padding: 10px 20px;
-}
-
-.delete--hide {
-	visibility: hidden;
-	opacity: 0;
-	max-height: 0;
-}
-
-.delete-bg {
-	background-color: transparent
-}
-
-.delete-container {
-	z-index: 9999;
-	transition: background-color var(--transition-middle);
-	position: fixed;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	background-color: var(--color-background--layer-50);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-	flex-direction: column;
-	visibility: visible;
-	opacity: 1;
-}
-
-.delete-text {
-	font-size: var(--font-size--content-large);
-	text-align: center;
-}
-
-.button-container {
-	display: flex;
-	width: 500px;
-	justify-content: center;
-	align-items: center;
-}
-
-.delete-button {
-	width: 200px;
-	margin: 40px 20px 0 20px;
-}
-
-.delete-confirm {
-	border-color: var(--color-primary--hover);
-	transition: background var(--transition-short);
-}
-
-.delete-confirm:hover {
-	background-color: var(--color-primary--hover);
 }
 </style>

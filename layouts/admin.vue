@@ -19,6 +19,12 @@
 				<li :class="'navItem' + ($route.path.startsWith('/admin/results') ? '' : ' inactive')">
 					<SvgResults :class="'icon' + ($route.path.startsWith('/admin/results') ? ' highlight' : '')" />
 				</li>
+				<li class="navItem" v-if="authState.root">
+					<NuxtLink href="/admin/root/">
+						<SvgAdmin :class="'icon' + ($route.path.startsWith('/admin/root') ? ' highlight' : '')" />
+					</NuxtLink>
+					<!-- programmer beware: this causes a hydration node mismatch because authState.root is not available on the server -->
+				</li>
 			</ul>
 			<div @click="logout" class="logout">
 				<SvgLogout class="icon" />
@@ -35,7 +41,8 @@
 export default defineComponent({
 	data() {
 		return {
-			config: useRuntimeConfig()
+			config: useRuntimeConfig(),
+			authState: useAuth()
 		};
 	},
 	methods: {
@@ -44,6 +51,8 @@ export default defineComponent({
 				method: "POST",
 				credentials: "include"
 			});
+			this.authState.auth = false;
+			this.authState.root = false;
 			await navigateTo("/");
 		},
 		determineHeading() {
@@ -52,6 +61,7 @@ export default defineComponent({
 			else if (path.startsWith("/admin/list")) return "Created polls";
 			else if (path.startsWith("/admin/create")) return "Create new poll";
 			else if (path.startsWith("/admin/edit")) return "Edit Poll";
+			else if (path.startsWith("/admin/root")) return "System administration";
 		}
 	}
 });

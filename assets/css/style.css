@@ -70,10 +70,6 @@ body {
 	margin: 0px;
 }
 
-.noHover {
-	pointer-events: none;
-}
-
 textarea,
 input[type=datetime-local],
 input[type=text],

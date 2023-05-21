@@ -62,7 +62,6 @@ export default defineComponent({
 			if (this.username === "" || this.password === "") {
 				return;
 			}
-			const password = await this.hashPassword();
 			const res = await fetch(this.config.public.pollApiBase + "/login", {
 				method: "POST",
 				credentials: "include",
@@ -72,7 +71,7 @@ export default defineComponent({
 				},
 				body: JSON.stringify({
 					username: this.username,
-					password: password
+					password: this.password
 				})
 			});
 			if (res.ok) {
@@ -90,14 +89,6 @@ export default defineComponent({
 				}
 			}
 
-		},
-		async hashPassword() {
-			const salt = this.password + this.username;
-			const msgUint8 = new TextEncoder().encode(salt);
-			const hashBuffer = await crypto.subtle.digest("sha-256", msgUint8);
-			const hashArray = Array.from(new Uint8Array(hashBuffer));
-			const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-			return hashHex;
 		}
 	}
 });

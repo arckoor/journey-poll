@@ -6,7 +6,8 @@ defineProps<{
 	expires: string,
 	voteAmount: number,
 	id: string,
-	callback: (id: string, name: string) => void
+	duplicateCallback: (id: string) => void,
+	deleteCallback: (id: string, name: string) => void
 }>();
 const config = useRuntimeConfig();
 </script>
@@ -40,10 +41,13 @@ const config = useRuntimeConfig();
 			<Button class="link-item" @click="navigateTo('/admin/edit/' + id)">
 				<template #buttonSlot><SvgEdit :width="30" :height="30" /></template>
 			</Button>
+			<Button class="link-item" @click="duplicateCallback(id)" v-if="authState.root">
+				<template #buttonSlot><SvgDuplicate :width="30" :height="30" /></template>
+			</Button>
 			<Button class="link-item" @click="navigateTo('/admin/results/' + id)">
 				<template #buttonSlot><SvgResults :width="30" :height="30" /></template>
 			</Button>
-			<Button class="link-item delete" @click="callback(id, name)">
+			<Button class="link-item delete" @click="deleteCallback(id, name)">
 				<template #buttonSlot><SvgDelete :width="30" :height="30" /></template>
 			</Button>
 		</div>
@@ -54,7 +58,8 @@ const config = useRuntimeConfig();
 export default defineComponent({
 	data() {
 		return {
-			ended: false
+			ended: false,
+			authState: useAuth()
 		};
 	}
 });
