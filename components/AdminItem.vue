@@ -61,7 +61,7 @@ withDefaults(defineProps<Props>(), {
 						class="field-input"
 					>
 					<input
-						type="text"
+						type="password"
 						id="password"
 						v-model="editPassword"
 						class="field-input"
