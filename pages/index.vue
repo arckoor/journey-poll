@@ -37,7 +37,7 @@
 			How can I make an account?
 			<span :class="'tool-tip--content '+ (tooltipEnabled ? 'reveal' : '')">
 				Currently, accounts are issued on a per-request basis.
-				If you'd like to use this service, please contact arckoor#6568 in the Journey Discord.
+				If you'd like to use this service, please contact arckoor in the Journey Discord.
 			</span>
 		</div>
 	</div>

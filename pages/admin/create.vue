@@ -15,6 +15,7 @@ definePageMeta({
 		:disabled="published"
 		:valid-callback="validCallback"
 		@interface="assignData"
+		v-if = "ready"
 	/>
 	<div class="button-container">
 		<div v-if="!published && !working">
@@ -46,17 +47,30 @@ export default defineComponent({
 		return {
 			config: useRuntimeConfig(),
 			name: "",
-			info: "**Please check out the entries and vote for your favourites!** The entry letter (A, B, C) is assigned at the top of the image. Use the checkbox next to the entry letter to select your choices, then submit them at the bottom of the page!",
-			allowedVotes: 3,
-			ends: toDateInputValue(addDays(new Date(), 1)),
-			expires: toDateInputValue(addDays(new Date(), 3)),
+			info: "",
+			allowedVotes: 0,
+			ends: "",
+			expires: "",
 			valid: false,
 			published: false,
 			working: false,
 			error: false,
 			id: "",
-			dataCallback: () => <IPollData>{}
+			dataCallback: () => <IPollData>{},
+			ready: false
 		};
+	},
+	async mounted() {
+		const data = await fetch(this.config.public.pollApiBase + "/admin/settings", {
+			credentials: "include"
+		});
+		const settings = await data.json();
+		this.name = settings.name || "";
+		this.info = settings.info || "";
+		this.allowedVotes = Number(settings.allowedVotes) || 1;
+		this.ends = makeDateFromConfig(settings.endTime, settings.endPlusDays) || toDateInputValue(addDays(new Date(), 1));
+		this.expires = makeDateFromConfig(settings.expireTime, settings.expirePlusDays) || toDateInputValue(addDays(new Date(), 3));
+		this.ready = true;
 	},
 	methods: {
 		validCallback(valid: boolean) {

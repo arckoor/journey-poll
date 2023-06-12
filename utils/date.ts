@@ -14,3 +14,15 @@ export function toLocalTimeZone(date: Date) {
 	date.setMinutes(date.getMinutes() - offset);
 	return date.toISOString().replace("Z", "");
 }
+
+export function makeDateFromConfig(time: string, days: string) {
+	if (!time && !days) return null;
+	const date = new Date();
+	if (time) {
+		const [hours, minutes] = time.split(":");
+		date.setHours(+hours);
+		date.setMinutes(+minutes);
+	}
+	if (days) addDays(date, +days);
+	return toDateInputValue(date);
+}

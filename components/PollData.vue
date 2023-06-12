@@ -30,7 +30,6 @@ defineProps<{
 				id="pollInfo"
 				v-model="info"
 				:disabled="disabled"
-				@input="removeNewlines"
 			/>
 		</div>
 		<div class="input-item">
@@ -154,9 +153,6 @@ export default defineComponent({
 					reader.readAsDataURL(files[i]);
 				}
 			}
-		},
-		removeNewlines() {
-			this.info = this.info.replaceAll(/\n/g, "");
 		},
 		removeImage(idx: number) {
 			this.images.splice(idx, 1);

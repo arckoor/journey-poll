@@ -13,11 +13,10 @@
 						<SvgCreate :class="'icon' + ($route.path === '/admin/create' ? ' highlight' : '')" />
 					</NuxtLink>
 				</li>
-				<li :class="'navItem' + ($route.path.startsWith('/admin/edit') ? '' : ' inactive')">
-					<SvgEdit :class="'icon' + ($route.path.startsWith('/admin/edit') ? ' highlight' : '')" />
-				</li>
-				<li :class="'navItem' + ($route.path.startsWith('/admin/results') ? '' : ' inactive')">
-					<SvgResults :class="'icon' + ($route.path.startsWith('/admin/results') ? ' highlight' : '')" />
+				<li class="navItem">
+					<NuxtLink to="/admin/settings">
+						<SvgSettings :class="'icon' + ($route.path === '/admin/settings' ? ' highlight' : '')" />
+					</NuxtLink>
 				</li>
 				<li class="navItem" v-if="authState.root">
 					<NuxtLink href="/admin/root/">
@@ -58,6 +57,7 @@ export default defineComponent({
 		determineHeading() {
 			const path = this.$route.fullPath;
 			if (path.startsWith("/admin/results")) return "Results";
+			else if (path.startsWith("/admin/settings")) return "Settings";
 			else if (path.startsWith("/admin/list")) return "Created polls";
 			else if (path.startsWith("/admin/create")) return "Create new poll";
 			else if (path.startsWith("/admin/edit")) return "Edit Poll";

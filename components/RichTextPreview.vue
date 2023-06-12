@@ -12,6 +12,7 @@ defineProps<{
 			<span v-else-if="item.type === 'bold'"><strong>{{ item.content }}</strong></span>
 			<span v-else-if="item.type === 'underline'"><u>{{ item.content }}</u></span>
 			<span v-else-if="item.type === 'italic'"><i>{{ item.content }}</i></span>
+			<span v-else-if="item.type === 'newline'"><br /></span>
 		</template>
 		<span v-if="text">&nbsp;</span>
 		<u>You may vote for up to {{ allowedVotes }} {{ allowedVotes > 1 ? "entries" : "entry" }}!</u> Thanks for your vote!
@@ -36,8 +37,9 @@ export default defineComponent({
 			this.splits = [];
 			const regex = [
 				/(\*\*[^*]+\*\*)/g,  // bold
-				/(__[^_]+__)/g,	     // underline
-				/((?<!_)_[^_]+_)/g	 // italic
+				/(__[^_]+__)/g,      // underline
+				/((?<!_)_[^_]+_)/g,  // italic
+				/(\r\n|\r|\n)/g      // new line
 			];
 			let info = [input] as Array<string | string[]>;
 			for (const re of regex) {
@@ -60,6 +62,9 @@ export default defineComponent({
 				} else if (new RegExp(regex[2]).test(item)) {
 					item = item.replaceAll("_", "");
 					type = "italic";
+				}  else if (new RegExp(regex[3]).test(item)) {
+					item = "";
+					type = "newline";
 				} else {
 					type = "text";
 				}
