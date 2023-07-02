@@ -1,28 +1,36 @@
 <template>
 	<div class="container">
-		<div class="input-container">
-			<label for="username">Username:</label>
-			<input
-				spellcheck="false"
-				type="text"
-				v-model="username"
-				v-on:keydown.enter="($refs.password as HTMLElement).focus()"
-				id="username"
-				name="username"
-				placeholder="Enter your username..."
-			/>
-		</div>
-		<div class="input-container">
-			<label for="password">Password:</label>
-			<input
-				type="password"
-				v-model="password"
-				v-on:keydown.enter="login"
-				ref="password"
-				id="password"
-				name="password"
-				placeholder="Enter your password..."
-			/>
+		<div class="input-wrapper">
+			<div class="input-container">
+				<label for="username">Username:</label>
+				<input
+					spellcheck="false"
+					type="text"
+					v-model="username"
+					v-on:keydown.enter="($refs.password as HTMLElement).focus()"
+					id="username"
+					name="username"
+					placeholder="Enter your username..."
+					autocomplete="username"
+				/>
+			</div>
+			<div class="input-container">
+				<label for="password">Password:</label>
+				<input
+					:type="pwType"
+					v-model="password"
+					v-on:keydown.enter="login"
+					ref="password"
+					id="password"
+					name="password"
+					placeholder="Enter your password..."
+					autocomplete="current-password"
+				/>
+				<div class="visibility-toggle no-select">
+					<SvgVisibility v-if="pwType == 'password'" @click="toggleVisibility" />
+					<SvgVisibilityLock v-else @click="toggleVisibility" />
+				</div>
+			</div>
 		</div>
 		<div class="login-container">
 			<Button
@@ -51,7 +59,8 @@ export default defineComponent({
 			password: "",
 			config: useRuntimeConfig(),
 			errorMessage: "",
-			tooltipEnabled: false
+			tooltipEnabled: false,
+			pwType: "password"
 		};
 	},
 	mounted() {
@@ -88,7 +97,9 @@ export default defineComponent({
 					this.errorMessage = "Something went wrong :/";
 				}
 			}
-
+		},
+		toggleVisibility() {
+			this.pwType = this.pwType === "password" ? "text" : "password";
 		}
 	}
 });
@@ -113,6 +124,12 @@ export default defineComponent({
 	justify-content: center;
 }
 
+.input-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
 .input-container {
 	display: flex;
 	padding: 20px 0;
@@ -123,6 +140,14 @@ export default defineComponent({
 label {
 	width: 120px;
 	padding-right: 25px;
+}
+
+.visibility-toggle {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 10px;
+	cursor: pointer;
 }
 
 .login-container {
