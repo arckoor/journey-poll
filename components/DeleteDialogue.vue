@@ -19,6 +19,12 @@ defineProps<{
 </template>
 
 <style scoped>
+@media only screen and (max-width: 599px) {
+	.button-container {
+		flex-direction: column;
+	}
+}
+
 .delete-container {
 	z-index: 9999;
 	transition: background-color var(--transition-middle);
