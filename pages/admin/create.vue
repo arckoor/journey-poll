@@ -32,7 +32,7 @@ definePageMeta({
 		<div v-else-if="error">
 			<div class="success-msg">An error occurred. Have you submitted the correct file formats?</div>
 		</div>
-		<div v-else>
+		<div v-else class="done">
 			<div class="success-msg">Poll successfully published!</div>
 			<Button text="Copy Link" @click="copyLink(config.public.base + '/' + id)" />
 		</div>
@@ -80,6 +80,7 @@ export default defineComponent({
 			this.dataCallback = dataInterface.dataInterface;
 		},
 		async create() {
+			if (!this.valid) return;
 			this.error = false;
 			this.working = true;
 			const data = this.dataCallback();
@@ -153,6 +154,13 @@ export default defineComponent({
 .spin-msg {
 	margin-top: 27px;
 	margin-left: 40px;
+}
+
+.done {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 }
 
 .success-msg {

@@ -55,7 +55,8 @@ defineProps<{
 }
 
 .delete-button {
-	width: 200px;
+	width: fit-content;
+	min-width: 200px;
 	margin: 40px 20px 0 20px;
 }
 
