@@ -45,6 +45,8 @@ export default defineComponent({
 	data() {
 		return {
 			config: useRuntimeConfig(),
+			route: useRoute(),
+			router: useRouter(),
 			id: this.$route.params.id,
 			name: "",
 			info: "",
@@ -62,6 +64,8 @@ export default defineComponent({
 	},
 	async mounted() {
 		await this.getPollData();
+		if (this.route.query.tiebreaker) this.saved = true;
+		this.router.replace({ query: {} });
 		this.ready = true;
 	},
 	methods: {

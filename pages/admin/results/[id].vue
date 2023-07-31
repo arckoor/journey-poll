@@ -151,7 +151,7 @@ export default defineComponent({
 			}).then(async res => {
 				if (res.ok) {
 					const data = await res.json();
-					await navigateTo("/admin/edit/" + data);
+					await navigateTo("/admin/edit/" + data + "?tiebreaker=true");
 				}
 			});
 		}
