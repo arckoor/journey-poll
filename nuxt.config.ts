@@ -5,8 +5,8 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			dev: process.env.NODE_ENV !== "production",
-			apiBase: process.env.NODE_ENV !== "production" ? "http://localhost:8080/" : process.env.NUXT_API_BASE_URL,
-			pollApiBase: process.env.NODE_ENV !== "production" ? "http://localhost:8080/poll" : process.env.NUXT_POLL_API_BASE_URL,
+			apiBase: process.env.NODE_ENV !== "production" ? "http://localhost:8080" : process.env.NUXT_API_BASE_URL,
+			pollApiBase: process.env.NODE_ENV !== "production" ? "http://localhost:8080" : process.env.NUXT_POLL_API_BASE_URL,
 			base: process.env.NODE_ENV !== "production" ? "http://localhost:3000/p" : process.env.NUXT_BASE_URL
 		}
 	},

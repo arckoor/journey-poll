@@ -1,3 +1,6 @@
+# DEPRECATION NOTICE
+**This project is no longer maintained. Use [flare](https://github.com/arckoor/flare) instead.**
+
 # journey-poll
 [Journey](https://thatgamecompany.com/journey/) is a video game made by [ThatGameCompany](https://thatgamecompany.com/).
 
